@@ -33,7 +33,6 @@ void run(List<String> args) async {
     '/*',
   );
   
-
   auth.AuthConfig.set(auth.AuthConfig(
     sendValidationEmail: (session, email, validationCode) async {
       // Retrieve the credentials

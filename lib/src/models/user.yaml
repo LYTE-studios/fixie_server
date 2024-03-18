@@ -1,0 +1,4 @@
+class: User
+fields:
+  email: String
+  password: String

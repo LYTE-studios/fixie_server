@@ -13,7 +13,9 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/module.dart' as _i3;
 import 'example.dart' as _i4;
+import 'user.dart' as _i5;
 export 'example.dart';
+export 'user.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
   Protocol._();
@@ -41,8 +43,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i4.Example) {
       return _i4.Example.fromJson(data, this) as T;
     }
+    if (t == _i5.User) {
+      return _i5.User.fromJson(data, this) as T;
+    }
     if (t == _i1.getType<_i4.Example?>()) {
       return (data != null ? _i4.Example.fromJson(data, this) : null) as T;
+    }
+    if (t == _i1.getType<_i5.User?>()) {
+      return (data != null ? _i5.User.fromJson(data, this) : null) as T;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
@@ -63,6 +71,9 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i4.Example) {
       return 'Example';
     }
+    if (data is _i5.User) {
+      return 'User';
+    }
     return super.getClassNameForObject(data);
   }
 
@@ -74,6 +85,9 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (data['className'] == 'Example') {
       return deserialize<_i4.Example>(data['data']);
+    }
+    if (data['className'] == 'User') {
+      return deserialize<_i5.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
