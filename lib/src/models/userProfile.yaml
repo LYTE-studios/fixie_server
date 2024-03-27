@@ -1,0 +1,5 @@
+class: UserProfile
+fields:
+  name: String
+  email: String
+  daysSinceCreation: int

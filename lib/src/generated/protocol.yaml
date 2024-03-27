@@ -1,2 +1,6 @@
 example:
   - hello:
+profile:
+  - getProfileData:
+  - updateBirthday:
+  - updateName:

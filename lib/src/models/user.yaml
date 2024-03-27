@@ -1,4 +1,9 @@
 class: User
+table: user
 fields:
-  email: String
-  password: String
+  userInfo: module:auth:UserInfo?, relation(onDelete=Cascade)
+  birthday: DateTime
+indexes:
+  user_info_id_unique_idx:
+    fields: userInfoId
+    unique: true
