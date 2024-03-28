@@ -15,7 +15,7 @@ project_name = "fixie"
 # need to update the instance_ami variable (see below) and update the region in
 # the .github/workflows/deployment-aws.yml file. In some cases you will also
 # need to update your instance_type.
-aws_region = "us-west-2"
+aws_region = "eu-central-1"
 
 # Enabling Redis may incur additional costs. You will also need to enable Redis
 # in your staging.yaml and production.yaml configuration files.
@@ -28,10 +28,10 @@ enable_redis = false
 # *.example.com to your certificate. You will need to create one certificate
 # for your main region and one for use with Cloudfront that resides in the
 # us-east-1 region.
-hosted_zone_id             = "<YOUR HOSTED ZONE ID>"
-top_domain                 = "<YOUR DOMAIN NAME>"
-certificate_arn            = "<YOUR CERTIFICATE ARN>"
-cloudfront_certificate_arn = "<YOUR CERTIFICATE ARN IN US-EAST-1>"
+hosted_zone_id              = "Z02591311HJF2TTJGDZYQ"
+top_domain                  = "api.fixie.lytestudios.be"
+certificate_arn             = "arn:aws:acm:eu-central-1:100545315670:certificate/0dee95cb-a074-42f2-b5c3-6c242c4b5378"
+cloudfront_certificate_arn  = "arn:aws:acm:eu-central-1:100545315670:certificate/0dee95cb-a074-42f2-b5c3-6c242c4b5378"
 
 # Subdomains for different services. Default values are recommended, but you
 # may want to change the subdomain_web to www if you are using the top domain
