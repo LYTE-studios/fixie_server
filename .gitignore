@@ -10,6 +10,3 @@ doc/api/
 
 # Passwords file
 config/passwords.yaml
-
-# Github
-.github
