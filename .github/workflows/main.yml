@@ -36,7 +36,6 @@ jobs:
           aws-region: us-west-2
 
       - name: Create passwords file
-        working-directory: fixie_server
         shell: bash
         env:
           SERVERPOD_PASSWORDS: ${{ secrets.SERVERPOD_PASSWORDS }}
@@ -46,11 +45,9 @@ jobs:
           ls config/
 
       - name: Get Dart packages
-        working-directory: fixie_server
         run: dart pub get
 
       - name: Compile server
-        working-directory: fixie_server
         run: dart compile kernel bin/main.dart
 
       - name: Create CodeDeploy Deployment
