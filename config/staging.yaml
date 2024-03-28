@@ -11,14 +11,14 @@
 # Configuration for the main API server.
 apiServer:
   port: 8080
-  publicHost: staging.api.fixie.lytestudios.be
+  publicHost: staging-api.fixie.lytestudios.be
   publicPort: 443
   publicScheme: https
 
 # Configuration for the Insights server.
 insightsServer:
   port: 8081
-  publicHost: insights.staging.fixie.lytestudios.be
+  publicHost: insights-staging.fixie.lytestudios.be
   publicPort: 443
   publicScheme: https
 
@@ -34,7 +34,7 @@ webServer:
 # If you are connecting on a public IP (e.g. on AWS or Google Cloud Run), you
 # connect on the public IP of the database e.g. database-staging.examplepod.com.
 database:
-  host: database.staging.fixie.lytestudios.be
+  host: database-staging.fixie.lytestudios.be
   port: 5432
   name: serverpod
   user: postgres
@@ -45,5 +45,5 @@ database:
 # connect on the public IP of the database e.g. redis-staging.examplepod.com.
 redis:
   enabled: false
-  host: redis.staging.fixie.lytestudios.be
+  host: redis-staging.fixie.lytestudios.be
   port: 6379

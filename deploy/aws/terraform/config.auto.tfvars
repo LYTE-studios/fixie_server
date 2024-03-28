@@ -29,9 +29,9 @@ enable_redis = false
 # for your main region and one for use with Cloudfront that resides in the
 # us-east-1 region.
 hosted_zone_id              = "Z02591311HJF2TTJGDZYQ"
-top_domain                  = "api.fixie.lytestudios.be"
+top_domain                  = "fixie.lytestudios.be"
 certificate_arn             = "arn:aws:acm:eu-central-1:100545315670:certificate/0dee95cb-a074-42f2-b5c3-6c242c4b5378"
-cloudfront_certificate_arn  = "arn:aws:acm:eu-central-1:100545315670:certificate/0dee95cb-a074-42f2-b5c3-6c242c4b5378"
+cloudfront_certificate_arn  = "arn:aws:acm:us-east-1:100545315670:certificate/3fb356dc-174a-4c03-af3e-68ce38388a77"
 
 # Subdomains for different services. Default values are recommended, but you
 # may want to change the subdomain_web to www if you are using the top domain
@@ -60,7 +60,7 @@ use_top_domain_for_web = false
 # Note: For some regions the t2.micro is not available. If so, consult the AWS
 # documentation to find another instance type that suits your needs.
 instance_type                = "t2.micro"
-instance_ami                 = "ami-0ca285d4c2cda3300"
+instance_ami                 = "ami-0183b16fc359a89dd"
 autoscaling_min_size         = 1
 autoscaling_max_size         = 1
 autoscaling_desired_capacity = 1
