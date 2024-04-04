@@ -1,0 +1,6 @@
+enum: Repetition
+serialized: byName
+values:
+  - Daily
+  - Weekly
+  - Monthly

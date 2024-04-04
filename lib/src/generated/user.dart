@@ -10,6 +10,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod_auth_server/module.dart' as _i2;
+import 'protocol.dart' as _i3;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class User extends _i1.TableRow {
@@ -18,6 +19,7 @@ abstract class User extends _i1.TableRow {
     required this.userInfoId,
     this.userInfo,
     required this.birthday,
+    this.goals,
   }) : super(id);
 
   factory User({
@@ -25,6 +27,7 @@ abstract class User extends _i1.TableRow {
     required int userInfoId,
     _i2.UserInfo? userInfo,
     required DateTime birthday,
+    List<_i3.Goal>? goals,
   }) = _UserImpl;
 
   factory User.fromJson(
@@ -39,6 +42,8 @@ abstract class User extends _i1.TableRow {
           .deserialize<_i2.UserInfo?>(jsonSerialization['userInfo']),
       birthday: serializationManager
           .deserialize<DateTime>(jsonSerialization['birthday']),
+      goals: serializationManager
+          .deserialize<List<_i3.Goal>?>(jsonSerialization['goals']),
     );
   }
 
@@ -52,6 +57,8 @@ abstract class User extends _i1.TableRow {
 
   DateTime birthday;
 
+  List<_i3.Goal>? goals;
+
   @override
   _i1.Table get table => t;
 
@@ -60,6 +67,7 @@ abstract class User extends _i1.TableRow {
     int? userInfoId,
     _i2.UserInfo? userInfo,
     DateTime? birthday,
+    List<_i3.Goal>? goals,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -68,6 +76,7 @@ abstract class User extends _i1.TableRow {
       'userInfoId': userInfoId,
       if (userInfo != null) 'userInfo': userInfo?.toJson(),
       'birthday': birthday.toJson(),
+      if (goals != null) 'goals': goals?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -78,6 +87,7 @@ abstract class User extends _i1.TableRow {
       'id': id,
       'userInfoId': userInfoId,
       'birthday': birthday,
+      'goals': goals,
     };
   }
 
@@ -88,6 +98,8 @@ abstract class User extends _i1.TableRow {
       'userInfoId': userInfoId,
       if (userInfo != null) 'userInfo': userInfo?.allToJson(),
       'birthday': birthday.toJson(),
+      if (goals != null)
+        'goals': goals?.toJson(valueToJson: (v) => v.allToJson()),
     };
   }
 
@@ -106,6 +118,9 @@ abstract class User extends _i1.TableRow {
         return;
       case 'birthday':
         birthday = value;
+        return;
+      case 'goals':
+        goals = value;
         return;
       default:
         throw UnimplementedError();
@@ -270,11 +285,13 @@ class _UserImpl extends User {
     required int userInfoId,
     _i2.UserInfo? userInfo,
     required DateTime birthday,
+    List<_i3.Goal>? goals,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
           userInfo: userInfo,
           birthday: birthday,
+          goals: goals,
         );
 
   @override
@@ -283,6 +300,7 @@ class _UserImpl extends User {
     int? userInfoId,
     Object? userInfo = _Undefined,
     DateTime? birthday,
+    Object? goals = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -290,6 +308,7 @@ class _UserImpl extends User {
       userInfo:
           userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
       birthday: birthday ?? this.birthday,
+      goals: goals is List<_i3.Goal>? ? goals : this.goals?.clone(),
     );
   }
 }
@@ -304,6 +323,10 @@ class UserTable extends _i1.Table {
       'birthday',
       this,
     );
+    goals = _i1.ColumnSerializable(
+      'goals',
+      this,
+    );
   }
 
   late final _i1.ColumnInt userInfoId;
@@ -311,6 +334,8 @@ class UserTable extends _i1.Table {
   _i2.UserInfoTable? _userInfo;
 
   late final _i1.ColumnDateTime birthday;
+
+  late final _i1.ColumnSerializable goals;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -330,6 +355,7 @@ class UserTable extends _i1.Table {
         id,
         userInfoId,
         birthday,
+        goals,
       ];
 
   @override

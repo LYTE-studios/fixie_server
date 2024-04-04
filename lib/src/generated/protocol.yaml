@@ -1,5 +1,8 @@
-example:
-  - hello:
+goals:
+  - addGoal:
+  - getGoal:
+  - getGoals:
+  - updateGoal:
 profile:
   - getProfileData:
   - updateBirthday:
