@@ -10,8 +10,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/example_endpoint.dart' as _i2;
-import '../endpoints/profile_endpoint.dart' as _i3;
-import 'package:serverpod_auth_server/module.dart' as _i4;
+import '../endpoints/goals_endpoint.dart' as _i3;
+import '../endpoints/profile_endpoint.dart' as _i4;
+import 'package:fixie_server/src/generated/goal.dart' as _i5;
+import 'package:serverpod_auth_server/module.dart' as _i6;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -23,7 +25,13 @@ class Endpoints extends _i1.EndpointDispatch {
           'example',
           null,
         ),
-      'profile': _i3.ProfileEndpoint()
+      'goals': _i3.GoalsEndpoint()
+        ..initialize(
+          server,
+          'goals',
+          null,
+        ),
+      'profile': _i4.ProfileEndpoint()
         ..initialize(
           server,
           'profile',
@@ -54,6 +62,75 @@ class Endpoints extends _i1.EndpointDispatch {
         )
       },
     );
+    connectors['goals'] = _i1.EndpointConnector(
+      name: 'goals',
+      endpoint: endpoints['goals']!,
+      methodConnectors: {
+        'addGoal': _i1.MethodConnector(
+          name: 'addGoal',
+          params: {
+            'goal': _i1.ParameterDescription(
+              name: 'goal',
+              type: _i1.getType<_i5.Goal>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['goals'] as _i3.GoalsEndpoint).addGoal(
+            session,
+            params['goal'],
+          ),
+        ),
+        'getGoal': _i1.MethodConnector(
+          name: 'getGoal',
+          params: {
+            'goalId': _i1.ParameterDescription(
+              name: 'goalId',
+              type: _i1.getType<int?>(),
+              nullable: true,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['goals'] as _i3.GoalsEndpoint).getGoal(
+            session,
+            params['goalId'],
+          ),
+        ),
+        'getGoals': _i1.MethodConnector(
+          name: 'getGoals',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['goals'] as _i3.GoalsEndpoint).getGoals(session),
+        ),
+        'editGoal': _i1.MethodConnector(
+          name: 'editGoal',
+          params: {
+            'goal': _i1.ParameterDescription(
+              name: 'goal',
+              type: _i1.getType<_i5.Goal>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['goals'] as _i3.GoalsEndpoint).editGoal(
+            session,
+            params['goal'],
+          ),
+        ),
+      },
+    );
     connectors['profile'] = _i1.EndpointConnector(
       name: 'profile',
       endpoint: endpoints['profile']!,
@@ -65,7 +142,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i3.ProfileEndpoint)
+              (endpoints['profile'] as _i4.ProfileEndpoint)
                   .getProfileData(session),
         ),
         'updateBirthday': _i1.MethodConnector(
@@ -81,7 +158,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i3.ProfileEndpoint).updateBirthday(
+              (endpoints['profile'] as _i4.ProfileEndpoint).updateBirthday(
             session,
             params['birthday'],
           ),
@@ -99,13 +176,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i3.ProfileEndpoint).updateName(
+              (endpoints['profile'] as _i4.ProfileEndpoint).updateName(
             session,
             params['name'],
           ),
         ),
       },
     );
-    modules['serverpod_auth'] = _i4.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i6.Endpoints()..initializeEndpoints(server);
   }
 }

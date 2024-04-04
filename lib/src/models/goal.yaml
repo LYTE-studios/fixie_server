@@ -1,0 +1,10 @@
+class: Goal
+table: goal
+fields:
+  title: String
+  picture: String?
+  target: int
+  targetPeriod: TargetPeriod
+  category: Category
+  repetition: Repetition
+  days: List<Days>?

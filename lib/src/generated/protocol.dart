@@ -12,8 +12,20 @@ library protocol; // ignore_for_file: no_leading_underscores_for_library_prefixe
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/module.dart' as _i3;
-import 'user.dart' as _i4;
-import 'userProfile.dart' as _i5;
+import 'category.dart' as _i4;
+import 'days.dart' as _i5;
+import 'goal.dart' as _i6;
+import 'repetition.dart' as _i7;
+import 'target_period.dart' as _i8;
+import 'user.dart' as _i9;
+import 'userProfile.dart' as _i10;
+import 'protocol.dart' as _i11;
+import 'package:fixie_server/src/generated/goal.dart' as _i12;
+export 'category.dart';
+export 'days.dart';
+export 'goal.dart';
+export 'repetition.dart';
+export 'target_period.dart';
 export 'user.dart';
 export 'userProfile.dart';
 
@@ -27,6 +39,80 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
+    _i2.TableDefinition(
+      name: 'goal',
+      dartName: 'Goal',
+      schema: 'public',
+      module: 'fixie',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'goal_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'title',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'picture',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'target',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'targetPeriod',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'protocol:TargetPeriod',
+        ),
+        _i2.ColumnDefinition(
+          name: 'category',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:Category',
+        ),
+        _i2.ColumnDefinition(
+          name: 'repetition',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:Repetition',
+        ),
+        _i2.ColumnDefinition(
+          name: 'days',
+          columnType: _i2.ColumnType.json,
+          isNullable: true,
+          dartType: 'List<protocol:Days>?',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'goal_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
     _i2.TableDefinition(
       name: 'user',
       dartName: 'User',
@@ -51,6 +137,12 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: false,
           dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'goals',
+          columnType: _i2.ColumnType.json,
+          isNullable: true,
+          dartType: 'List<protocol:Goal>?',
         ),
       ],
       foreignKeys: [
@@ -108,17 +200,62 @@ class Protocol extends _i1.SerializationManagerServer {
     if (customConstructors.containsKey(t)) {
       return customConstructors[t]!(data, this) as T;
     }
-    if (t == _i4.User) {
-      return _i4.User.fromJson(data, this) as T;
+    if (t == _i4.Category) {
+      return _i4.Category.fromJson(data) as T;
     }
-    if (t == _i5.UserProfile) {
-      return _i5.UserProfile.fromJson(data, this) as T;
+    if (t == _i5.Days) {
+      return _i5.Days.fromJson(data) as T;
     }
-    if (t == _i1.getType<_i4.User?>()) {
-      return (data != null ? _i4.User.fromJson(data, this) : null) as T;
+    if (t == _i6.Goal) {
+      return _i6.Goal.fromJson(data, this) as T;
     }
-    if (t == _i1.getType<_i5.UserProfile?>()) {
-      return (data != null ? _i5.UserProfile.fromJson(data, this) : null) as T;
+    if (t == _i7.Repetition) {
+      return _i7.Repetition.fromJson(data) as T;
+    }
+    if (t == _i8.TargetPeriod) {
+      return _i8.TargetPeriod.fromJson(data) as T;
+    }
+    if (t == _i9.User) {
+      return _i9.User.fromJson(data, this) as T;
+    }
+    if (t == _i10.UserProfile) {
+      return _i10.UserProfile.fromJson(data, this) as T;
+    }
+    if (t == _i1.getType<_i4.Category?>()) {
+      return (data != null ? _i4.Category.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i5.Days?>()) {
+      return (data != null ? _i5.Days.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i6.Goal?>()) {
+      return (data != null ? _i6.Goal.fromJson(data, this) : null) as T;
+    }
+    if (t == _i1.getType<_i7.Repetition?>()) {
+      return (data != null ? _i7.Repetition.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i8.TargetPeriod?>()) {
+      return (data != null ? _i8.TargetPeriod.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i9.User?>()) {
+      return (data != null ? _i9.User.fromJson(data, this) : null) as T;
+    }
+    if (t == _i1.getType<_i10.UserProfile?>()) {
+      return (data != null ? _i10.UserProfile.fromJson(data, this) : null) as T;
+    }
+    if (t == _i1.getType<List<_i11.Days>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i11.Days>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<_i11.Goal>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i11.Goal>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<_i12.Goal>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i12.Goal>(e)).toList()
+          : null) as dynamic;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
@@ -136,10 +273,25 @@ class Protocol extends _i1.SerializationManagerServer {
     if (className != null) {
       return 'serverpod_auth.$className';
     }
-    if (data is _i4.User) {
+    if (data is _i4.Category) {
+      return 'Category';
+    }
+    if (data is _i5.Days) {
+      return 'Days';
+    }
+    if (data is _i6.Goal) {
+      return 'Goal';
+    }
+    if (data is _i7.Repetition) {
+      return 'Repetition';
+    }
+    if (data is _i8.TargetPeriod) {
+      return 'TargetPeriod';
+    }
+    if (data is _i9.User) {
       return 'User';
     }
-    if (data is _i5.UserProfile) {
+    if (data is _i10.UserProfile) {
       return 'UserProfile';
     }
     return super.getClassNameForObject(data);
@@ -151,11 +303,26 @@ class Protocol extends _i1.SerializationManagerServer {
       data['className'] = data['className'].substring(15);
       return _i3.Protocol().deserializeByClassName(data);
     }
+    if (data['className'] == 'Category') {
+      return deserialize<_i4.Category>(data['data']);
+    }
+    if (data['className'] == 'Days') {
+      return deserialize<_i5.Days>(data['data']);
+    }
+    if (data['className'] == 'Goal') {
+      return deserialize<_i6.Goal>(data['data']);
+    }
+    if (data['className'] == 'Repetition') {
+      return deserialize<_i7.Repetition>(data['data']);
+    }
+    if (data['className'] == 'TargetPeriod') {
+      return deserialize<_i8.TargetPeriod>(data['data']);
+    }
     if (data['className'] == 'User') {
-      return deserialize<_i4.User>(data['data']);
+      return deserialize<_i9.User>(data['data']);
     }
     if (data['className'] == 'UserProfile') {
-      return deserialize<_i5.UserProfile>(data['data']);
+      return deserialize<_i10.UserProfile>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
@@ -175,8 +342,10 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i4.User:
-        return _i4.User.t;
+      case _i6.Goal:
+        return _i6.Goal.t;
+      case _i9.User:
+        return _i9.User.t;
     }
     return null;
   }

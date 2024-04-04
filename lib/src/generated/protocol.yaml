@@ -1,5 +1,10 @@
 example:
   - hello:
+goals:
+  - addGoal:
+  - getGoal:
+  - getGoals:
+  - editGoal:
 profile:
   - getProfileData:
   - updateBirthday:
