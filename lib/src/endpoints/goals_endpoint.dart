@@ -1,9 +1,7 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
-import 'package:serverpod_auth_server/module.dart';
 
 class GoalsEndpoint extends Endpoint {
   Future<int> addGoal(Session session, Goal goal) async {
