@@ -13,17 +13,18 @@ class GoalsEndpoint extends Endpoint {
       where: (t) => t.userInfoId.equals(authenticatedUserId),
     );
     if (user != null) {
-      int? goalLength = user.goals?.length;
-      user.goals?.add(goal);
+      var newGoal = await Goal.db.insertRow(session, goal);
+      user.goals?.add(newGoal);
       var updatedUser = await User.db.updateRow(session, user);
-      var updatedLength = updatedUser.goals?.length;
-      if (updatedLength != null && updatedLength == goalLength) {
+      var goalCheck = updatedUser.goals?.firstWhere(
+          (element) => element.id?.compareTo(newGoal.id as num) == 0);
+      if (goalCheck != null) {
         return HttpStatus.ok;
       } else {
         return HttpStatus.notModified;
       }
     } else {
-      throw Exception("Goal can't be null.");
+      throw Exception("User can't be null.");
     }
   }
 
@@ -58,27 +59,39 @@ class GoalsEndpoint extends Endpoint {
     }
   }
 
-  Future<int> editGoal(Session session, Goal goal) async {
+  Future<int> updateGoal(Session session, int goalId, Goal newGoal) async {
     int? authenticatedUserId = await session.auth.authenticatedUserId;
     User? user = await User.db.findFirstRow(
       session,
       where: (t) => t.userInfoId.equals(authenticatedUserId),
     );
     if (user != null) {
-      var len = user.goals?.length;
-      var goalToUpdate = user.goals
-          ?.firstWhere((element) => element.id?.compareTo(goal.id as num) == 0);
-      user.goals?.remove(goalToUpdate);
-      user.goals?.add(goal);
-      var updatedUser = await User.db.updateRow(session, user);
-      var updatedLength = updatedUser.goals?.length;
-      if (updatedLength != null && updatedLength == len) {
-        return HttpStatus.ok;
+      var goal = await Goal.db.findById(session, goalId);
+      if (goal != null) {
+        goal.title = newGoal.title;
+        goal.picture = newGoal.picture;
+        goal.target = newGoal.target;
+        goal.targetPeriod = newGoal.targetPeriod;
+        goal.category = newGoal.category;
+        goal.repetition = newGoal.repetition;
+        goal.days = newGoal.days;
+        var updatedGoal = await Goal.db.updateRow(session, goal);
+        if (updatedGoal.title == goal.title ||
+            updatedGoal.picture == goal.picture ||
+            updatedGoal.target == goal.target ||
+            updatedGoal.targetPeriod == goal.targetPeriod ||
+            updatedGoal.category == goal.category ||
+            updatedGoal.repetition == goal.repetition ||
+            areListsEqual(goal.days!, updatedGoal.days!)) {
+          return HttpStatus.ok;
+        } else {
+          return HttpStatus.notModified;
+        }
       } else {
-        return HttpStatus.notModified;
+        throw Exception("Goal could not be found");
       }
     } else {
-      throw Exception("Goal can't be null.");
+      throw Exception("User can't be null.");
     }
   }
 
@@ -100,5 +113,11 @@ class GoalsEndpoint extends Endpoint {
         repetition: repetition,
         days: days ?? []);
     return goal;
+  }
+
+  bool areListsEqual(List<Days> list1, List<Days> list2) {
+    final set1 = Set.from(list1);
+    final set2 = Set.from(list2);
+    return set1.length == set2.length && set1.containsAll(set2);
   }
 }
