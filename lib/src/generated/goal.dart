@@ -1,0 +1,602 @@
+/* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
+/*   To generate run: "serverpod generate"    */
+
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: public_member_api_docs
+// ignore_for_file: implementation_imports
+// ignore_for_file: use_super_parameters
+// ignore_for_file: type_literal_in_constant_pattern
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:serverpod/serverpod.dart' as _i1;
+import 'protocol.dart' as _i2;
+import 'package:serverpod_serialization/serverpod_serialization.dart';
+
+abstract class Goal extends _i1.TableRow {
+  Goal._({
+    int? id,
+    required this.title,
+    this.picture,
+    required this.target,
+    required this.targetPeriod,
+    required this.category,
+    required this.repetition,
+    this.days,
+  }) : super(id);
+
+  factory Goal({
+    int? id,
+    required String title,
+    String? picture,
+    required int target,
+    required _i2.TargetPeriod targetPeriod,
+    required _i2.Category category,
+    required _i2.Repetition repetition,
+    List<_i2.Days>? days,
+  }) = _GoalImpl;
+
+  factory Goal.fromJson(
+    Map<String, dynamic> jsonSerialization,
+    _i1.SerializationManager serializationManager,
+  ) {
+    return Goal(
+      id: serializationManager.deserialize<int?>(jsonSerialization['id']),
+      title:
+          serializationManager.deserialize<String>(jsonSerialization['title']),
+      picture: serializationManager
+          .deserialize<String?>(jsonSerialization['picture']),
+      target:
+          serializationManager.deserialize<int>(jsonSerialization['target']),
+      targetPeriod: serializationManager
+          .deserialize<_i2.TargetPeriod>(jsonSerialization['targetPeriod']),
+      category: serializationManager
+          .deserialize<_i2.Category>(jsonSerialization['category']),
+      repetition: serializationManager
+          .deserialize<_i2.Repetition>(jsonSerialization['repetition']),
+      days: serializationManager
+          .deserialize<List<_i2.Days>?>(jsonSerialization['days']),
+    );
+  }
+
+  static final t = GoalTable();
+
+  static const db = GoalRepository._();
+
+  String title;
+
+  String? picture;
+
+  int target;
+
+  _i2.TargetPeriod targetPeriod;
+
+  _i2.Category category;
+
+  _i2.Repetition repetition;
+
+  List<_i2.Days>? days;
+
+  @override
+  _i1.Table get table => t;
+
+  Goal copyWith({
+    int? id,
+    String? title,
+    String? picture,
+    int? target,
+    _i2.TargetPeriod? targetPeriod,
+    _i2.Category? category,
+    _i2.Repetition? repetition,
+    List<_i2.Days>? days,
+  });
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      if (id != null) 'id': id,
+      'title': title,
+      if (picture != null) 'picture': picture,
+      'target': target,
+      'targetPeriod': targetPeriod.toJson(),
+      'category': category.toJson(),
+      'repetition': repetition.toJson(),
+      if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+    };
+  }
+
+  @override
+  @Deprecated('Will be removed in 2.0.0')
+  Map<String, dynamic> toJsonForDatabase() {
+    return {
+      'id': id,
+      'title': title,
+      'picture': picture,
+      'target': target,
+      'targetPeriod': targetPeriod,
+      'category': category,
+      'repetition': repetition,
+      'days': days,
+    };
+  }
+
+  @override
+  Map<String, dynamic> allToJson() {
+    return {
+      if (id != null) 'id': id,
+      'title': title,
+      if (picture != null) 'picture': picture,
+      'target': target,
+      'targetPeriod': targetPeriod.toJson(),
+      'category': category.toJson(),
+      'repetition': repetition.toJson(),
+      if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+    };
+  }
+
+  @override
+  @Deprecated('Will be removed in 2.0.0')
+  void setColumn(
+    String columnName,
+    value,
+  ) {
+    switch (columnName) {
+      case 'id':
+        id = value;
+        return;
+      case 'title':
+        title = value;
+        return;
+      case 'picture':
+        picture = value;
+        return;
+      case 'target':
+        target = value;
+        return;
+      case 'targetPeriod':
+        targetPeriod = value;
+        return;
+      case 'category':
+        category = value;
+        return;
+      case 'repetition':
+        repetition = value;
+        return;
+      case 'days':
+        days = value;
+        return;
+      default:
+        throw UnimplementedError();
+    }
+  }
+
+  @Deprecated('Will be removed in 2.0.0. Use: db.find instead.')
+  static Future<List<Goal>> find(
+    _i1.Session session, {
+    _i1.WhereExpressionBuilder<GoalTable>? where,
+    int? limit,
+    int? offset,
+    _i1.Column? orderBy,
+    List<_i1.Order>? orderByList,
+    bool orderDescending = false,
+    bool useCache = true,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.find<Goal>(
+      where: where != null ? where(Goal.t) : null,
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy,
+      orderByList: orderByList,
+      orderDescending: orderDescending,
+      useCache: useCache,
+      transaction: transaction,
+    );
+  }
+
+  @Deprecated('Will be removed in 2.0.0. Use: db.findRow instead.')
+  static Future<Goal?> findSingleRow(
+    _i1.Session session, {
+    _i1.WhereExpressionBuilder<GoalTable>? where,
+    int? offset,
+    _i1.Column? orderBy,
+    bool orderDescending = false,
+    bool useCache = true,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.findSingleRow<Goal>(
+      where: where != null ? where(Goal.t) : null,
+      offset: offset,
+      orderBy: orderBy,
+      orderDescending: orderDescending,
+      useCache: useCache,
+      transaction: transaction,
+    );
+  }
+
+  @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
+  static Future<Goal?> findById(
+    _i1.Session session,
+    int id,
+  ) async {
+    return session.db.findById<Goal>(id);
+  }
+
+  @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
+  static Future<int> delete(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<GoalTable> where,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.delete<Goal>(
+      where: where(Goal.t),
+      transaction: transaction,
+    );
+  }
+
+  @Deprecated('Will be removed in 2.0.0. Use: db.deleteRow instead.')
+  static Future<bool> deleteRow(
+    _i1.Session session,
+    Goal row, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.deleteRow(
+      row,
+      transaction: transaction,
+    );
+  }
+
+  @Deprecated('Will be removed in 2.0.0. Use: db.update instead.')
+  static Future<bool> update(
+    _i1.Session session,
+    Goal row, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.update(
+      row,
+      transaction: transaction,
+    );
+  }
+
+  @Deprecated(
+      'Will be removed in 2.0.0. Use: db.insert instead. Important note: In db.insert, the object you pass in is no longer modified, instead a new copy with the added row is returned which contains the inserted id.')
+  static Future<void> insert(
+    _i1.Session session,
+    Goal row, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.insert(
+      row,
+      transaction: transaction,
+    );
+  }
+
+  @Deprecated('Will be removed in 2.0.0. Use: db.count instead.')
+  static Future<int> count(
+    _i1.Session session, {
+    _i1.WhereExpressionBuilder<GoalTable>? where,
+    int? limit,
+    bool useCache = true,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.count<Goal>(
+      where: where != null ? where(Goal.t) : null,
+      limit: limit,
+      useCache: useCache,
+      transaction: transaction,
+    );
+  }
+
+  static GoalInclude include() {
+    return GoalInclude._();
+  }
+
+  static GoalIncludeList includeList({
+    _i1.WhereExpressionBuilder<GoalTable>? where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<GoalTable>? orderBy,
+    bool orderDescending = false,
+    _i1.OrderByListBuilder<GoalTable>? orderByList,
+    GoalInclude? include,
+  }) {
+    return GoalIncludeList._(
+      where: where,
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Goal.t),
+      orderDescending: orderDescending,
+      orderByList: orderByList?.call(Goal.t),
+      include: include,
+    );
+  }
+}
+
+class _Undefined {}
+
+class _GoalImpl extends Goal {
+  _GoalImpl({
+    int? id,
+    required String title,
+    String? picture,
+    required int target,
+    required _i2.TargetPeriod targetPeriod,
+    required _i2.Category category,
+    required _i2.Repetition repetition,
+    List<_i2.Days>? days,
+  }) : super._(
+          id: id,
+          title: title,
+          picture: picture,
+          target: target,
+          targetPeriod: targetPeriod,
+          category: category,
+          repetition: repetition,
+          days: days,
+        );
+
+  @override
+  Goal copyWith({
+    Object? id = _Undefined,
+    String? title,
+    Object? picture = _Undefined,
+    int? target,
+    _i2.TargetPeriod? targetPeriod,
+    _i2.Category? category,
+    _i2.Repetition? repetition,
+    Object? days = _Undefined,
+  }) {
+    return Goal(
+      id: id is int? ? id : this.id,
+      title: title ?? this.title,
+      picture: picture is String? ? picture : this.picture,
+      target: target ?? this.target,
+      targetPeriod: targetPeriod ?? this.targetPeriod,
+      category: category ?? this.category,
+      repetition: repetition ?? this.repetition,
+      days: days is List<_i2.Days>? ? days : this.days?.clone(),
+    );
+  }
+}
+
+class GoalTable extends _i1.Table {
+  GoalTable({super.tableRelation}) : super(tableName: 'goal') {
+    title = _i1.ColumnString(
+      'title',
+      this,
+    );
+    picture = _i1.ColumnString(
+      'picture',
+      this,
+    );
+    target = _i1.ColumnInt(
+      'target',
+      this,
+    );
+    targetPeriod = _i1.ColumnEnum(
+      'targetPeriod',
+      this,
+      _i1.EnumSerialization.byIndex,
+    );
+    category = _i1.ColumnEnum(
+      'category',
+      this,
+      _i1.EnumSerialization.byName,
+    );
+    repetition = _i1.ColumnEnum(
+      'repetition',
+      this,
+      _i1.EnumSerialization.byName,
+    );
+    days = _i1.ColumnSerializable(
+      'days',
+      this,
+    );
+  }
+
+  late final _i1.ColumnString title;
+
+  late final _i1.ColumnString picture;
+
+  late final _i1.ColumnInt target;
+
+  late final _i1.ColumnEnum<_i2.TargetPeriod> targetPeriod;
+
+  late final _i1.ColumnEnum<_i2.Category> category;
+
+  late final _i1.ColumnEnum<_i2.Repetition> repetition;
+
+  late final _i1.ColumnSerializable days;
+
+  @override
+  List<_i1.Column> get columns => [
+        id,
+        title,
+        picture,
+        target,
+        targetPeriod,
+        category,
+        repetition,
+        days,
+      ];
+}
+
+@Deprecated('Use GoalTable.t instead.')
+GoalTable tGoal = GoalTable();
+
+class GoalInclude extends _i1.IncludeObject {
+  GoalInclude._();
+
+  @override
+  Map<String, _i1.Include?> get includes => {};
+
+  @override
+  _i1.Table get table => Goal.t;
+}
+
+class GoalIncludeList extends _i1.IncludeList {
+  GoalIncludeList._({
+    _i1.WhereExpressionBuilder<GoalTable>? where,
+    super.limit,
+    super.offset,
+    super.orderBy,
+    super.orderDescending,
+    super.orderByList,
+    super.include,
+  }) {
+    super.where = where?.call(Goal.t);
+  }
+
+  @override
+  Map<String, _i1.Include?> get includes => include?.includes ?? {};
+
+  @override
+  _i1.Table get table => Goal.t;
+}
+
+class GoalRepository {
+  const GoalRepository._();
+
+  Future<List<Goal>> find(
+    _i1.Session session, {
+    _i1.WhereExpressionBuilder<GoalTable>? where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<GoalTable>? orderBy,
+    bool orderDescending = false,
+    _i1.OrderByListBuilder<GoalTable>? orderByList,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.find<Goal>(
+      where: where?.call(Goal.t),
+      orderBy: orderBy?.call(Goal.t),
+      orderByList: orderByList?.call(Goal.t),
+      orderDescending: orderDescending,
+      limit: limit,
+      offset: offset,
+      transaction: transaction,
+    );
+  }
+
+  Future<Goal?> findFirstRow(
+    _i1.Session session, {
+    _i1.WhereExpressionBuilder<GoalTable>? where,
+    int? offset,
+    _i1.OrderByBuilder<GoalTable>? orderBy,
+    bool orderDescending = false,
+    _i1.OrderByListBuilder<GoalTable>? orderByList,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.findFirstRow<Goal>(
+      where: where?.call(Goal.t),
+      orderBy: orderBy?.call(Goal.t),
+      orderByList: orderByList?.call(Goal.t),
+      orderDescending: orderDescending,
+      offset: offset,
+      transaction: transaction,
+    );
+  }
+
+  Future<Goal?> findById(
+    _i1.Session session,
+    int id, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.findById<Goal>(
+      id,
+      transaction: transaction,
+    );
+  }
+
+  Future<List<Goal>> insert(
+    _i1.Session session,
+    List<Goal> rows, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.insert<Goal>(
+      rows,
+      transaction: transaction,
+    );
+  }
+
+  Future<Goal> insertRow(
+    _i1.Session session,
+    Goal row, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.insertRow<Goal>(
+      row,
+      transaction: transaction,
+    );
+  }
+
+  Future<List<Goal>> update(
+    _i1.Session session,
+    List<Goal> rows, {
+    _i1.ColumnSelections<GoalTable>? columns,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.update<Goal>(
+      rows,
+      columns: columns?.call(Goal.t),
+      transaction: transaction,
+    );
+  }
+
+  Future<Goal> updateRow(
+    _i1.Session session,
+    Goal row, {
+    _i1.ColumnSelections<GoalTable>? columns,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.updateRow<Goal>(
+      row,
+      columns: columns?.call(Goal.t),
+      transaction: transaction,
+    );
+  }
+
+  Future<List<int>> delete(
+    _i1.Session session,
+    List<Goal> rows, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.delete<Goal>(
+      rows,
+      transaction: transaction,
+    );
+  }
+
+  Future<int> deleteRow(
+    _i1.Session session,
+    Goal row, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.deleteRow<Goal>(
+      row,
+      transaction: transaction,
+    );
+  }
+
+  Future<List<int>> deleteWhere(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<GoalTable> where,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.deleteWhere<Goal>(
+      where: where(Goal.t),
+      transaction: transaction,
+    );
+  }
+
+  Future<int> count(
+    _i1.Session session, {
+    _i1.WhereExpressionBuilder<GoalTable>? where,
+    int? limit,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.dbNext.count<Goal>(
+      where: where?.call(Goal.t),
+      limit: limit,
+      transaction: transaction,
+    );
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "moduleName": "fixie",
+  "tables": [
+    {
+      "name": "user_data",
+      "dartName": "User",
+      "module": "fixie",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 2,
+          "isNullable": false,
+          "columnDefault": "nextval('user_data_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "userInfo",
+          "columnType": 8,
+          "isNullable": false,
+          "dartType": "module:auth:UserInfo"
+        },
+        {
+          "name": "birthday",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "user_data_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    }
+  ],
+  "installedModules": [
+    {
+      "module": "serverpod",
+      "version": "20240115074235544"
+    },
+    {
+      "module": "serverpod_auth",
+      "version": "20240115074239642"
+    },
+    {
+      "module": "fixie",
+      "version": "20240314151909743"
+    }
+  ],
+  "migrationApiVersion": 1
+}
