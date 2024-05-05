@@ -21,10 +21,16 @@
           "dartType": "String"
         },
         {
+          "name": "userId",
+          "columnType": 2,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
           "name": "picture",
           "columnType": 0,
-          "isNullable": false,
-          "dartType": "String"
+          "isNullable": true,
+          "dartType": "String?"
         },
         {
           "name": "target",
@@ -53,11 +59,25 @@
         {
           "name": "days",
           "columnType": 8,
-          "isNullable": false,
-          "dartType": "List<protocol:Days>"
+          "isNullable": true,
+          "dartType": "List<protocol:Days>?"
         }
       ],
-      "foreignKeys": [],
+      "foreignKeys": [
+        {
+          "constraintName": "goal_fk_0",
+          "columns": [
+            "userId"
+          ],
+          "referenceTable": "user",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
       "indexes": [
         {
           "indexName": "goal_pkey",
@@ -98,12 +118,6 @@
           "columnType": 4,
           "isNullable": false,
           "dartType": "DateTime"
-        },
-        {
-          "name": "goals",
-          "columnType": 8,
-          "isNullable": true,
-          "dartType": "List<protocol:Goal>?"
         }
       ],
       "foreignKeys": [
@@ -118,7 +132,7 @@
             "id"
           ],
           "onUpdate": 3,
-          "onDelete": 4
+          "onDelete": 3
         }
       ],
       "indexes": [
@@ -158,10 +172,6 @@
     {
       "module": "serverpod_auth",
       "version": "20240115074239642"
-    },
-    {
-      "module": "fixie",
-      "version": "20240327093252688"
     }
   ],
   "migrationApiVersion": 1

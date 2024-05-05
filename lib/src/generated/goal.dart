@@ -16,6 +16,8 @@ abstract class Goal extends _i1.TableRow {
   Goal._({
     int? id,
     required this.title,
+    required this.userId,
+    this.user,
     this.picture,
     required this.target,
     required this.targetPeriod,
@@ -27,6 +29,8 @@ abstract class Goal extends _i1.TableRow {
   factory Goal({
     int? id,
     required String title,
+    required int userId,
+    _i2.User? user,
     String? picture,
     required int target,
     required _i2.TargetPeriod targetPeriod,
@@ -43,6 +47,10 @@ abstract class Goal extends _i1.TableRow {
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
       title:
           serializationManager.deserialize<String>(jsonSerialization['title']),
+      userId:
+          serializationManager.deserialize<int>(jsonSerialization['userId']),
+      user: serializationManager
+          .deserialize<_i2.User?>(jsonSerialization['user']),
       picture: serializationManager
           .deserialize<String?>(jsonSerialization['picture']),
       target:
@@ -64,6 +72,10 @@ abstract class Goal extends _i1.TableRow {
 
   String title;
 
+  int userId;
+
+  _i2.User? user;
+
   String? picture;
 
   int target;
@@ -82,6 +94,8 @@ abstract class Goal extends _i1.TableRow {
   Goal copyWith({
     int? id,
     String? title,
+    int? userId,
+    _i2.User? user,
     String? picture,
     int? target,
     _i2.TargetPeriod? targetPeriod,
@@ -94,6 +108,8 @@ abstract class Goal extends _i1.TableRow {
     return {
       if (id != null) 'id': id,
       'title': title,
+      'userId': userId,
+      if (user != null) 'user': user?.toJson(),
       if (picture != null) 'picture': picture,
       'target': target,
       'targetPeriod': targetPeriod.toJson(),
@@ -109,6 +125,7 @@ abstract class Goal extends _i1.TableRow {
     return {
       'id': id,
       'title': title,
+      'userId': userId,
       'picture': picture,
       'target': target,
       'targetPeriod': targetPeriod,
@@ -123,6 +140,8 @@ abstract class Goal extends _i1.TableRow {
     return {
       if (id != null) 'id': id,
       'title': title,
+      'userId': userId,
+      if (user != null) 'user': user?.allToJson(),
       if (picture != null) 'picture': picture,
       'target': target,
       'targetPeriod': targetPeriod.toJson(),
@@ -144,6 +163,9 @@ abstract class Goal extends _i1.TableRow {
         return;
       case 'title':
         title = value;
+        return;
+      case 'userId':
+        userId = value;
         return;
       case 'picture':
         picture = value;
@@ -179,6 +201,7 @@ abstract class Goal extends _i1.TableRow {
     bool orderDescending = false,
     bool useCache = true,
     _i1.Transaction? transaction,
+    GoalInclude? include,
   }) async {
     return session.db.find<Goal>(
       where: where != null ? where(Goal.t) : null,
@@ -189,6 +212,7 @@ abstract class Goal extends _i1.TableRow {
       orderDescending: orderDescending,
       useCache: useCache,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -201,6 +225,7 @@ abstract class Goal extends _i1.TableRow {
     bool orderDescending = false,
     bool useCache = true,
     _i1.Transaction? transaction,
+    GoalInclude? include,
   }) async {
     return session.db.findSingleRow<Goal>(
       where: where != null ? where(Goal.t) : null,
@@ -209,15 +234,20 @@ abstract class Goal extends _i1.TableRow {
       orderDescending: orderDescending,
       useCache: useCache,
       transaction: transaction,
+      include: include,
     );
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
   static Future<Goal?> findById(
     _i1.Session session,
-    int id,
-  ) async {
-    return session.db.findById<Goal>(id);
+    int id, {
+    GoalInclude? include,
+  }) async {
+    return session.db.findById<Goal>(
+      id,
+      include: include,
+    );
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
@@ -285,8 +315,8 @@ abstract class Goal extends _i1.TableRow {
     );
   }
 
-  static GoalInclude include() {
-    return GoalInclude._();
+  static GoalInclude include({_i2.UserInclude? user}) {
+    return GoalInclude._(user: user);
   }
 
   static GoalIncludeList includeList({
@@ -316,6 +346,8 @@ class _GoalImpl extends Goal {
   _GoalImpl({
     int? id,
     required String title,
+    required int userId,
+    _i2.User? user,
     String? picture,
     required int target,
     required _i2.TargetPeriod targetPeriod,
@@ -325,6 +357,8 @@ class _GoalImpl extends Goal {
   }) : super._(
           id: id,
           title: title,
+          userId: userId,
+          user: user,
           picture: picture,
           target: target,
           targetPeriod: targetPeriod,
@@ -337,6 +371,8 @@ class _GoalImpl extends Goal {
   Goal copyWith({
     Object? id = _Undefined,
     String? title,
+    int? userId,
+    Object? user = _Undefined,
     Object? picture = _Undefined,
     int? target,
     _i2.TargetPeriod? targetPeriod,
@@ -347,6 +383,8 @@ class _GoalImpl extends Goal {
     return Goal(
       id: id is int? ? id : this.id,
       title: title ?? this.title,
+      userId: userId ?? this.userId,
+      user: user is _i2.User? ? user : this.user?.copyWith(),
       picture: picture is String? ? picture : this.picture,
       target: target ?? this.target,
       targetPeriod: targetPeriod ?? this.targetPeriod,
@@ -361,6 +399,10 @@ class GoalTable extends _i1.Table {
   GoalTable({super.tableRelation}) : super(tableName: 'goal') {
     title = _i1.ColumnString(
       'title',
+      this,
+    );
+    userId = _i1.ColumnInt(
+      'userId',
       this,
     );
     picture = _i1.ColumnString(
@@ -394,6 +436,10 @@ class GoalTable extends _i1.Table {
 
   late final _i1.ColumnString title;
 
+  late final _i1.ColumnInt userId;
+
+  _i2.UserTable? _user;
+
   late final _i1.ColumnString picture;
 
   late final _i1.ColumnInt target;
@@ -406,10 +452,24 @@ class GoalTable extends _i1.Table {
 
   late final _i1.ColumnSerializable days;
 
+  _i2.UserTable get user {
+    if (_user != null) return _user!;
+    _user = _i1.createRelationTable(
+      relationFieldName: 'user',
+      field: Goal.t.userId,
+      foreignField: _i2.User.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i2.UserTable(tableRelation: foreignTableRelation),
+    );
+    return _user!;
+  }
+
   @override
   List<_i1.Column> get columns => [
         id,
         title,
+        userId,
         picture,
         target,
         targetPeriod,
@@ -417,16 +477,28 @@ class GoalTable extends _i1.Table {
         repetition,
         days,
       ];
+
+  @override
+  _i1.Table? getRelationTable(String relationField) {
+    if (relationField == 'user') {
+      return user;
+    }
+    return null;
+  }
 }
 
 @Deprecated('Use GoalTable.t instead.')
 GoalTable tGoal = GoalTable();
 
 class GoalInclude extends _i1.IncludeObject {
-  GoalInclude._();
+  GoalInclude._({_i2.UserInclude? user}) {
+    _user = user;
+  }
+
+  _i2.UserInclude? _user;
 
   @override
-  Map<String, _i1.Include?> get includes => {};
+  Map<String, _i1.Include?> get includes => {'user': _user};
 
   @override
   _i1.Table get table => Goal.t;
@@ -455,6 +527,8 @@ class GoalIncludeList extends _i1.IncludeList {
 class GoalRepository {
   const GoalRepository._();
 
+  final attachRow = const GoalAttachRowRepository._();
+
   Future<List<Goal>> find(
     _i1.Session session, {
     _i1.WhereExpressionBuilder<GoalTable>? where,
@@ -464,6 +538,7 @@ class GoalRepository {
     bool orderDescending = false,
     _i1.OrderByListBuilder<GoalTable>? orderByList,
     _i1.Transaction? transaction,
+    GoalInclude? include,
   }) async {
     return session.dbNext.find<Goal>(
       where: where?.call(Goal.t),
@@ -473,6 +548,7 @@ class GoalRepository {
       limit: limit,
       offset: offset,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -484,6 +560,7 @@ class GoalRepository {
     bool orderDescending = false,
     _i1.OrderByListBuilder<GoalTable>? orderByList,
     _i1.Transaction? transaction,
+    GoalInclude? include,
   }) async {
     return session.dbNext.findFirstRow<Goal>(
       where: where?.call(Goal.t),
@@ -492,6 +569,7 @@ class GoalRepository {
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -499,10 +577,12 @@ class GoalRepository {
     _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
+    GoalInclude? include,
   }) async {
     return session.dbNext.findById<Goal>(
       id,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -597,6 +677,29 @@ class GoalRepository {
       where: where?.call(Goal.t),
       limit: limit,
       transaction: transaction,
+    );
+  }
+}
+
+class GoalAttachRowRepository {
+  const GoalAttachRowRepository._();
+
+  Future<void> user(
+    _i1.Session session,
+    Goal goal,
+    _i2.User user,
+  ) async {
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $goal = goal.copyWith(userId: user.id);
+    await session.dbNext.updateRow<Goal>(
+      $goal,
+      columns: [Goal.t.userId],
     );
   }
 }

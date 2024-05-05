@@ -87,7 +87,6 @@ abstract class User extends _i1.TableRow {
       'id': id,
       'userInfoId': userInfoId,
       'birthday': birthday,
-      'goals': goals,
     };
   }
 
@@ -118,9 +117,6 @@ abstract class User extends _i1.TableRow {
         return;
       case 'birthday':
         birthday = value;
-        return;
-      case 'goals':
-        goals = value;
         return;
       default:
         throw UnimplementedError();
@@ -252,8 +248,14 @@ abstract class User extends _i1.TableRow {
     );
   }
 
-  static UserInclude include({_i2.UserInfoInclude? userInfo}) {
-    return UserInclude._(userInfo: userInfo);
+  static UserInclude include({
+    _i2.UserInfoInclude? userInfo,
+    _i3.GoalIncludeList? goals,
+  }) {
+    return UserInclude._(
+      userInfo: userInfo,
+      goals: goals,
+    );
   }
 
   static UserIncludeList includeList({
@@ -323,10 +325,6 @@ class UserTable extends _i1.Table {
       'birthday',
       this,
     );
-    goals = _i1.ColumnSerializable(
-      'goals',
-      this,
-    );
   }
 
   late final _i1.ColumnInt userInfoId;
@@ -335,7 +333,9 @@ class UserTable extends _i1.Table {
 
   late final _i1.ColumnDateTime birthday;
 
-  late final _i1.ColumnSerializable goals;
+  _i3.GoalTable? ___goals;
+
+  _i1.ManyRelation<_i3.GoalTable>? _goals;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -350,18 +350,51 @@ class UserTable extends _i1.Table {
     return _userInfo!;
   }
 
+  _i3.GoalTable get __goals {
+    if (___goals != null) return ___goals!;
+    ___goals = _i1.createRelationTable(
+      relationFieldName: '__goals',
+      field: User.t.id,
+      foreignField: _i3.Goal.t.userId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.GoalTable(tableRelation: foreignTableRelation),
+    );
+    return ___goals!;
+  }
+
+  _i1.ManyRelation<_i3.GoalTable> get goals {
+    if (_goals != null) return _goals!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'goals',
+      field: User.t.id,
+      foreignField: _i3.Goal.t.userId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.GoalTable(tableRelation: foreignTableRelation),
+    );
+    _goals = _i1.ManyRelation<_i3.GoalTable>(
+      tableWithRelations: relationTable,
+      table: _i3.GoalTable(
+          tableRelation: relationTable.tableRelation!.lastRelation),
+    );
+    return _goals!;
+  }
+
   @override
   List<_i1.Column> get columns => [
         id,
         userInfoId,
         birthday,
-        goals,
       ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
     if (relationField == 'userInfo') {
       return userInfo;
+    }
+    if (relationField == 'goals') {
+      return __goals;
     }
     return null;
   }
@@ -371,14 +404,23 @@ class UserTable extends _i1.Table {
 UserTable tUser = UserTable();
 
 class UserInclude extends _i1.IncludeObject {
-  UserInclude._({_i2.UserInfoInclude? userInfo}) {
+  UserInclude._({
+    _i2.UserInfoInclude? userInfo,
+    _i3.GoalIncludeList? goals,
+  }) {
     _userInfo = userInfo;
+    _goals = goals;
   }
 
   _i2.UserInfoInclude? _userInfo;
 
+  _i3.GoalIncludeList? _goals;
+
   @override
-  Map<String, _i1.Include?> get includes => {'userInfo': _userInfo};
+  Map<String, _i1.Include?> get includes => {
+        'userInfo': _userInfo,
+        'goals': _goals,
+      };
 
   @override
   _i1.Table get table => User.t;
@@ -406,6 +448,8 @@ class UserIncludeList extends _i1.IncludeList {
 
 class UserRepository {
   const UserRepository._();
+
+  final attach = const UserAttachRepository._();
 
   final attachRow = const UserAttachRowRepository._();
 
@@ -561,6 +605,29 @@ class UserRepository {
   }
 }
 
+class UserAttachRepository {
+  const UserAttachRepository._();
+
+  Future<void> goals(
+    _i1.Session session,
+    User user,
+    List<_i3.Goal> goal,
+  ) async {
+    if (goal.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('goal.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $goal = goal.map((e) => e.copyWith(userId: user.id)).toList();
+    await session.dbNext.update<_i3.Goal>(
+      $goal,
+      columns: [_i3.Goal.t.userId],
+    );
+  }
+}
+
 class UserAttachRowRepository {
   const UserAttachRowRepository._();
 
@@ -580,6 +647,25 @@ class UserAttachRowRepository {
     await session.dbNext.updateRow<User>(
       $user,
       columns: [User.t.userInfoId],
+    );
+  }
+
+  Future<void> goals(
+    _i1.Session session,
+    User user,
+    _i3.Goal goal,
+  ) async {
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $goal = goal.copyWith(userId: user.id);
+    await session.dbNext.updateRow<_i3.Goal>(
+      $goal,
+      columns: [_i3.Goal.t.userId],
     );
   }
 }

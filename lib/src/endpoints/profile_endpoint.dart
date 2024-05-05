@@ -5,6 +5,21 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
 
 class ProfileEndpoint extends Endpoint {
+  Future<int> createUser(
+      Session session, UserInfo? user, DateTime birthday) async {
+    if (user != null) {
+      var newUser = await User.db
+          .insertRow(session, User(userInfoId: user.id!, birthday: birthday));
+      if (newUser.userInfoId == user.id) {
+        return HttpStatus.ok;
+      } else {
+        return HttpStatus.notModified;
+      }
+    } else {
+      throw Exception("User is null");
+    }
+  }
+
   Future<UserProfile> getProfileData(Session session) async {
     int? authenticatedUserId = await session.auth.authenticatedUserId;
     UserInfo? user = await UserInfo.db.findById(session, authenticatedUserId!);

@@ -14,10 +14,7 @@ class GoalsEndpoint extends Endpoint {
     );
     if (user != null) {
       var newGoal = await Goal.db.insertRow(session, goal);
-      user.goals?.add(newGoal);
-      var updatedUser = await User.db.updateRow(session, user);
-      var goalCheck = updatedUser.goals?.firstWhere(
-          (element) => element.id?.compareTo(newGoal.id as num) == 0);
+      var goalCheck = await Goal.db.findById(session, newGoal.id!);
       if (goalCheck != null) {
         return HttpStatus.ok;
       } else {
@@ -28,21 +25,19 @@ class GoalsEndpoint extends Endpoint {
     }
   }
 
-  Future<Goal> getGoal(Session session, int? goalId) async {
-    Goal? goal;
+  Future<Goal?> getGoal(Session session, int? goalId) async {
     int? authenticatedUserId = await session.auth.authenticatedUserId;
     User? user = await User.db.findFirstRow(session,
         where: (t) => t.userInfoId.equals(authenticatedUserId));
     if (user != null) {
-      if (user.goals != null && user.goals?.isNotEmpty == true) {
-        goal = user.goals?.firstWhere(
-            (element) => element.id?.compareTo(goalId as num) == 0);
-        if (goal == null) {
-          throw Exception("Could not find goal");
-        }
+      var goal = await Goal.db.findById(session, goalId!);
+      if (goal == null) {
+        throw Exception("Could not find goal");
+      } else {
+        return goal;
       }
     }
-    return goal!;
+    return null;
   }
 
   Future<List<Goal>?> getGoals(Session session) async {
@@ -52,7 +47,8 @@ class GoalsEndpoint extends Endpoint {
       where: (t) => t.userInfoId.equals(authenticatedUserId),
     );
     if (user != null) {
-      var list = user.goals;
+      var list = await Goal.db
+          .find(session, where: (p0) => p0.userId.equals(authenticatedUserId));
       return list;
     } else {
       throw Exception("User can't be null.");
@@ -77,6 +73,7 @@ class GoalsEndpoint extends Endpoint {
         goal.days = newGoal.days;
         var updatedGoal = await Goal.db.updateRow(session, goal);
         if (updatedGoal.title == goal.title ||
+            updatedGoal.userId == goal.userId ||
             updatedGoal.picture == goal.picture ||
             updatedGoal.target == goal.target ||
             updatedGoal.targetPeriod == goal.targetPeriod ||
@@ -93,26 +90,6 @@ class GoalsEndpoint extends Endpoint {
     } else {
       throw Exception("User can't be null.");
     }
-  }
-
-  //Method to create Goal
-  Goal createGoal(
-      String title,
-      String? picture,
-      int target,
-      TargetPeriod targetPeriod,
-      Category category,
-      Repetition repetition,
-      List<Days>? days) {
-    Goal goal = Goal(
-        title: title,
-        picture: picture ?? '',
-        target: target,
-        targetPeriod: targetPeriod,
-        category: category,
-        repetition: repetition,
-        days: days ?? []);
-    return goal;
   }
 
   bool areListsEqual(List<Days> list1, List<Days> list2) {

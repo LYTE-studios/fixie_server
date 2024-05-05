@@ -4,6 +4,7 @@ goals:
   - getGoals:
   - updateGoal:
 profile:
+  - createUser:
   - getProfileData:
   - updateBirthday:
   - updateName:

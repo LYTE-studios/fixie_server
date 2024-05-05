@@ -6,12 +6,13 @@ BEGIN;
 CREATE TABLE "goal" (
     "id" serial PRIMARY KEY,
     "title" text NOT NULL,
-    "picture" text NOT NULL,
+    "userId" integer NOT NULL,
+    "picture" text,
     "target" integer NOT NULL,
     "targetPeriod" integer NOT NULL,
     "category" text NOT NULL,
     "repetition" text NOT NULL,
-    "days" json NOT NULL
+    "days" json
 );
 
 --
@@ -20,8 +21,7 @@ CREATE TABLE "goal" (
 CREATE TABLE "user" (
     "id" serial PRIMARY KEY,
     "userInfoId" integer NOT NULL,
-    "birthday" timestamp without time zone NOT NULL,
-    "goals" json
+    "birthday" timestamp without time zone NOT NULL
 );
 
 -- Indexes
@@ -346,13 +346,23 @@ CREATE UNIQUE INDEX "serverpod_user_info_user_identifier" ON "serverpod_user_inf
 CREATE INDEX "serverpod_user_info_email" ON "serverpod_user_info" USING btree ("email");
 
 --
+-- Foreign relations for "goal" table
+--
+ALTER TABLE ONLY "goal"
+    ADD CONSTRAINT "goal_fk_0"
+    FOREIGN KEY("userId")
+    REFERENCES "user"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
 -- Foreign relations for "user" table
 --
 ALTER TABLE ONLY "user"
     ADD CONSTRAINT "user_fk_0"
     FOREIGN KEY("userInfoId")
     REFERENCES "serverpod_user_info"("id")
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION;
 
 --
@@ -390,9 +400,9 @@ ALTER TABLE ONLY "serverpod_query_log"
 -- MIGRATION VERSION FOR fixie
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
-    VALUES ('fixie', '20240329141733794', now())
+    VALUES ('fixie', '20240505145920141', now())
     ON CONFLICT ("module")
-    DO UPDATE SET "version" = '20240329141733794', "timestamp" = now();
+    DO UPDATE SET "version" = '20240505145920141', "timestamp" = now();
 
 --
 -- MIGRATION VERSION FOR serverpod
