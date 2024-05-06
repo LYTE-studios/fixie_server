@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fixie_server/src/generated/protocol.dart';
+import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
 
@@ -16,7 +17,9 @@ class ProfileEndpoint extends Endpoint {
         return HttpStatus.notModified;
       }
     } else {
-      throw Exception("User is null");
+      throw EndpointException(
+          message: "User could not be found. Are you authenticated?",
+          errorType: ErrorType.authenticationError);
     }
   }
 
@@ -32,16 +35,14 @@ class ProfileEndpoint extends Endpoint {
           daysSinceCreation: daysSinceCreation);
       return userProfileData;
     } else {
-      throw Exception("User is null");
+      throw EndpointException(
+          message: "User could not be found. Are you authenticated?",
+          errorType: ErrorType.authenticationError);
     }
   }
 
   Future<int> updateBirthday(Session session, DateTime birthday) async {
-    int? authenticatedUserId = await session.auth.authenticatedUserId;
-    User? user = await User.db.findFirstRow(
-      session,
-      where: (t) => t.userInfoId.equals(authenticatedUserId),
-    );
+    var user = await AuthUtils.getAuthenticatedUser(session);
     if (user != null) {
       user.birthday = birthday;
       var updatedUser = await User.db.updateRow(session, user);
@@ -51,7 +52,9 @@ class ProfileEndpoint extends Endpoint {
         return HttpStatus.notModified;
       }
     } else {
-      throw Exception("User can't be null.");
+      throw EndpointException(
+          message: "User could not be found. Are you authenticated?",
+          errorType: ErrorType.authenticationError);
     }
   }
 
@@ -71,7 +74,9 @@ class ProfileEndpoint extends Endpoint {
         return HttpStatus.notModified;
       }
     } else {
-      throw Exception("User can't be null.");
+      throw EndpointException(
+          message: "User could not be found",
+          errorType: ErrorType.authenticationError);
     }
   }
 }

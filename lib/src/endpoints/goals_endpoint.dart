@@ -17,7 +17,9 @@ class GoalsEndpoint extends Endpoint {
         return HttpStatus.notModified;
       }
     } else {
-      return HttpStatus.notFound;
+      throw EndpointException(
+          message: "User could not be found. Are you authenticated?",
+          errorType: ErrorType.authenticationError);
     }
   }
 
@@ -42,7 +44,8 @@ class GoalsEndpoint extends Endpoint {
       return list;
     } else {
       throw EndpointException(
-          message: 'User could not be found.', errorType: ErrorType.notFound);
+          message: 'User could not be found.',
+          errorType: ErrorType.authenticationError);
     }
   }
 
@@ -76,7 +79,8 @@ class GoalsEndpoint extends Endpoint {
       }
     } else {
       throw EndpointException(
-          message: 'User could not be found.', errorType: ErrorType.notFound);
+          message: 'User could not be found.',
+          errorType: ErrorType.authenticationError);
     }
   }
 
@@ -98,7 +102,8 @@ class GoalsEndpoint extends Endpoint {
       }
     } else {
       throw EndpointException(
-          message: 'User could not be found.', errorType: ErrorType.notFound);
+          message: 'User could not be found.',
+          errorType: ErrorType.authenticationError);
     }
   }
 
