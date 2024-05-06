@@ -2,17 +2,13 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:fixie_server/src/generated/protocol.dart';
+import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
 
 class GoalsEndpoint extends Endpoint {
   Future<int> addGoal(Session session, Goal goal) async {
-    int? authenticatedUserId = await session.auth.authenticatedUserId;
-    User? user = await User.db.findFirstRow(
-      session,
-      where: (t) => t.userInfoId.equals(authenticatedUserId),
-    );
-    if (user != null) {
+    if (await AuthUtils.getAuthenticatedUser(session) != null) {
       var newGoal = await Goal.db.insertRow(session, goal);
       var goalCheck = await Goal.db.findById(session, newGoal.id!);
       if (goalCheck != null) {
@@ -21,18 +17,16 @@ class GoalsEndpoint extends Endpoint {
         return HttpStatus.notModified;
       }
     } else {
-      throw Exception("User can't be null.");
+      return HttpStatus.notFound;
     }
   }
 
   Future<Goal?> getGoal(Session session, int? goalId) async {
-    int? authenticatedUserId = await session.auth.authenticatedUserId;
-    User? user = await User.db.findFirstRow(session,
-        where: (t) => t.userInfoId.equals(authenticatedUserId));
-    if (user != null) {
+    if (await AuthUtils.getAuthenticatedUser(session) != null) {
       var goal = await Goal.db.findById(session, goalId!);
       if (goal == null) {
-        throw Exception("Could not find goal");
+        throw EndpointException(
+            message: 'Goal not found', errorType: ErrorType.notFound);
       } else {
         return goal;
       }
@@ -41,27 +35,19 @@ class GoalsEndpoint extends Endpoint {
   }
 
   Future<List<Goal>?> getGoals(Session session) async {
-    int? authenticatedUserId = await session.auth.authenticatedUserId;
-    User? user = await User.db.findFirstRow(
-      session,
-      where: (t) => t.userInfoId.equals(authenticatedUserId),
-    );
+    var user = await AuthUtils.getAuthenticatedUser(session);
     if (user != null) {
       var list = await Goal.db
-          .find(session, where: (p0) => p0.userId.equals(authenticatedUserId));
+          .find(session, where: (p0) => p0.userId.equals(user.userInfoId));
       return list;
     } else {
-      throw Exception("User can't be null.");
+      throw EndpointException(
+          message: 'User could not be found.', errorType: ErrorType.notFound);
     }
   }
 
   Future<int> updateGoal(Session session, int goalId, Goal newGoal) async {
-    int? authenticatedUserId = await session.auth.authenticatedUserId;
-    User? user = await User.db.findFirstRow(
-      session,
-      where: (t) => t.userInfoId.equals(authenticatedUserId),
-    );
-    if (user != null) {
+    if (await AuthUtils.getAuthenticatedUser(session) != null) {
       var goal = await Goal.db.findById(session, goalId);
       if (goal != null) {
         goal.title = newGoal.title;
@@ -85,10 +71,34 @@ class GoalsEndpoint extends Endpoint {
           return HttpStatus.notModified;
         }
       } else {
-        throw Exception("Goal could not be found");
+        throw EndpointException(
+            message: 'Goal could not be found', errorType: ErrorType.notFound);
       }
     } else {
-      throw Exception("User can't be null.");
+      throw EndpointException(
+          message: 'User could not be found.', errorType: ErrorType.notFound);
+    }
+  }
+
+  Future<int> deleteGoal(Session session, int goalId) async {
+    if (await AuthUtils.getAuthenticatedUser(session) != null) {
+      var goal = await Goal.db.findById(session, goalId);
+      if (goal != null) {
+        var id = await Goal.db.deleteRow(session, goal);
+        if (id == goalId) {
+          return HttpStatus.ok;
+        } else {
+          throw EndpointException(
+              message: "Goals don't match? Deleted goal's id: $id",
+              errorType: ErrorType.databaseError);
+        }
+      } else {
+        throw EndpointException(
+            message: 'Goal not found', errorType: ErrorType.notFound);
+      }
+    } else {
+      throw EndpointException(
+          message: 'User could not be found.', errorType: ErrorType.notFound);
     }
   }
 

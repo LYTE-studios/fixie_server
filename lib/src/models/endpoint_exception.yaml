@@ -1,0 +1,4 @@
+exception: EndpointException
+fields:
+  message: String
+  errorType: ErrorType

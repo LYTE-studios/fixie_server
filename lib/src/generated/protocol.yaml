@@ -3,6 +3,7 @@ goals:
   - getGoal:
   - getGoals:
   - updateGoal:
+  - deleteGoal:
 profile:
   - createUser:
   - getProfileData:

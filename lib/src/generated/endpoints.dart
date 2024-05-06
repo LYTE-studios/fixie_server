@@ -104,6 +104,24 @@ class Endpoints extends _i1.EndpointDispatch {
             params['newGoal'],
           ),
         ),
+        'deleteGoal': _i1.MethodConnector(
+          name: 'deleteGoal',
+          params: {
+            'goalId': _i1.ParameterDescription(
+              name: 'goalId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['goals'] as _i2.GoalsEndpoint).deleteGoal(
+            session,
+            params['goalId'],
+          ),
+        ),
       },
     );
     connectors['profile'] = _i1.EndpointConnector(

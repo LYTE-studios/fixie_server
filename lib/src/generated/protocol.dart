@@ -14,15 +14,19 @@ import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/module.dart' as _i3;
 import 'category.dart' as _i4;
 import 'days.dart' as _i5;
-import 'goal.dart' as _i6;
-import 'repetition.dart' as _i7;
-import 'target_period.dart' as _i8;
-import 'user.dart' as _i9;
-import 'userProfile.dart' as _i10;
-import 'protocol.dart' as _i11;
-import 'package:fixie_server/src/generated/goal.dart' as _i12;
+import 'endpoint_exception.dart' as _i6;
+import 'error_types.dart' as _i7;
+import 'goal.dart' as _i8;
+import 'repetition.dart' as _i9;
+import 'target_period.dart' as _i10;
+import 'user.dart' as _i11;
+import 'userProfile.dart' as _i12;
+import 'protocol.dart' as _i13;
+import 'package:fixie_server/src/generated/goal.dart' as _i14;
 export 'category.dart';
 export 'days.dart';
+export 'endpoint_exception.dart';
+export 'error_types.dart';
 export 'goal.dart';
 export 'repetition.dart';
 export 'target_period.dart';
@@ -217,20 +221,26 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i5.Days) {
       return _i5.Days.fromJson(data) as T;
     }
-    if (t == _i6.Goal) {
-      return _i6.Goal.fromJson(data, this) as T;
+    if (t == _i6.EndpointException) {
+      return _i6.EndpointException.fromJson(data, this) as T;
     }
-    if (t == _i7.Repetition) {
-      return _i7.Repetition.fromJson(data) as T;
+    if (t == _i7.ErrorType) {
+      return _i7.ErrorType.fromJson(data) as T;
     }
-    if (t == _i8.TargetPeriod) {
-      return _i8.TargetPeriod.fromJson(data) as T;
+    if (t == _i8.Goal) {
+      return _i8.Goal.fromJson(data, this) as T;
     }
-    if (t == _i9.User) {
-      return _i9.User.fromJson(data, this) as T;
+    if (t == _i9.Repetition) {
+      return _i9.Repetition.fromJson(data) as T;
     }
-    if (t == _i10.UserProfile) {
-      return _i10.UserProfile.fromJson(data, this) as T;
+    if (t == _i10.TargetPeriod) {
+      return _i10.TargetPeriod.fromJson(data) as T;
+    }
+    if (t == _i11.User) {
+      return _i11.User.fromJson(data, this) as T;
+    }
+    if (t == _i12.UserProfile) {
+      return _i12.UserProfile.fromJson(data, this) as T;
     }
     if (t == _i1.getType<_i4.Category?>()) {
       return (data != null ? _i4.Category.fromJson(data) : null) as T;
@@ -238,34 +248,41 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i5.Days?>()) {
       return (data != null ? _i5.Days.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i6.Goal?>()) {
-      return (data != null ? _i6.Goal.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i6.EndpointException?>()) {
+      return (data != null ? _i6.EndpointException.fromJson(data, this) : null)
+          as T;
     }
-    if (t == _i1.getType<_i7.Repetition?>()) {
-      return (data != null ? _i7.Repetition.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i7.ErrorType?>()) {
+      return (data != null ? _i7.ErrorType.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i8.TargetPeriod?>()) {
-      return (data != null ? _i8.TargetPeriod.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i8.Goal?>()) {
+      return (data != null ? _i8.Goal.fromJson(data, this) : null) as T;
     }
-    if (t == _i1.getType<_i9.User?>()) {
-      return (data != null ? _i9.User.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i9.Repetition?>()) {
+      return (data != null ? _i9.Repetition.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i10.UserProfile?>()) {
-      return (data != null ? _i10.UserProfile.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i10.TargetPeriod?>()) {
+      return (data != null ? _i10.TargetPeriod.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<List<_i11.Days>?>()) {
+    if (t == _i1.getType<_i11.User?>()) {
+      return (data != null ? _i11.User.fromJson(data, this) : null) as T;
+    }
+    if (t == _i1.getType<_i12.UserProfile?>()) {
+      return (data != null ? _i12.UserProfile.fromJson(data, this) : null) as T;
+    }
+    if (t == _i1.getType<List<_i13.Days>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i11.Days>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i13.Days>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i11.Goal>?>()) {
+    if (t == _i1.getType<List<_i13.Goal>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i11.Goal>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i13.Goal>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i12.Goal>?>()) {
+    if (t == _i1.getType<List<_i14.Goal>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i12.Goal>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i14.Goal>(e)).toList()
           : null) as dynamic;
     }
     try {
@@ -290,19 +307,25 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i5.Days) {
       return 'Days';
     }
-    if (data is _i6.Goal) {
+    if (data is _i6.EndpointException) {
+      return 'EndpointException';
+    }
+    if (data is _i7.ErrorType) {
+      return 'ErrorType';
+    }
+    if (data is _i8.Goal) {
       return 'Goal';
     }
-    if (data is _i7.Repetition) {
+    if (data is _i9.Repetition) {
       return 'Repetition';
     }
-    if (data is _i8.TargetPeriod) {
+    if (data is _i10.TargetPeriod) {
       return 'TargetPeriod';
     }
-    if (data is _i9.User) {
+    if (data is _i11.User) {
       return 'User';
     }
-    if (data is _i10.UserProfile) {
+    if (data is _i12.UserProfile) {
       return 'UserProfile';
     }
     return super.getClassNameForObject(data);
@@ -320,20 +343,26 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'Days') {
       return deserialize<_i5.Days>(data['data']);
     }
+    if (data['className'] == 'EndpointException') {
+      return deserialize<_i6.EndpointException>(data['data']);
+    }
+    if (data['className'] == 'ErrorType') {
+      return deserialize<_i7.ErrorType>(data['data']);
+    }
     if (data['className'] == 'Goal') {
-      return deserialize<_i6.Goal>(data['data']);
+      return deserialize<_i8.Goal>(data['data']);
     }
     if (data['className'] == 'Repetition') {
-      return deserialize<_i7.Repetition>(data['data']);
+      return deserialize<_i9.Repetition>(data['data']);
     }
     if (data['className'] == 'TargetPeriod') {
-      return deserialize<_i8.TargetPeriod>(data['data']);
+      return deserialize<_i10.TargetPeriod>(data['data']);
     }
     if (data['className'] == 'User') {
-      return deserialize<_i9.User>(data['data']);
+      return deserialize<_i11.User>(data['data']);
     }
     if (data['className'] == 'UserProfile') {
-      return deserialize<_i10.UserProfile>(data['data']);
+      return deserialize<_i12.UserProfile>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
@@ -353,10 +382,10 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i6.Goal:
-        return _i6.Goal.t;
-      case _i9.User:
-        return _i9.User.t;
+      case _i8.Goal:
+        return _i8.Goal.t;
+      case _i11.User:
+        return _i11.User.t;
     }
     return null;
   }
