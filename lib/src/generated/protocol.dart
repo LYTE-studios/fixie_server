@@ -17,17 +17,19 @@ import 'days.dart' as _i5;
 import 'endpoint_exception.dart' as _i6;
 import 'error_types.dart' as _i7;
 import 'goal.dart' as _i8;
-import 'repetition.dart' as _i9;
-import 'target_period.dart' as _i10;
-import 'user.dart' as _i11;
-import 'userProfile.dart' as _i12;
-import 'protocol.dart' as _i13;
-import 'package:fixie_server/src/generated/goal.dart' as _i14;
+import 'journal.dart' as _i9;
+import 'repetition.dart' as _i10;
+import 'target_period.dart' as _i11;
+import 'user.dart' as _i12;
+import 'userProfile.dart' as _i13;
+import 'protocol.dart' as _i14;
+import 'package:fixie_server/src/generated/goal.dart' as _i15;
 export 'category.dart';
 export 'days.dart';
 export 'endpoint_exception.dart';
 export 'error_types.dart';
 export 'goal.dart';
+export 'journal.dart';
 export 'repetition.dart';
 export 'target_period.dart';
 export 'user.dart';
@@ -120,6 +122,73 @@ class Protocol extends _i1.SerializationManagerServer {
       indexes: [
         _i2.IndexDefinition(
           indexName: 'goal_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'journal',
+      dartName: 'Journal',
+      schema: 'public',
+      module: 'fixie',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'journal_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'text',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'date',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'pictures',
+          columnType: _i2.ColumnType.json,
+          isNullable: true,
+          dartType: 'List<String>?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'journal_fk_0',
+          columns: ['userId'],
+          referenceTable: 'user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'journal_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
@@ -230,17 +299,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i8.Goal) {
       return _i8.Goal.fromJson(data, this) as T;
     }
-    if (t == _i9.Repetition) {
-      return _i9.Repetition.fromJson(data) as T;
+    if (t == _i9.Journal) {
+      return _i9.Journal.fromJson(data, this) as T;
     }
-    if (t == _i10.TargetPeriod) {
-      return _i10.TargetPeriod.fromJson(data) as T;
+    if (t == _i10.Repetition) {
+      return _i10.Repetition.fromJson(data) as T;
     }
-    if (t == _i11.User) {
-      return _i11.User.fromJson(data, this) as T;
+    if (t == _i11.TargetPeriod) {
+      return _i11.TargetPeriod.fromJson(data) as T;
     }
-    if (t == _i12.UserProfile) {
-      return _i12.UserProfile.fromJson(data, this) as T;
+    if (t == _i12.User) {
+      return _i12.User.fromJson(data, this) as T;
+    }
+    if (t == _i13.UserProfile) {
+      return _i13.UserProfile.fromJson(data, this) as T;
     }
     if (t == _i1.getType<_i4.Category?>()) {
       return (data != null ? _i4.Category.fromJson(data) : null) as T;
@@ -258,31 +330,44 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i8.Goal?>()) {
       return (data != null ? _i8.Goal.fromJson(data, this) : null) as T;
     }
-    if (t == _i1.getType<_i9.Repetition?>()) {
-      return (data != null ? _i9.Repetition.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i9.Journal?>()) {
+      return (data != null ? _i9.Journal.fromJson(data, this) : null) as T;
     }
-    if (t == _i1.getType<_i10.TargetPeriod?>()) {
-      return (data != null ? _i10.TargetPeriod.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i10.Repetition?>()) {
+      return (data != null ? _i10.Repetition.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i11.User?>()) {
-      return (data != null ? _i11.User.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i11.TargetPeriod?>()) {
+      return (data != null ? _i11.TargetPeriod.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i12.UserProfile?>()) {
-      return (data != null ? _i12.UserProfile.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i12.User?>()) {
+      return (data != null ? _i12.User.fromJson(data, this) : null) as T;
     }
-    if (t == _i1.getType<List<_i13.Days>?>()) {
+    if (t == _i1.getType<_i13.UserProfile?>()) {
+      return (data != null ? _i13.UserProfile.fromJson(data, this) : null) as T;
+    }
+    if (t == _i1.getType<List<_i14.Days>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i13.Days>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i14.Days>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i13.Goal>?>()) {
+    if (t == _i1.getType<List<String>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i13.Goal>(e)).toList()
+          ? (data as List).map((e) => deserialize<String>(e)).toList()
           : null) as dynamic;
     }
     if (t == _i1.getType<List<_i14.Goal>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i14.Goal>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<_i14.Journal>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i14.Journal>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<_i15.Goal>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i15.Goal>(e)).toList()
           : null) as dynamic;
     }
     try {
@@ -316,16 +401,19 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i8.Goal) {
       return 'Goal';
     }
-    if (data is _i9.Repetition) {
+    if (data is _i9.Journal) {
+      return 'Journal';
+    }
+    if (data is _i10.Repetition) {
       return 'Repetition';
     }
-    if (data is _i10.TargetPeriod) {
+    if (data is _i11.TargetPeriod) {
       return 'TargetPeriod';
     }
-    if (data is _i11.User) {
+    if (data is _i12.User) {
       return 'User';
     }
-    if (data is _i12.UserProfile) {
+    if (data is _i13.UserProfile) {
       return 'UserProfile';
     }
     return super.getClassNameForObject(data);
@@ -352,17 +440,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'Goal') {
       return deserialize<_i8.Goal>(data['data']);
     }
+    if (data['className'] == 'Journal') {
+      return deserialize<_i9.Journal>(data['data']);
+    }
     if (data['className'] == 'Repetition') {
-      return deserialize<_i9.Repetition>(data['data']);
+      return deserialize<_i10.Repetition>(data['data']);
     }
     if (data['className'] == 'TargetPeriod') {
-      return deserialize<_i10.TargetPeriod>(data['data']);
+      return deserialize<_i11.TargetPeriod>(data['data']);
     }
     if (data['className'] == 'User') {
-      return deserialize<_i11.User>(data['data']);
+      return deserialize<_i12.User>(data['data']);
     }
     if (data['className'] == 'UserProfile') {
-      return deserialize<_i12.UserProfile>(data['data']);
+      return deserialize<_i13.UserProfile>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
@@ -384,8 +475,10 @@ class Protocol extends _i1.SerializationManagerServer {
     switch (t) {
       case _i8.Goal:
         return _i8.Goal.t;
-      case _i11.User:
-        return _i11.User.t;
+      case _i9.Journal:
+        return _i9.Journal.t;
+      case _i12.User:
+        return _i12.User.t;
     }
     return null;
   }

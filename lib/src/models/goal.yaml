@@ -6,6 +6,6 @@ fields:
   picture: String?
   target: int
   targetPeriod: TargetPeriod
-  category: Category
+  category: String
   repetition: Repetition
   days: List<Days>?
