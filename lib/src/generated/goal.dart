@@ -24,6 +24,7 @@ abstract class Goal extends _i1.TableRow {
     required this.category,
     required this.repetition,
     this.days,
+    this.journal,
   }) : super(id);
 
   factory Goal({
@@ -34,9 +35,10 @@ abstract class Goal extends _i1.TableRow {
     String? picture,
     required int target,
     required _i2.TargetPeriod targetPeriod,
-    required _i2.Category category,
+    required String category,
     required _i2.Repetition repetition,
     List<_i2.Days>? days,
+    List<_i2.JournalLog>? journal,
   }) = _GoalImpl;
 
   factory Goal.fromJson(
@@ -58,11 +60,13 @@ abstract class Goal extends _i1.TableRow {
       targetPeriod: serializationManager
           .deserialize<_i2.TargetPeriod>(jsonSerialization['targetPeriod']),
       category: serializationManager
-          .deserialize<_i2.Category>(jsonSerialization['category']),
+          .deserialize<String>(jsonSerialization['category']),
       repetition: serializationManager
           .deserialize<_i2.Repetition>(jsonSerialization['repetition']),
       days: serializationManager
           .deserialize<List<_i2.Days>?>(jsonSerialization['days']),
+      journal: serializationManager
+          .deserialize<List<_i2.JournalLog>?>(jsonSerialization['journal']),
     );
   }
 
@@ -82,11 +86,13 @@ abstract class Goal extends _i1.TableRow {
 
   _i2.TargetPeriod targetPeriod;
 
-  _i2.Category category;
+  String category;
 
   _i2.Repetition repetition;
 
   List<_i2.Days>? days;
+
+  List<_i2.JournalLog>? journal;
 
   @override
   _i1.Table get table => t;
@@ -99,9 +105,10 @@ abstract class Goal extends _i1.TableRow {
     String? picture,
     int? target,
     _i2.TargetPeriod? targetPeriod,
-    _i2.Category? category,
+    String? category,
     _i2.Repetition? repetition,
     List<_i2.Days>? days,
+    List<_i2.JournalLog>? journal,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -113,9 +120,11 @@ abstract class Goal extends _i1.TableRow {
       if (picture != null) 'picture': picture,
       'target': target,
       'targetPeriod': targetPeriod.toJson(),
-      'category': category.toJson(),
+      'category': category,
       'repetition': repetition.toJson(),
       if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+      if (journal != null)
+        'journal': journal?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -145,9 +154,11 @@ abstract class Goal extends _i1.TableRow {
       if (picture != null) 'picture': picture,
       'target': target,
       'targetPeriod': targetPeriod.toJson(),
-      'category': category.toJson(),
+      'category': category,
       'repetition': repetition.toJson(),
       if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+      if (journal != null)
+        'journal': journal?.toJson(valueToJson: (v) => v.allToJson()),
     };
   }
 
@@ -315,8 +326,14 @@ abstract class Goal extends _i1.TableRow {
     );
   }
 
-  static GoalInclude include({_i2.UserInclude? user}) {
-    return GoalInclude._(user: user);
+  static GoalInclude include({
+    _i2.UserInclude? user,
+    _i2.JournalLogIncludeList? journal,
+  }) {
+    return GoalInclude._(
+      user: user,
+      journal: journal,
+    );
   }
 
   static GoalIncludeList includeList({
@@ -351,9 +368,10 @@ class _GoalImpl extends Goal {
     String? picture,
     required int target,
     required _i2.TargetPeriod targetPeriod,
-    required _i2.Category category,
+    required String category,
     required _i2.Repetition repetition,
     List<_i2.Days>? days,
+    List<_i2.JournalLog>? journal,
   }) : super._(
           id: id,
           title: title,
@@ -365,6 +383,7 @@ class _GoalImpl extends Goal {
           category: category,
           repetition: repetition,
           days: days,
+          journal: journal,
         );
 
   @override
@@ -376,9 +395,10 @@ class _GoalImpl extends Goal {
     Object? picture = _Undefined,
     int? target,
     _i2.TargetPeriod? targetPeriod,
-    _i2.Category? category,
+    String? category,
     _i2.Repetition? repetition,
     Object? days = _Undefined,
+    Object? journal = _Undefined,
   }) {
     return Goal(
       id: id is int? ? id : this.id,
@@ -391,6 +411,8 @@ class _GoalImpl extends Goal {
       category: category ?? this.category,
       repetition: repetition ?? this.repetition,
       days: days is List<_i2.Days>? ? days : this.days?.clone(),
+      journal:
+          journal is List<_i2.JournalLog>? ? journal : this.journal?.clone(),
     );
   }
 }
@@ -418,10 +440,9 @@ class GoalTable extends _i1.Table {
       this,
       _i1.EnumSerialization.byIndex,
     );
-    category = _i1.ColumnEnum(
+    category = _i1.ColumnString(
       'category',
       this,
-      _i1.EnumSerialization.byName,
     );
     repetition = _i1.ColumnEnum(
       'repetition',
@@ -446,11 +467,15 @@ class GoalTable extends _i1.Table {
 
   late final _i1.ColumnEnum<_i2.TargetPeriod> targetPeriod;
 
-  late final _i1.ColumnEnum<_i2.Category> category;
+  late final _i1.ColumnString category;
 
   late final _i1.ColumnEnum<_i2.Repetition> repetition;
 
   late final _i1.ColumnSerializable days;
+
+  _i2.JournalLogTable? ___journal;
+
+  _i1.ManyRelation<_i2.JournalLogTable>? _journal;
 
   _i2.UserTable get user {
     if (_user != null) return _user!;
@@ -463,6 +488,37 @@ class GoalTable extends _i1.Table {
           _i2.UserTable(tableRelation: foreignTableRelation),
     );
     return _user!;
+  }
+
+  _i2.JournalLogTable get __journal {
+    if (___journal != null) return ___journal!;
+    ___journal = _i1.createRelationTable(
+      relationFieldName: '__journal',
+      field: Goal.t.id,
+      foreignField: _i2.JournalLog.t.goalId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i2.JournalLogTable(tableRelation: foreignTableRelation),
+    );
+    return ___journal!;
+  }
+
+  _i1.ManyRelation<_i2.JournalLogTable> get journal {
+    if (_journal != null) return _journal!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'journal',
+      field: Goal.t.id,
+      foreignField: _i2.JournalLog.t.goalId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i2.JournalLogTable(tableRelation: foreignTableRelation),
+    );
+    _journal = _i1.ManyRelation<_i2.JournalLogTable>(
+      tableWithRelations: relationTable,
+      table: _i2.JournalLogTable(
+          tableRelation: relationTable.tableRelation!.lastRelation),
+    );
+    return _journal!;
   }
 
   @override
@@ -483,6 +539,9 @@ class GoalTable extends _i1.Table {
     if (relationField == 'user') {
       return user;
     }
+    if (relationField == 'journal') {
+      return __journal;
+    }
     return null;
   }
 }
@@ -491,14 +550,23 @@ class GoalTable extends _i1.Table {
 GoalTable tGoal = GoalTable();
 
 class GoalInclude extends _i1.IncludeObject {
-  GoalInclude._({_i2.UserInclude? user}) {
+  GoalInclude._({
+    _i2.UserInclude? user,
+    _i2.JournalLogIncludeList? journal,
+  }) {
     _user = user;
+    _journal = journal;
   }
 
   _i2.UserInclude? _user;
 
+  _i2.JournalLogIncludeList? _journal;
+
   @override
-  Map<String, _i1.Include?> get includes => {'user': _user};
+  Map<String, _i1.Include?> get includes => {
+        'user': _user,
+        'journal': _journal,
+      };
 
   @override
   _i1.Table get table => Goal.t;
@@ -527,7 +595,13 @@ class GoalIncludeList extends _i1.IncludeList {
 class GoalRepository {
   const GoalRepository._();
 
+  final attach = const GoalAttachRepository._();
+
   final attachRow = const GoalAttachRowRepository._();
+
+  final detach = const GoalDetachRepository._();
+
+  final detachRow = const GoalDetachRowRepository._();
 
   Future<List<Goal>> find(
     _i1.Session session, {
@@ -681,6 +755,30 @@ class GoalRepository {
   }
 }
 
+class GoalAttachRepository {
+  const GoalAttachRepository._();
+
+  Future<void> journal(
+    _i1.Session session,
+    Goal goal,
+    List<_i2.JournalLog> journalLog,
+  ) async {
+    if (journalLog.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('journalLog.id');
+    }
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
+    }
+
+    var $journalLog =
+        journalLog.map((e) => e.copyWith(goalId: goal.id)).toList();
+    await session.dbNext.update<_i2.JournalLog>(
+      $journalLog,
+      columns: [_i2.JournalLog.t.goalId],
+    );
+  }
+}
+
 class GoalAttachRowRepository {
   const GoalAttachRowRepository._();
 
@@ -700,6 +798,63 @@ class GoalAttachRowRepository {
     await session.dbNext.updateRow<Goal>(
       $goal,
       columns: [Goal.t.userId],
+    );
+  }
+
+  Future<void> journal(
+    _i1.Session session,
+    Goal goal,
+    _i2.JournalLog journalLog,
+  ) async {
+    if (journalLog.id == null) {
+      throw ArgumentError.notNull('journalLog.id');
+    }
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
+    }
+
+    var $journalLog = journalLog.copyWith(goalId: goal.id);
+    await session.dbNext.updateRow<_i2.JournalLog>(
+      $journalLog,
+      columns: [_i2.JournalLog.t.goalId],
+    );
+  }
+}
+
+class GoalDetachRepository {
+  const GoalDetachRepository._();
+
+  Future<void> journal(
+    _i1.Session session,
+    List<_i2.JournalLog> journalLog,
+  ) async {
+    if (journalLog.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('journalLog.id');
+    }
+
+    var $journalLog = journalLog.map((e) => e.copyWith(goalId: null)).toList();
+    await session.dbNext.update<_i2.JournalLog>(
+      $journalLog,
+      columns: [_i2.JournalLog.t.goalId],
+    );
+  }
+}
+
+class GoalDetachRowRepository {
+  const GoalDetachRowRepository._();
+
+  Future<void> journal(
+    _i1.Session session,
+    _i2.JournalLog journalLog,
+  ) async {
+    if (journalLog.id == null) {
+      throw ArgumentError.notNull('journalLog.id');
+    }
+
+    var $journalLog = journalLog.copyWith(goalId: null);
+    await session.dbNext.updateRow<_i2.JournalLog>(
+      $journalLog,
+      columns: [_i2.JournalLog.t.goalId],
     );
   }
 }

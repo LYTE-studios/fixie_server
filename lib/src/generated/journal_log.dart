@@ -12,77 +12,77 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'protocol.dart' as _i2;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class Journal extends _i1.TableRow {
-  Journal._({
+abstract class JournalLog extends _i1.TableRow {
+  JournalLog._({
     int? id,
-    required this.userId,
-    this.user,
+    required this.goalId,
+    this.goal,
     required this.text,
     required this.date,
-    this.pictures,
+    this.picture,
   }) : super(id);
 
-  factory Journal({
+  factory JournalLog({
     int? id,
-    required int userId,
-    _i2.User? user,
+    required int goalId,
+    _i2.Goal? goal,
     required String text,
     required DateTime date,
-    List<String>? pictures,
-  }) = _JournalImpl;
+    String? picture,
+  }) = _JournalLogImpl;
 
-  factory Journal.fromJson(
+  factory JournalLog.fromJson(
     Map<String, dynamic> jsonSerialization,
     _i1.SerializationManager serializationManager,
   ) {
-    return Journal(
+    return JournalLog(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      userId:
-          serializationManager.deserialize<int>(jsonSerialization['userId']),
-      user: serializationManager
-          .deserialize<_i2.User?>(jsonSerialization['user']),
+      goalId:
+          serializationManager.deserialize<int>(jsonSerialization['goalId']),
+      goal: serializationManager
+          .deserialize<_i2.Goal?>(jsonSerialization['goal']),
       text: serializationManager.deserialize<String>(jsonSerialization['text']),
       date:
           serializationManager.deserialize<DateTime>(jsonSerialization['date']),
-      pictures: serializationManager
-          .deserialize<List<String>?>(jsonSerialization['pictures']),
+      picture: serializationManager
+          .deserialize<String?>(jsonSerialization['picture']),
     );
   }
 
-  static final t = JournalTable();
+  static final t = JournalLogTable();
 
-  static const db = JournalRepository._();
+  static const db = JournalLogRepository._();
 
-  int userId;
+  int goalId;
 
-  _i2.User? user;
+  _i2.Goal? goal;
 
   String text;
 
   DateTime date;
 
-  List<String>? pictures;
+  String? picture;
 
   @override
   _i1.Table get table => t;
 
-  Journal copyWith({
+  JournalLog copyWith({
     int? id,
-    int? userId,
-    _i2.User? user,
+    int? goalId,
+    _i2.Goal? goal,
     String? text,
     DateTime? date,
-    List<String>? pictures,
+    String? picture,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'userId': userId,
-      if (user != null) 'user': user?.toJson(),
+      'goalId': goalId,
+      if (goal != null) 'goal': goal?.toJson(),
       'text': text,
       'date': date.toJson(),
-      if (pictures != null) 'pictures': pictures?.toJson(),
+      if (picture != null) 'picture': picture,
     };
   }
 
@@ -91,10 +91,10 @@ abstract class Journal extends _i1.TableRow {
   Map<String, dynamic> toJsonForDatabase() {
     return {
       'id': id,
-      'userId': userId,
+      'goalId': goalId,
       'text': text,
       'date': date,
-      'pictures': pictures,
+      'picture': picture,
     };
   }
 
@@ -102,11 +102,11 @@ abstract class Journal extends _i1.TableRow {
   Map<String, dynamic> allToJson() {
     return {
       if (id != null) 'id': id,
-      'userId': userId,
-      if (user != null) 'user': user?.allToJson(),
+      'goalId': goalId,
+      if (goal != null) 'goal': goal?.allToJson(),
       'text': text,
       'date': date.toJson(),
-      if (pictures != null) 'pictures': pictures?.toJson(),
+      if (picture != null) 'picture': picture,
     };
   }
 
@@ -120,8 +120,8 @@ abstract class Journal extends _i1.TableRow {
       case 'id':
         id = value;
         return;
-      case 'userId':
-        userId = value;
+      case 'goalId':
+        goalId = value;
         return;
       case 'text':
         text = value;
@@ -129,8 +129,8 @@ abstract class Journal extends _i1.TableRow {
       case 'date':
         date = value;
         return;
-      case 'pictures':
-        pictures = value;
+      case 'picture':
+        picture = value;
         return;
       default:
         throw UnimplementedError();
@@ -138,9 +138,9 @@ abstract class Journal extends _i1.TableRow {
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.find instead.')
-  static Future<List<Journal>> find(
+  static Future<List<JournalLog>> find(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<JournalTable>? where,
+    _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? limit,
     int? offset,
     _i1.Column? orderBy,
@@ -148,10 +148,10 @@ abstract class Journal extends _i1.TableRow {
     bool orderDescending = false,
     bool useCache = true,
     _i1.Transaction? transaction,
-    JournalInclude? include,
+    JournalLogInclude? include,
   }) async {
-    return session.db.find<Journal>(
-      where: where != null ? where(Journal.t) : null,
+    return session.db.find<JournalLog>(
+      where: where != null ? where(JournalLog.t) : null,
       limit: limit,
       offset: offset,
       orderBy: orderBy,
@@ -164,18 +164,18 @@ abstract class Journal extends _i1.TableRow {
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.findRow instead.')
-  static Future<Journal?> findSingleRow(
+  static Future<JournalLog?> findSingleRow(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<JournalTable>? where,
+    _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? offset,
     _i1.Column? orderBy,
     bool orderDescending = false,
     bool useCache = true,
     _i1.Transaction? transaction,
-    JournalInclude? include,
+    JournalLogInclude? include,
   }) async {
-    return session.db.findSingleRow<Journal>(
-      where: where != null ? where(Journal.t) : null,
+    return session.db.findSingleRow<JournalLog>(
+      where: where != null ? where(JournalLog.t) : null,
       offset: offset,
       orderBy: orderBy,
       orderDescending: orderDescending,
@@ -186,12 +186,12 @@ abstract class Journal extends _i1.TableRow {
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
-  static Future<Journal?> findById(
+  static Future<JournalLog?> findById(
     _i1.Session session,
     int id, {
-    JournalInclude? include,
+    JournalLogInclude? include,
   }) async {
-    return session.db.findById<Journal>(
+    return session.db.findById<JournalLog>(
       id,
       include: include,
     );
@@ -200,11 +200,11 @@ abstract class Journal extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
   static Future<int> delete(
     _i1.Session session, {
-    required _i1.WhereExpressionBuilder<JournalTable> where,
+    required _i1.WhereExpressionBuilder<JournalLogTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<Journal>(
-      where: where(Journal.t),
+    return session.db.delete<JournalLog>(
+      where: where(JournalLog.t),
       transaction: transaction,
     );
   }
@@ -212,7 +212,7 @@ abstract class Journal extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.deleteRow instead.')
   static Future<bool> deleteRow(
     _i1.Session session,
-    Journal row, {
+    JournalLog row, {
     _i1.Transaction? transaction,
   }) async {
     return session.db.deleteRow(
@@ -224,7 +224,7 @@ abstract class Journal extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.update instead.')
   static Future<bool> update(
     _i1.Session session,
-    Journal row, {
+    JournalLog row, {
     _i1.Transaction? transaction,
   }) async {
     return session.db.update(
@@ -237,7 +237,7 @@ abstract class Journal extends _i1.TableRow {
       'Will be removed in 2.0.0. Use: db.insert instead. Important note: In db.insert, the object you pass in is no longer modified, instead a new copy with the added row is returned which contains the inserted id.')
   static Future<void> insert(
     _i1.Session session,
-    Journal row, {
+    JournalLog row, {
     _i1.Transaction? transaction,
   }) async {
     return session.db.insert(
@@ -249,39 +249,39 @@ abstract class Journal extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.count instead.')
   static Future<int> count(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<JournalTable>? where,
+    _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? limit,
     bool useCache = true,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<Journal>(
-      where: where != null ? where(Journal.t) : null,
+    return session.db.count<JournalLog>(
+      where: where != null ? where(JournalLog.t) : null,
       limit: limit,
       useCache: useCache,
       transaction: transaction,
     );
   }
 
-  static JournalInclude include({_i2.UserInclude? user}) {
-    return JournalInclude._(user: user);
+  static JournalLogInclude include({_i2.GoalInclude? goal}) {
+    return JournalLogInclude._(goal: goal);
   }
 
-  static JournalIncludeList includeList({
-    _i1.WhereExpressionBuilder<JournalTable>? where,
+  static JournalLogIncludeList includeList({
+    _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<JournalTable>? orderBy,
+    _i1.OrderByBuilder<JournalLogTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<JournalTable>? orderByList,
-    JournalInclude? include,
+    _i1.OrderByListBuilder<JournalLogTable>? orderByList,
+    JournalLogInclude? include,
   }) {
-    return JournalIncludeList._(
+    return JournalLogIncludeList._(
       where: where,
       limit: limit,
       offset: offset,
-      orderBy: orderBy?.call(Journal.t),
+      orderBy: orderBy?.call(JournalLog.t),
       orderDescending: orderDescending,
-      orderByList: orderByList?.call(Journal.t),
+      orderByList: orderByList?.call(JournalLog.t),
       include: include,
     );
   }
@@ -289,47 +289,47 @@ abstract class Journal extends _i1.TableRow {
 
 class _Undefined {}
 
-class _JournalImpl extends Journal {
-  _JournalImpl({
+class _JournalLogImpl extends JournalLog {
+  _JournalLogImpl({
     int? id,
-    required int userId,
-    _i2.User? user,
+    required int goalId,
+    _i2.Goal? goal,
     required String text,
     required DateTime date,
-    List<String>? pictures,
+    String? picture,
   }) : super._(
           id: id,
-          userId: userId,
-          user: user,
+          goalId: goalId,
+          goal: goal,
           text: text,
           date: date,
-          pictures: pictures,
+          picture: picture,
         );
 
   @override
-  Journal copyWith({
+  JournalLog copyWith({
     Object? id = _Undefined,
-    int? userId,
-    Object? user = _Undefined,
+    int? goalId,
+    Object? goal = _Undefined,
     String? text,
     DateTime? date,
-    Object? pictures = _Undefined,
+    Object? picture = _Undefined,
   }) {
-    return Journal(
+    return JournalLog(
       id: id is int? ? id : this.id,
-      userId: userId ?? this.userId,
-      user: user is _i2.User? ? user : this.user?.copyWith(),
+      goalId: goalId ?? this.goalId,
+      goal: goal is _i2.Goal? ? goal : this.goal?.copyWith(),
       text: text ?? this.text,
       date: date ?? this.date,
-      pictures: pictures is List<String>? ? pictures : this.pictures?.clone(),
+      picture: picture is String? ? picture : this.picture,
     );
   }
 }
 
-class JournalTable extends _i1.Table {
-  JournalTable({super.tableRelation}) : super(tableName: 'journal') {
-    userId = _i1.ColumnInt(
-      'userId',
+class JournalLogTable extends _i1.Table {
+  JournalLogTable({super.tableRelation}) : super(tableName: 'journal_log') {
+    goalId = _i1.ColumnInt(
+      'goalId',
       this,
     );
     text = _i1.ColumnString(
@@ -340,73 +340,73 @@ class JournalTable extends _i1.Table {
       'date',
       this,
     );
-    pictures = _i1.ColumnSerializable(
-      'pictures',
+    picture = _i1.ColumnString(
+      'picture',
       this,
     );
   }
 
-  late final _i1.ColumnInt userId;
+  late final _i1.ColumnInt goalId;
 
-  _i2.UserTable? _user;
+  _i2.GoalTable? _goal;
 
   late final _i1.ColumnString text;
 
   late final _i1.ColumnDateTime date;
 
-  late final _i1.ColumnSerializable pictures;
+  late final _i1.ColumnString picture;
 
-  _i2.UserTable get user {
-    if (_user != null) return _user!;
-    _user = _i1.createRelationTable(
-      relationFieldName: 'user',
-      field: Journal.t.userId,
-      foreignField: _i2.User.t.id,
+  _i2.GoalTable get goal {
+    if (_goal != null) return _goal!;
+    _goal = _i1.createRelationTable(
+      relationFieldName: 'goal',
+      field: JournalLog.t.goalId,
+      foreignField: _i2.Goal.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.UserTable(tableRelation: foreignTableRelation),
+          _i2.GoalTable(tableRelation: foreignTableRelation),
     );
-    return _user!;
+    return _goal!;
   }
 
   @override
   List<_i1.Column> get columns => [
         id,
-        userId,
+        goalId,
         text,
         date,
-        pictures,
+        picture,
       ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
-    if (relationField == 'user') {
-      return user;
+    if (relationField == 'goal') {
+      return goal;
     }
     return null;
   }
 }
 
-@Deprecated('Use JournalTable.t instead.')
-JournalTable tJournal = JournalTable();
+@Deprecated('Use JournalLogTable.t instead.')
+JournalLogTable tJournalLog = JournalLogTable();
 
-class JournalInclude extends _i1.IncludeObject {
-  JournalInclude._({_i2.UserInclude? user}) {
-    _user = user;
+class JournalLogInclude extends _i1.IncludeObject {
+  JournalLogInclude._({_i2.GoalInclude? goal}) {
+    _goal = goal;
   }
 
-  _i2.UserInclude? _user;
+  _i2.GoalInclude? _goal;
 
   @override
-  Map<String, _i1.Include?> get includes => {'user': _user};
+  Map<String, _i1.Include?> get includes => {'goal': _goal};
 
   @override
-  _i1.Table get table => Journal.t;
+  _i1.Table get table => JournalLog.t;
 }
 
-class JournalIncludeList extends _i1.IncludeList {
-  JournalIncludeList._({
-    _i1.WhereExpressionBuilder<JournalTable>? where,
+class JournalLogIncludeList extends _i1.IncludeList {
+  JournalLogIncludeList._({
+    _i1.WhereExpressionBuilder<JournalLogTable>? where,
     super.limit,
     super.offset,
     super.orderBy,
@@ -414,36 +414,36 @@ class JournalIncludeList extends _i1.IncludeList {
     super.orderByList,
     super.include,
   }) {
-    super.where = where?.call(Journal.t);
+    super.where = where?.call(JournalLog.t);
   }
 
   @override
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table get table => Journal.t;
+  _i1.Table get table => JournalLog.t;
 }
 
-class JournalRepository {
-  const JournalRepository._();
+class JournalLogRepository {
+  const JournalLogRepository._();
 
-  final attachRow = const JournalAttachRowRepository._();
+  final attachRow = const JournalLogAttachRowRepository._();
 
-  Future<List<Journal>> find(
+  Future<List<JournalLog>> find(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<JournalTable>? where,
+    _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<JournalTable>? orderBy,
+    _i1.OrderByBuilder<JournalLogTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<JournalTable>? orderByList,
+    _i1.OrderByListBuilder<JournalLogTable>? orderByList,
     _i1.Transaction? transaction,
-    JournalInclude? include,
+    JournalLogInclude? include,
   }) async {
-    return session.dbNext.find<Journal>(
-      where: where?.call(Journal.t),
-      orderBy: orderBy?.call(Journal.t),
-      orderByList: orderByList?.call(Journal.t),
+    return session.dbNext.find<JournalLog>(
+      where: where?.call(JournalLog.t),
+      orderBy: orderBy?.call(JournalLog.t),
+      orderByList: orderByList?.call(JournalLog.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
@@ -452,20 +452,20 @@ class JournalRepository {
     );
   }
 
-  Future<Journal?> findFirstRow(
+  Future<JournalLog?> findFirstRow(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<JournalTable>? where,
+    _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? offset,
-    _i1.OrderByBuilder<JournalTable>? orderBy,
+    _i1.OrderByBuilder<JournalLogTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<JournalTable>? orderByList,
+    _i1.OrderByListBuilder<JournalLogTable>? orderByList,
     _i1.Transaction? transaction,
-    JournalInclude? include,
+    JournalLogInclude? include,
   }) async {
-    return session.dbNext.findFirstRow<Journal>(
-      where: where?.call(Journal.t),
-      orderBy: orderBy?.call(Journal.t),
-      orderByList: orderByList?.call(Journal.t),
+    return session.dbNext.findFirstRow<JournalLog>(
+      where: where?.call(JournalLog.t),
+      orderBy: orderBy?.call(JournalLog.t),
+      orderByList: orderByList?.call(JournalLog.t),
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
@@ -473,73 +473,73 @@ class JournalRepository {
     );
   }
 
-  Future<Journal?> findById(
+  Future<JournalLog?> findById(
     _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
-    JournalInclude? include,
+    JournalLogInclude? include,
   }) async {
-    return session.dbNext.findById<Journal>(
+    return session.dbNext.findById<JournalLog>(
       id,
       transaction: transaction,
       include: include,
     );
   }
 
-  Future<List<Journal>> insert(
+  Future<List<JournalLog>> insert(
     _i1.Session session,
-    List<Journal> rows, {
+    List<JournalLog> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insert<Journal>(
+    return session.dbNext.insert<JournalLog>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<Journal> insertRow(
+  Future<JournalLog> insertRow(
     _i1.Session session,
-    Journal row, {
+    JournalLog row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insertRow<Journal>(
+    return session.dbNext.insertRow<JournalLog>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<Journal>> update(
+  Future<List<JournalLog>> update(
     _i1.Session session,
-    List<Journal> rows, {
-    _i1.ColumnSelections<JournalTable>? columns,
+    List<JournalLog> rows, {
+    _i1.ColumnSelections<JournalLogTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.update<Journal>(
+    return session.dbNext.update<JournalLog>(
       rows,
-      columns: columns?.call(Journal.t),
+      columns: columns?.call(JournalLog.t),
       transaction: transaction,
     );
   }
 
-  Future<Journal> updateRow(
+  Future<JournalLog> updateRow(
     _i1.Session session,
-    Journal row, {
-    _i1.ColumnSelections<JournalTable>? columns,
+    JournalLog row, {
+    _i1.ColumnSelections<JournalLogTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.updateRow<Journal>(
+    return session.dbNext.updateRow<JournalLog>(
       row,
-      columns: columns?.call(Journal.t),
+      columns: columns?.call(JournalLog.t),
       transaction: transaction,
     );
   }
 
   Future<List<int>> delete(
     _i1.Session session,
-    List<Journal> rows, {
+    List<JournalLog> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.delete<Journal>(
+    return session.dbNext.delete<JournalLog>(
       rows,
       transaction: transaction,
     );
@@ -547,10 +547,10 @@ class JournalRepository {
 
   Future<int> deleteRow(
     _i1.Session session,
-    Journal row, {
+    JournalLog row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteRow<Journal>(
+    return session.dbNext.deleteRow<JournalLog>(
       row,
       transaction: transaction,
     );
@@ -558,48 +558,48 @@ class JournalRepository {
 
   Future<List<int>> deleteWhere(
     _i1.Session session, {
-    required _i1.WhereExpressionBuilder<JournalTable> where,
+    required _i1.WhereExpressionBuilder<JournalLogTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteWhere<Journal>(
-      where: where(Journal.t),
+    return session.dbNext.deleteWhere<JournalLog>(
+      where: where(JournalLog.t),
       transaction: transaction,
     );
   }
 
   Future<int> count(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<JournalTable>? where,
+    _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.count<Journal>(
-      where: where?.call(Journal.t),
+    return session.dbNext.count<JournalLog>(
+      where: where?.call(JournalLog.t),
       limit: limit,
       transaction: transaction,
     );
   }
 }
 
-class JournalAttachRowRepository {
-  const JournalAttachRowRepository._();
+class JournalLogAttachRowRepository {
+  const JournalLogAttachRowRepository._();
 
-  Future<void> user(
+  Future<void> goal(
     _i1.Session session,
-    Journal journal,
-    _i2.User user,
+    JournalLog journalLog,
+    _i2.Goal goal,
   ) async {
-    if (journal.id == null) {
-      throw ArgumentError.notNull('journal.id');
+    if (journalLog.id == null) {
+      throw ArgumentError.notNull('journalLog.id');
     }
-    if (user.id == null) {
-      throw ArgumentError.notNull('user.id');
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
     }
 
-    var $journal = journal.copyWith(userId: user.id);
-    await session.dbNext.updateRow<Journal>(
-      $journal,
-      columns: [Journal.t.userId],
+    var $journalLog = journalLog.copyWith(goalId: goal.id);
+    await session.dbNext.updateRow<JournalLog>(
+      $journalLog,
+      columns: [JournalLog.t.goalId],
     );
   }
 }

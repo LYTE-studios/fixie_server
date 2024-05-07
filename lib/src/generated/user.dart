@@ -20,7 +20,6 @@ abstract class User extends _i1.TableRow {
     this.userInfo,
     required this.birthday,
     this.goals,
-    this.journals,
   }) : super(id);
 
   factory User({
@@ -29,7 +28,6 @@ abstract class User extends _i1.TableRow {
     _i2.UserInfo? userInfo,
     required DateTime birthday,
     List<_i3.Goal>? goals,
-    List<_i3.Journal>? journals,
   }) = _UserImpl;
 
   factory User.fromJson(
@@ -46,8 +44,6 @@ abstract class User extends _i1.TableRow {
           .deserialize<DateTime>(jsonSerialization['birthday']),
       goals: serializationManager
           .deserialize<List<_i3.Goal>?>(jsonSerialization['goals']),
-      journals: serializationManager
-          .deserialize<List<_i3.Journal>?>(jsonSerialization['journals']),
     );
   }
 
@@ -63,8 +59,6 @@ abstract class User extends _i1.TableRow {
 
   List<_i3.Goal>? goals;
 
-  List<_i3.Journal>? journals;
-
   @override
   _i1.Table get table => t;
 
@@ -74,7 +68,6 @@ abstract class User extends _i1.TableRow {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
-    List<_i3.Journal>? journals,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -84,8 +77,6 @@ abstract class User extends _i1.TableRow {
       if (userInfo != null) 'userInfo': userInfo?.toJson(),
       'birthday': birthday.toJson(),
       if (goals != null) 'goals': goals?.toJson(valueToJson: (v) => v.toJson()),
-      if (journals != null)
-        'journals': journals?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -108,8 +99,6 @@ abstract class User extends _i1.TableRow {
       'birthday': birthday.toJson(),
       if (goals != null)
         'goals': goals?.toJson(valueToJson: (v) => v.allToJson()),
-      if (journals != null)
-        'journals': journals?.toJson(valueToJson: (v) => v.allToJson()),
     };
   }
 
@@ -262,12 +251,10 @@ abstract class User extends _i1.TableRow {
   static UserInclude include({
     _i2.UserInfoInclude? userInfo,
     _i3.GoalIncludeList? goals,
-    _i3.JournalIncludeList? journals,
   }) {
     return UserInclude._(
       userInfo: userInfo,
       goals: goals,
-      journals: journals,
     );
   }
 
@@ -301,14 +288,12 @@ class _UserImpl extends User {
     _i2.UserInfo? userInfo,
     required DateTime birthday,
     List<_i3.Goal>? goals,
-    List<_i3.Journal>? journals,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
           userInfo: userInfo,
           birthday: birthday,
           goals: goals,
-          journals: journals,
         );
 
   @override
@@ -318,7 +303,6 @@ class _UserImpl extends User {
     Object? userInfo = _Undefined,
     DateTime? birthday,
     Object? goals = _Undefined,
-    Object? journals = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -327,8 +311,6 @@ class _UserImpl extends User {
           userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
       birthday: birthday ?? this.birthday,
       goals: goals is List<_i3.Goal>? ? goals : this.goals?.clone(),
-      journals:
-          journals is List<_i3.Journal>? ? journals : this.journals?.clone(),
     );
   }
 }
@@ -354,10 +336,6 @@ class UserTable extends _i1.Table {
   _i3.GoalTable? ___goals;
 
   _i1.ManyRelation<_i3.GoalTable>? _goals;
-
-  _i3.JournalTable? ___journals;
-
-  _i1.ManyRelation<_i3.JournalTable>? _journals;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -385,19 +363,6 @@ class UserTable extends _i1.Table {
     return ___goals!;
   }
 
-  _i3.JournalTable get __journals {
-    if (___journals != null) return ___journals!;
-    ___journals = _i1.createRelationTable(
-      relationFieldName: '__journals',
-      field: User.t.id,
-      foreignField: _i3.Journal.t.userId,
-      tableRelation: tableRelation,
-      createTable: (foreignTableRelation) =>
-          _i3.JournalTable(tableRelation: foreignTableRelation),
-    );
-    return ___journals!;
-  }
-
   _i1.ManyRelation<_i3.GoalTable> get goals {
     if (_goals != null) return _goals!;
     var relationTable = _i1.createRelationTable(
@@ -416,24 +381,6 @@ class UserTable extends _i1.Table {
     return _goals!;
   }
 
-  _i1.ManyRelation<_i3.JournalTable> get journals {
-    if (_journals != null) return _journals!;
-    var relationTable = _i1.createRelationTable(
-      relationFieldName: 'journals',
-      field: User.t.id,
-      foreignField: _i3.Journal.t.userId,
-      tableRelation: tableRelation,
-      createTable: (foreignTableRelation) =>
-          _i3.JournalTable(tableRelation: foreignTableRelation),
-    );
-    _journals = _i1.ManyRelation<_i3.JournalTable>(
-      tableWithRelations: relationTable,
-      table: _i3.JournalTable(
-          tableRelation: relationTable.tableRelation!.lastRelation),
-    );
-    return _journals!;
-  }
-
   @override
   List<_i1.Column> get columns => [
         id,
@@ -449,9 +396,6 @@ class UserTable extends _i1.Table {
     if (relationField == 'goals') {
       return __goals;
     }
-    if (relationField == 'journals') {
-      return __journals;
-    }
     return null;
   }
 }
@@ -463,24 +407,19 @@ class UserInclude extends _i1.IncludeObject {
   UserInclude._({
     _i2.UserInfoInclude? userInfo,
     _i3.GoalIncludeList? goals,
-    _i3.JournalIncludeList? journals,
   }) {
     _userInfo = userInfo;
     _goals = goals;
-    _journals = journals;
   }
 
   _i2.UserInfoInclude? _userInfo;
 
   _i3.GoalIncludeList? _goals;
 
-  _i3.JournalIncludeList? _journals;
-
   @override
   Map<String, _i1.Include?> get includes => {
         'userInfo': _userInfo,
         'goals': _goals,
-        'journals': _journals,
       };
 
   @override
@@ -687,25 +626,6 @@ class UserAttachRepository {
       columns: [_i3.Goal.t.userId],
     );
   }
-
-  Future<void> journals(
-    _i1.Session session,
-    User user,
-    List<_i3.Journal> journal,
-  ) async {
-    if (journal.any((e) => e.id == null)) {
-      throw ArgumentError.notNull('journal.id');
-    }
-    if (user.id == null) {
-      throw ArgumentError.notNull('user.id');
-    }
-
-    var $journal = journal.map((e) => e.copyWith(userId: user.id)).toList();
-    await session.dbNext.update<_i3.Journal>(
-      $journal,
-      columns: [_i3.Journal.t.userId],
-    );
-  }
 }
 
 class UserAttachRowRepository {
@@ -746,25 +666,6 @@ class UserAttachRowRepository {
     await session.dbNext.updateRow<_i3.Goal>(
       $goal,
       columns: [_i3.Goal.t.userId],
-    );
-  }
-
-  Future<void> journals(
-    _i1.Session session,
-    User user,
-    _i3.Journal journal,
-  ) async {
-    if (journal.id == null) {
-      throw ArgumentError.notNull('journal.id');
-    }
-    if (user.id == null) {
-      throw ArgumentError.notNull('user.id');
-    }
-
-    var $journal = journal.copyWith(userId: user.id);
-    await session.dbNext.updateRow<_i3.Journal>(
-      $journal,
-      columns: [_i3.Journal.t.userId],
     );
   }
 }

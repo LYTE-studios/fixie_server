@@ -9,3 +9,4 @@ fields:
   category: String
   repetition: Repetition
   days: List<Days>?
+  journal: List<JournalLog>?, relation(name=goal_journal)
