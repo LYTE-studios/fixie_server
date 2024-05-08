@@ -1,0 +1,6 @@
+enum: ErrorType
+serialized: byName
+values:
+  - notFound
+  - authenticationError
+  - databaseError

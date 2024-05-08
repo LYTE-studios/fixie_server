@@ -10,6 +10,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod_auth_server/module.dart' as _i2;
+import 'protocol.dart' as _i3;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class User extends _i1.TableRow {
@@ -18,6 +19,8 @@ abstract class User extends _i1.TableRow {
     required this.userInfoId,
     this.userInfo,
     required this.birthday,
+    this.goals,
+    this.journals,
   }) : super(id);
 
   factory User({
@@ -25,6 +28,8 @@ abstract class User extends _i1.TableRow {
     required int userInfoId,
     _i2.UserInfo? userInfo,
     required DateTime birthday,
+    List<_i3.Goal>? goals,
+    List<_i3.Journal>? journals,
   }) = _UserImpl;
 
   factory User.fromJson(
@@ -39,6 +44,10 @@ abstract class User extends _i1.TableRow {
           .deserialize<_i2.UserInfo?>(jsonSerialization['userInfo']),
       birthday: serializationManager
           .deserialize<DateTime>(jsonSerialization['birthday']),
+      goals: serializationManager
+          .deserialize<List<_i3.Goal>?>(jsonSerialization['goals']),
+      journals: serializationManager
+          .deserialize<List<_i3.Journal>?>(jsonSerialization['journals']),
     );
   }
 
@@ -52,6 +61,10 @@ abstract class User extends _i1.TableRow {
 
   DateTime birthday;
 
+  List<_i3.Goal>? goals;
+
+  List<_i3.Journal>? journals;
+
   @override
   _i1.Table get table => t;
 
@@ -60,6 +73,8 @@ abstract class User extends _i1.TableRow {
     int? userInfoId,
     _i2.UserInfo? userInfo,
     DateTime? birthday,
+    List<_i3.Goal>? goals,
+    List<_i3.Journal>? journals,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -68,6 +83,9 @@ abstract class User extends _i1.TableRow {
       'userInfoId': userInfoId,
       if (userInfo != null) 'userInfo': userInfo?.toJson(),
       'birthday': birthday.toJson(),
+      if (goals != null) 'goals': goals?.toJson(valueToJson: (v) => v.toJson()),
+      if (journals != null)
+        'journals': journals?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -88,6 +106,10 @@ abstract class User extends _i1.TableRow {
       'userInfoId': userInfoId,
       if (userInfo != null) 'userInfo': userInfo?.allToJson(),
       'birthday': birthday.toJson(),
+      if (goals != null)
+        'goals': goals?.toJson(valueToJson: (v) => v.allToJson()),
+      if (journals != null)
+        'journals': journals?.toJson(valueToJson: (v) => v.allToJson()),
     };
   }
 
@@ -237,8 +259,16 @@ abstract class User extends _i1.TableRow {
     );
   }
 
-  static UserInclude include({_i2.UserInfoInclude? userInfo}) {
-    return UserInclude._(userInfo: userInfo);
+  static UserInclude include({
+    _i2.UserInfoInclude? userInfo,
+    _i3.GoalIncludeList? goals,
+    _i3.JournalIncludeList? journals,
+  }) {
+    return UserInclude._(
+      userInfo: userInfo,
+      goals: goals,
+      journals: journals,
+    );
   }
 
   static UserIncludeList includeList({
@@ -270,11 +300,15 @@ class _UserImpl extends User {
     required int userInfoId,
     _i2.UserInfo? userInfo,
     required DateTime birthday,
+    List<_i3.Goal>? goals,
+    List<_i3.Journal>? journals,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
           userInfo: userInfo,
           birthday: birthday,
+          goals: goals,
+          journals: journals,
         );
 
   @override
@@ -283,6 +317,8 @@ class _UserImpl extends User {
     int? userInfoId,
     Object? userInfo = _Undefined,
     DateTime? birthday,
+    Object? goals = _Undefined,
+    Object? journals = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -290,6 +326,9 @@ class _UserImpl extends User {
       userInfo:
           userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
       birthday: birthday ?? this.birthday,
+      goals: goals is List<_i3.Goal>? ? goals : this.goals?.clone(),
+      journals:
+          journals is List<_i3.Journal>? ? journals : this.journals?.clone(),
     );
   }
 }
@@ -312,6 +351,14 @@ class UserTable extends _i1.Table {
 
   late final _i1.ColumnDateTime birthday;
 
+  _i3.GoalTable? ___goals;
+
+  _i1.ManyRelation<_i3.GoalTable>? _goals;
+
+  _i3.JournalTable? ___journals;
+
+  _i1.ManyRelation<_i3.JournalTable>? _journals;
+
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
     _userInfo = _i1.createRelationTable(
@@ -323,6 +370,68 @@ class UserTable extends _i1.Table {
           _i2.UserInfoTable(tableRelation: foreignTableRelation),
     );
     return _userInfo!;
+  }
+
+  _i3.GoalTable get __goals {
+    if (___goals != null) return ___goals!;
+    ___goals = _i1.createRelationTable(
+      relationFieldName: '__goals',
+      field: User.t.id,
+      foreignField: _i3.Goal.t.userId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.GoalTable(tableRelation: foreignTableRelation),
+    );
+    return ___goals!;
+  }
+
+  _i3.JournalTable get __journals {
+    if (___journals != null) return ___journals!;
+    ___journals = _i1.createRelationTable(
+      relationFieldName: '__journals',
+      field: User.t.id,
+      foreignField: _i3.Journal.t.userId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.JournalTable(tableRelation: foreignTableRelation),
+    );
+    return ___journals!;
+  }
+
+  _i1.ManyRelation<_i3.GoalTable> get goals {
+    if (_goals != null) return _goals!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'goals',
+      field: User.t.id,
+      foreignField: _i3.Goal.t.userId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.GoalTable(tableRelation: foreignTableRelation),
+    );
+    _goals = _i1.ManyRelation<_i3.GoalTable>(
+      tableWithRelations: relationTable,
+      table: _i3.GoalTable(
+          tableRelation: relationTable.tableRelation!.lastRelation),
+    );
+    return _goals!;
+  }
+
+  _i1.ManyRelation<_i3.JournalTable> get journals {
+    if (_journals != null) return _journals!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'journals',
+      field: User.t.id,
+      foreignField: _i3.Journal.t.userId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.JournalTable(tableRelation: foreignTableRelation),
+    );
+    _journals = _i1.ManyRelation<_i3.JournalTable>(
+      tableWithRelations: relationTable,
+      table: _i3.JournalTable(
+          tableRelation: relationTable.tableRelation!.lastRelation),
+    );
+    return _journals!;
   }
 
   @override
@@ -337,6 +446,12 @@ class UserTable extends _i1.Table {
     if (relationField == 'userInfo') {
       return userInfo;
     }
+    if (relationField == 'goals') {
+      return __goals;
+    }
+    if (relationField == 'journals') {
+      return __journals;
+    }
     return null;
   }
 }
@@ -345,14 +460,28 @@ class UserTable extends _i1.Table {
 UserTable tUser = UserTable();
 
 class UserInclude extends _i1.IncludeObject {
-  UserInclude._({_i2.UserInfoInclude? userInfo}) {
+  UserInclude._({
+    _i2.UserInfoInclude? userInfo,
+    _i3.GoalIncludeList? goals,
+    _i3.JournalIncludeList? journals,
+  }) {
     _userInfo = userInfo;
+    _goals = goals;
+    _journals = journals;
   }
 
   _i2.UserInfoInclude? _userInfo;
 
+  _i3.GoalIncludeList? _goals;
+
+  _i3.JournalIncludeList? _journals;
+
   @override
-  Map<String, _i1.Include?> get includes => {'userInfo': _userInfo};
+  Map<String, _i1.Include?> get includes => {
+        'userInfo': _userInfo,
+        'goals': _goals,
+        'journals': _journals,
+      };
 
   @override
   _i1.Table get table => User.t;
@@ -380,6 +509,8 @@ class UserIncludeList extends _i1.IncludeList {
 
 class UserRepository {
   const UserRepository._();
+
+  final attach = const UserAttachRepository._();
 
   final attachRow = const UserAttachRowRepository._();
 
@@ -535,6 +666,48 @@ class UserRepository {
   }
 }
 
+class UserAttachRepository {
+  const UserAttachRepository._();
+
+  Future<void> goals(
+    _i1.Session session,
+    User user,
+    List<_i3.Goal> goal,
+  ) async {
+    if (goal.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('goal.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $goal = goal.map((e) => e.copyWith(userId: user.id)).toList();
+    await session.dbNext.update<_i3.Goal>(
+      $goal,
+      columns: [_i3.Goal.t.userId],
+    );
+  }
+
+  Future<void> journals(
+    _i1.Session session,
+    User user,
+    List<_i3.Journal> journal,
+  ) async {
+    if (journal.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('journal.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $journal = journal.map((e) => e.copyWith(userId: user.id)).toList();
+    await session.dbNext.update<_i3.Journal>(
+      $journal,
+      columns: [_i3.Journal.t.userId],
+    );
+  }
+}
+
 class UserAttachRowRepository {
   const UserAttachRowRepository._();
 
@@ -554,6 +727,44 @@ class UserAttachRowRepository {
     await session.dbNext.updateRow<User>(
       $user,
       columns: [User.t.userInfoId],
+    );
+  }
+
+  Future<void> goals(
+    _i1.Session session,
+    User user,
+    _i3.Goal goal,
+  ) async {
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $goal = goal.copyWith(userId: user.id);
+    await session.dbNext.updateRow<_i3.Goal>(
+      $goal,
+      columns: [_i3.Goal.t.userId],
+    );
+  }
+
+  Future<void> journals(
+    _i1.Session session,
+    User user,
+    _i3.Journal journal,
+  ) async {
+    if (journal.id == null) {
+      throw ArgumentError.notNull('journal.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $journal = journal.copyWith(userId: user.id);
+    await session.dbNext.updateRow<_i3.Journal>(
+      $journal,
+      columns: [_i3.Journal.t.userId],
     );
   }
 }

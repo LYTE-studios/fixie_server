@@ -1,0 +1,9 @@
+enum: Days
+values:
+  - Monday
+  - Tuesday
+  - Wednesday
+  - Thursday
+  - Friday
+  - Saturday
+  - Sunday

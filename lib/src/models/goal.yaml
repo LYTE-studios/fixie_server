@@ -1,0 +1,11 @@
+class: Goal
+table: goal
+fields:
+  title: String
+  user: User?, relation(name=user_goals)
+  picture: String?
+  target: int
+  targetPeriod: TargetPeriod
+  category: String
+  repetition: Repetition
+  days: List<Days>?
