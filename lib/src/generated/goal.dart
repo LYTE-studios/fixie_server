@@ -24,6 +24,13 @@ abstract class Goal extends _i1.TableRow {
     required this.category,
     required this.repetition,
     this.days,
+    required this.setEnd,
+    this.end,
+    required this.setRemind,
+    this.remindHour,
+    this.remindMinutes,
+    this.remindHalf,
+    this.remindTimezone,
     this.journal,
   }) : super(id);
 
@@ -35,9 +42,16 @@ abstract class Goal extends _i1.TableRow {
     String? picture,
     required int target,
     required _i2.TargetPeriod targetPeriod,
-    required String category,
+    required _i2.Category category,
     required _i2.Repetition repetition,
     List<_i2.Days>? days,
+    required bool setEnd,
+    DateTime? end,
+    required bool setRemind,
+    int? remindHour,
+    int? remindMinutes,
+    bool? remindHalf,
+    String? remindTimezone,
     List<_i2.JournalLog>? journal,
   }) = _GoalImpl;
 
@@ -60,11 +74,25 @@ abstract class Goal extends _i1.TableRow {
       targetPeriod: serializationManager
           .deserialize<_i2.TargetPeriod>(jsonSerialization['targetPeriod']),
       category: serializationManager
-          .deserialize<String>(jsonSerialization['category']),
+          .deserialize<_i2.Category>(jsonSerialization['category']),
       repetition: serializationManager
           .deserialize<_i2.Repetition>(jsonSerialization['repetition']),
       days: serializationManager
           .deserialize<List<_i2.Days>?>(jsonSerialization['days']),
+      setEnd:
+          serializationManager.deserialize<bool>(jsonSerialization['setEnd']),
+      end:
+          serializationManager.deserialize<DateTime?>(jsonSerialization['end']),
+      setRemind: serializationManager
+          .deserialize<bool>(jsonSerialization['setRemind']),
+      remindHour: serializationManager
+          .deserialize<int?>(jsonSerialization['remindHour']),
+      remindMinutes: serializationManager
+          .deserialize<int?>(jsonSerialization['remindMinutes']),
+      remindHalf: serializationManager
+          .deserialize<bool?>(jsonSerialization['remindHalf']),
+      remindTimezone: serializationManager
+          .deserialize<String?>(jsonSerialization['remindTimezone']),
       journal: serializationManager
           .deserialize<List<_i2.JournalLog>?>(jsonSerialization['journal']),
     );
@@ -86,11 +114,25 @@ abstract class Goal extends _i1.TableRow {
 
   _i2.TargetPeriod targetPeriod;
 
-  String category;
+  _i2.Category category;
 
   _i2.Repetition repetition;
 
   List<_i2.Days>? days;
+
+  bool setEnd;
+
+  DateTime? end;
+
+  bool setRemind;
+
+  int? remindHour;
+
+  int? remindMinutes;
+
+  bool? remindHalf;
+
+  String? remindTimezone;
 
   List<_i2.JournalLog>? journal;
 
@@ -105,9 +147,16 @@ abstract class Goal extends _i1.TableRow {
     String? picture,
     int? target,
     _i2.TargetPeriod? targetPeriod,
-    String? category,
+    _i2.Category? category,
     _i2.Repetition? repetition,
     List<_i2.Days>? days,
+    bool? setEnd,
+    DateTime? end,
+    bool? setRemind,
+    int? remindHour,
+    int? remindMinutes,
+    bool? remindHalf,
+    String? remindTimezone,
     List<_i2.JournalLog>? journal,
   });
   @override
@@ -120,9 +169,16 @@ abstract class Goal extends _i1.TableRow {
       if (picture != null) 'picture': picture,
       'target': target,
       'targetPeriod': targetPeriod.toJson(),
-      'category': category,
+      'category': category.toJson(),
       'repetition': repetition.toJson(),
       if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+      'setEnd': setEnd,
+      if (end != null) 'end': end?.toJson(),
+      'setRemind': setRemind,
+      if (remindHour != null) 'remindHour': remindHour,
+      if (remindMinutes != null) 'remindMinutes': remindMinutes,
+      if (remindHalf != null) 'remindHalf': remindHalf,
+      if (remindTimezone != null) 'remindTimezone': remindTimezone,
       if (journal != null)
         'journal': journal?.toJson(valueToJson: (v) => v.toJson()),
     };
@@ -141,6 +197,13 @@ abstract class Goal extends _i1.TableRow {
       'category': category,
       'repetition': repetition,
       'days': days,
+      'setEnd': setEnd,
+      'end': end,
+      'setRemind': setRemind,
+      'remindHour': remindHour,
+      'remindMinutes': remindMinutes,
+      'remindHalf': remindHalf,
+      'remindTimezone': remindTimezone,
     };
   }
 
@@ -154,9 +217,16 @@ abstract class Goal extends _i1.TableRow {
       if (picture != null) 'picture': picture,
       'target': target,
       'targetPeriod': targetPeriod.toJson(),
-      'category': category,
+      'category': category.allToJson(),
       'repetition': repetition.toJson(),
       if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+      'setEnd': setEnd,
+      if (end != null) 'end': end?.toJson(),
+      'setRemind': setRemind,
+      if (remindHour != null) 'remindHour': remindHour,
+      if (remindMinutes != null) 'remindMinutes': remindMinutes,
+      if (remindHalf != null) 'remindHalf': remindHalf,
+      if (remindTimezone != null) 'remindTimezone': remindTimezone,
       if (journal != null)
         'journal': journal?.toJson(valueToJson: (v) => v.allToJson()),
     };
@@ -195,6 +265,27 @@ abstract class Goal extends _i1.TableRow {
         return;
       case 'days':
         days = value;
+        return;
+      case 'setEnd':
+        setEnd = value;
+        return;
+      case 'end':
+        end = value;
+        return;
+      case 'setRemind':
+        setRemind = value;
+        return;
+      case 'remindHour':
+        remindHour = value;
+        return;
+      case 'remindMinutes':
+        remindMinutes = value;
+        return;
+      case 'remindHalf':
+        remindHalf = value;
+        return;
+      case 'remindTimezone':
+        remindTimezone = value;
         return;
       default:
         throw UnimplementedError();
@@ -368,9 +459,16 @@ class _GoalImpl extends Goal {
     String? picture,
     required int target,
     required _i2.TargetPeriod targetPeriod,
-    required String category,
+    required _i2.Category category,
     required _i2.Repetition repetition,
     List<_i2.Days>? days,
+    required bool setEnd,
+    DateTime? end,
+    required bool setRemind,
+    int? remindHour,
+    int? remindMinutes,
+    bool? remindHalf,
+    String? remindTimezone,
     List<_i2.JournalLog>? journal,
   }) : super._(
           id: id,
@@ -383,6 +481,13 @@ class _GoalImpl extends Goal {
           category: category,
           repetition: repetition,
           days: days,
+          setEnd: setEnd,
+          end: end,
+          setRemind: setRemind,
+          remindHour: remindHour,
+          remindMinutes: remindMinutes,
+          remindHalf: remindHalf,
+          remindTimezone: remindTimezone,
           journal: journal,
         );
 
@@ -395,9 +500,16 @@ class _GoalImpl extends Goal {
     Object? picture = _Undefined,
     int? target,
     _i2.TargetPeriod? targetPeriod,
-    String? category,
+    _i2.Category? category,
     _i2.Repetition? repetition,
     Object? days = _Undefined,
+    bool? setEnd,
+    Object? end = _Undefined,
+    bool? setRemind,
+    Object? remindHour = _Undefined,
+    Object? remindMinutes = _Undefined,
+    Object? remindHalf = _Undefined,
+    Object? remindTimezone = _Undefined,
     Object? journal = _Undefined,
   }) {
     return Goal(
@@ -408,9 +520,17 @@ class _GoalImpl extends Goal {
       picture: picture is String? ? picture : this.picture,
       target: target ?? this.target,
       targetPeriod: targetPeriod ?? this.targetPeriod,
-      category: category ?? this.category,
+      category: category ?? this.category.copyWith(),
       repetition: repetition ?? this.repetition,
       days: days is List<_i2.Days>? ? days : this.days?.clone(),
+      setEnd: setEnd ?? this.setEnd,
+      end: end is DateTime? ? end : this.end,
+      setRemind: setRemind ?? this.setRemind,
+      remindHour: remindHour is int? ? remindHour : this.remindHour,
+      remindMinutes: remindMinutes is int? ? remindMinutes : this.remindMinutes,
+      remindHalf: remindHalf is bool? ? remindHalf : this.remindHalf,
+      remindTimezone:
+          remindTimezone is String? ? remindTimezone : this.remindTimezone,
       journal:
           journal is List<_i2.JournalLog>? ? journal : this.journal?.clone(),
     );
@@ -440,7 +560,7 @@ class GoalTable extends _i1.Table {
       this,
       _i1.EnumSerialization.byIndex,
     );
-    category = _i1.ColumnString(
+    category = _i1.ColumnSerializable(
       'category',
       this,
     );
@@ -451,6 +571,34 @@ class GoalTable extends _i1.Table {
     );
     days = _i1.ColumnSerializable(
       'days',
+      this,
+    );
+    setEnd = _i1.ColumnBool(
+      'setEnd',
+      this,
+    );
+    end = _i1.ColumnDateTime(
+      'end',
+      this,
+    );
+    setRemind = _i1.ColumnBool(
+      'setRemind',
+      this,
+    );
+    remindHour = _i1.ColumnInt(
+      'remindHour',
+      this,
+    );
+    remindMinutes = _i1.ColumnInt(
+      'remindMinutes',
+      this,
+    );
+    remindHalf = _i1.ColumnBool(
+      'remindHalf',
+      this,
+    );
+    remindTimezone = _i1.ColumnString(
+      'remindTimezone',
       this,
     );
   }
@@ -467,11 +615,25 @@ class GoalTable extends _i1.Table {
 
   late final _i1.ColumnEnum<_i2.TargetPeriod> targetPeriod;
 
-  late final _i1.ColumnString category;
+  late final _i1.ColumnSerializable category;
 
   late final _i1.ColumnEnum<_i2.Repetition> repetition;
 
   late final _i1.ColumnSerializable days;
+
+  late final _i1.ColumnBool setEnd;
+
+  late final _i1.ColumnDateTime end;
+
+  late final _i1.ColumnBool setRemind;
+
+  late final _i1.ColumnInt remindHour;
+
+  late final _i1.ColumnInt remindMinutes;
+
+  late final _i1.ColumnBool remindHalf;
+
+  late final _i1.ColumnString remindTimezone;
 
   _i2.JournalLogTable? ___journal;
 
@@ -532,6 +694,13 @@ class GoalTable extends _i1.Table {
         category,
         repetition,
         days,
+        setEnd,
+        end,
+        setRemind,
+        remindHour,
+        remindMinutes,
+        remindHalf,
+        remindTimezone,
       ];
 
   @override

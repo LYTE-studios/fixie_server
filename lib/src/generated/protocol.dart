@@ -24,6 +24,7 @@ import 'user.dart' as _i12;
 import 'userProfile.dart' as _i13;
 import 'protocol.dart' as _i14;
 import 'package:fixie_server/src/generated/goal.dart' as _i15;
+import 'package:fixie_server/src/generated/journal_log.dart' as _i16;
 export 'category.dart';
 export 'days.dart';
 export 'endpoint_exception.dart';
@@ -45,6 +46,56 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
+    _i2.TableDefinition(
+      name: 'category',
+      dartName: 'Category',
+      schema: 'public',
+      module: 'fixie',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'category_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'title',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'color',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'icon',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'category_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
     _i2.TableDefinition(
       name: 'goal',
       dartName: 'Goal',
@@ -90,9 +141,9 @@ class Protocol extends _i1.SerializationManagerServer {
         ),
         _i2.ColumnDefinition(
           name: 'category',
-          columnType: _i2.ColumnType.text,
+          columnType: _i2.ColumnType.json,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:Category',
         ),
         _i2.ColumnDefinition(
           name: 'repetition',
@@ -105,6 +156,48 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.json,
           isNullable: true,
           dartType: 'List<protocol:Days>?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'setEnd',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+        _i2.ColumnDefinition(
+          name: 'end',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'setRemind',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+        _i2.ColumnDefinition(
+          name: 'remindHour',
+          columnType: _i2.ColumnType.integer,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'remindMinutes',
+          columnType: _i2.ColumnType.integer,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'remindHalf',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: true,
+          dartType: 'bool?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'remindTimezone',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
         ),
       ],
       foreignKeys: [
@@ -285,7 +378,7 @@ class Protocol extends _i1.SerializationManagerServer {
       return customConstructors[t]!(data, this) as T;
     }
     if (t == _i4.Category) {
-      return _i4.Category.fromJson(data) as T;
+      return _i4.Category.fromJson(data, this) as T;
     }
     if (t == _i5.Days) {
       return _i5.Days.fromJson(data) as T;
@@ -315,7 +408,7 @@ class Protocol extends _i1.SerializationManagerServer {
       return _i13.UserProfile.fromJson(data, this) as T;
     }
     if (t == _i1.getType<_i4.Category?>()) {
-      return (data != null ? _i4.Category.fromJson(data) : null) as T;
+      return (data != null ? _i4.Category.fromJson(data, this) : null) as T;
     }
     if (t == _i1.getType<_i5.Days?>()) {
       return (data != null ? _i5.Days.fromJson(data) : null) as T;
@@ -363,6 +456,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<List<_i15.Goal>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i15.Goal>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<_i16.JournalLog>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i16.JournalLog>(e)).toList()
           : null) as dynamic;
     }
     try {
@@ -468,6 +566,8 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
+      case _i4.Category:
+        return _i4.Category.t;
       case _i8.Goal:
         return _i8.Goal.t;
       case _i9.JournalLog:

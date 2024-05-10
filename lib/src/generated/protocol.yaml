@@ -4,6 +4,11 @@ goals:
   - getGoals:
   - updateGoal:
   - deleteGoal:
+journal:
+  - addLog:
+  - getLog:
+  - getJournal:
+  - updateLog:
 profile:
   - createUser:
   - getProfileData:

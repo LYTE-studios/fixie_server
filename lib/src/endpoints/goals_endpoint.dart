@@ -50,37 +50,18 @@ class GoalsEndpoint extends Endpoint {
     }
   }
 
-  Future<int> updateGoal(Session session, int goalId, Goal newGoal) async {
+  Future<Goal> updateGoal(Session session, Goal newGoal) async {
     if (await AuthUtils.getAuthenticatedUser(session) == null) {
       throw EndpointException(
           message: 'User could not be found.',
           errorType: ErrorType.authenticationError);
     } else {
-      var goal = await Goal.db.findById(session, goalId);
+      var goal = await Goal.db.findById(session, newGoal.id!);
       if (goal == null) {
         throw EndpointException(
             message: 'Goal could not be found', errorType: ErrorType.notFound);
       } else {
-        goal.title = newGoal.title;
-        goal.picture = newGoal.picture;
-        goal.target = newGoal.target;
-        goal.targetPeriod = newGoal.targetPeriod;
-        goal.category = newGoal.category;
-        goal.repetition = newGoal.repetition;
-        goal.days = newGoal.days;
-        var updatedGoal = await Goal.db.updateRow(session, goal);
-        if (updatedGoal.title == goal.title ||
-            updatedGoal.userId == goal.userId ||
-            updatedGoal.picture == goal.picture ||
-            updatedGoal.target == goal.target ||
-            updatedGoal.targetPeriod == goal.targetPeriod ||
-            updatedGoal.category == goal.category ||
-            updatedGoal.repetition == goal.repetition ||
-            areListsEqual(goal.days!, updatedGoal.days!)) {
-          return HttpStatus.ok;
-        } else {
-          return HttpStatus.notModified;
-        }
+        return await Goal.db.updateRow(session, newGoal);
       }
     }
   }
@@ -106,11 +87,5 @@ class GoalsEndpoint extends Endpoint {
         }
       }
     }
-  }
-
-  bool areListsEqual(List<Days> list1, List<Days> list2) {
-    final set1 = Set.from(list1);
-    final set2 = Set.from(list2);
-    return set1.length == set2.length && set1.containsAll(set2);
   }
 }

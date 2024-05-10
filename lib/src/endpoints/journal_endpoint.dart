@@ -49,14 +49,20 @@ class JournalEndpoint extends Endpoint {
 
   Future<List<JournalLog>?> getJournal(Session session, int? goalId) async {
     if (await AuthUtils.getAuthenticatedUser(session) == null) {
-      throw EndpointException(message: 'User could not be found. Are you sure you are authenticated?', errorType: ErrorType.authenticationError);
+      throw EndpointException(
+          message:
+              'User could not be found. Are you sure you are authenticated?',
+          errorType: ErrorType.authenticationError);
     } else {
-      var list = await JournalLog.db.find(session, where:(p0) => p0.goalId.equals(goalId),);
+      var list = await JournalLog.db.find(
+        session,
+        where: (p0) => p0.goalId.equals(goalId),
+      );
       return list;
     }
   }
 
-  Future<int> updateLog(Session session, JournalLog editedLog) async {
+  Future<JournalLog> updateLog(Session session, JournalLog editedLog) async {
     if (await AuthUtils.getAuthenticatedUser(session) == null) {
       throw EndpointException(
           message:
@@ -68,18 +74,8 @@ class JournalEndpoint extends Endpoint {
         throw EndpointException(
             message: 'Journal log could not be found.',
             errorType: ErrorType.notFound);
-      } else { 
-        log.date = editedLog.date;
-        log.picture = editedLog.picture;
-        log.text = editedLog.text;
-        var updatedLog = await JournalLog.db.updateRow(session, log);
-        if (updatedLog.text == log.text && 
-            updatedLog.date == log.date && 
-            updatedLog.picture == log.picture) {
-          return HttpStatus.ok;
-        } else {
-          return HttpStatus.notModified;
-        }
+      } else {
+        return await JournalLog.db.updateRow(session, editedLog);
       }
     }
   }
