@@ -1,3 +1,6 @@
+file:
+  - getUploadDescription:
+  - verifyUpload:
 goals:
   - addGoal:
   - getGoal:
