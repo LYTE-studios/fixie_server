@@ -1,9 +1,19 @@
+file:
+  - getUploadDescription:
+  - verifyUpload:
 goals:
   - addGoal:
   - getGoal:
   - getGoals:
   - updateGoal:
+  - deleteGoal:
+journal:
+  - addLog:
+  - getLog:
+  - getJournal:
+  - updateLog:
 profile:
+  - createUser:
   - getProfileData:
   - updateBirthday:
   - updateName:

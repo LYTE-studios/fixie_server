@@ -1,6 +1,7 @@
-enum: Category
-serialized: byName
-values:
-  - Reading
-  - Writing
-  - Learning
+class: Category
+table: category
+fields:
+  title: String
+  color: String
+  icon: String
+  

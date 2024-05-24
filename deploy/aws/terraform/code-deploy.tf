@@ -88,4 +88,13 @@ resource "aws_s3_bucket" "deployment" {
 resource "aws_s3_bucket_acl" "deployment" {
   bucket = aws_s3_bucket.deployment.id
   acl    = "private"
+  depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership_deployment]
+}
+
+# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
+resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership_deployment" {
+  bucket = aws_s3_bucket.deployment.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
 }

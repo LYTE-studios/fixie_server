@@ -1,9 +1,9 @@
 class: User
 table: user
 fields:
-  userInfo: module:auth:UserInfo?, relation(onDelete=Cascade)
+  userInfo: module:auth:UserInfo?, relation
   birthday: DateTime
-  goals: List<Goal>?
+  goals: List<Goal>?, relation(name=user_goals)
 indexes:
   user_info_id_unique_idx:
     fields: userInfoId

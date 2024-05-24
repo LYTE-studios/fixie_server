@@ -1,0 +1,7 @@
+class: JournalLog
+table: journal_log
+fields:
+  goal: Goal?, relation(name=goal_journal)
+  text: String
+  date: DateTime
+  picture: String?

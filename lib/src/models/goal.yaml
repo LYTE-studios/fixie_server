@@ -2,9 +2,18 @@ class: Goal
 table: goal
 fields:
   title: String
+  user: User?, relation(name=user_goals)
   picture: String?
   target: int
   targetPeriod: TargetPeriod
   category: Category
   repetition: Repetition
   days: List<Days>?
+  setEnd: bool
+  end: DateTime?
+  setRemind: bool
+  remindHour: int? # 0-12h
+  remindMinutes: int? # 0-60m
+  remindHalf: bool? # 1 -> PM, 0 -> AM
+  remindTimezone: String?
+  journal: List<JournalLog>?, relation(name=goal_journal)
