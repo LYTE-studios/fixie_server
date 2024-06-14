@@ -9,10 +9,20 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+<<<<<<< Updated upstream
 import '../endpoints/goals_endpoint.dart' as _i2;
 import '../endpoints/profile_endpoint.dart' as _i3;
 import 'package:fixie_server/src/generated/goal.dart' as _i4;
 import 'package:serverpod_auth_server/module.dart' as _i5;
+=======
+import '../endpoints/file_endpoint.dart' as _i2;
+import '../endpoints/goals_endpoint.dart' as _i3;
+import '../endpoints/journal_endpoint.dart' as _i4;
+import '../endpoints/profile_endpoint.dart' as _i5;
+import 'package:fixie_server/src/generated/goal.dart' as _i6;
+import 'package:fixie_server/src/generated/journal_log.dart' as _i7;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i8;
+>>>>>>> Stashed changes
 
 class Endpoints extends _i1.EndpointDispatch {
   @override

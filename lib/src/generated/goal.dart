@@ -12,7 +12,7 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'protocol.dart' as _i2;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class Goal extends _i1.TableRow {
+abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
   Goal._({
     int? id,
     required this.title,
@@ -39,11 +39,9 @@ abstract class Goal extends _i1.TableRow {
     List<_i2.Days>? days,
   }) = _GoalImpl;
 
-  factory Goal.fromJson(
-    Map<String, dynamic> jsonSerialization,
-    _i1.SerializationManager serializationManager,
-  ) {
+  factory Goal.fromJson(Map<String, dynamic> jsonSerialization) {
     return Goal(
+<<<<<<< Updated upstream
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
       title:
           serializationManager.deserialize<String>(jsonSerialization['title']),
@@ -63,6 +61,38 @@ abstract class Goal extends _i1.TableRow {
           .deserialize<_i2.Repetition>(jsonSerialization['repetition']),
       days: serializationManager
           .deserialize<List<_i2.Days>?>(jsonSerialization['days']),
+=======
+      id: jsonSerialization['id'] as int?,
+      title: jsonSerialization['title'] as String,
+      userId: jsonSerialization['userId'] as int,
+      user: jsonSerialization['user'] == null
+          ? null
+          : _i2.User.fromJson(
+              (jsonSerialization['user'] as Map<String, dynamic>)),
+      picture: jsonSerialization['picture'] as String?,
+      target: jsonSerialization['target'] as int,
+      targetPeriod:
+          _i2.TargetPeriod.fromJson((jsonSerialization['targetPeriod'] as int)),
+      category: _i2.Category.fromJson(
+          (jsonSerialization['category'] as Map<String, dynamic>)),
+      repetition:
+          _i2.Repetition.fromJson((jsonSerialization['repetition'] as String)),
+      days: (jsonSerialization['days'] as List?)
+          ?.map((e) => _i2.Days.fromJson((e as int)))
+          .toList(),
+      setEnd: jsonSerialization['setEnd'] as bool,
+      end: jsonSerialization['end'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['end']),
+      setRemind: jsonSerialization['setRemind'] as bool,
+      remindHour: jsonSerialization['remindHour'] as int?,
+      remindMinutes: jsonSerialization['remindMinutes'] as int?,
+      remindHalf: jsonSerialization['remindHalf'] as bool?,
+      remindTimezone: jsonSerialization['remindTimezone'] as String?,
+      journal: (jsonSerialization['journal'] as List?)
+          ?.map((e) => _i2.JournalLog.fromJson((e as Map<String, dynamic>)))
+          .toList(),
+>>>>>>> Stashed changes
     );
   }
 
@@ -120,6 +150,7 @@ abstract class Goal extends _i1.TableRow {
   }
 
   @override
+<<<<<<< Updated upstream
   @Deprecated('Will be removed in 2.0.0')
   Map<String, dynamic> toJsonForDatabase() {
     return {
@@ -137,14 +168,18 @@ abstract class Goal extends _i1.TableRow {
 
   @override
   Map<String, dynamic> allToJson() {
+=======
+  Map<String, dynamic> toJsonForProtocol() {
+>>>>>>> Stashed changes
     return {
       if (id != null) 'id': id,
       'title': title,
       'userId': userId,
-      if (user != null) 'user': user?.allToJson(),
+      if (user != null) 'user': user?.toJsonForProtocol(),
       if (picture != null) 'picture': picture,
       'target': target,
       'targetPeriod': targetPeriod.toJson(),
+<<<<<<< Updated upstream
       'category': category.toJson(),
       'repetition': repetition.toJson(),
       if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
@@ -317,6 +352,31 @@ abstract class Goal extends _i1.TableRow {
 
   static GoalInclude include({_i2.UserInclude? user}) {
     return GoalInclude._(user: user);
+=======
+      'category': category.toJsonForProtocol(),
+      'repetition': repetition.toJson(),
+      if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+      'setEnd': setEnd,
+      if (end != null) 'end': end?.toJson(),
+      'setRemind': setRemind,
+      if (remindHour != null) 'remindHour': remindHour,
+      if (remindMinutes != null) 'remindMinutes': remindMinutes,
+      if (remindHalf != null) 'remindHalf': remindHalf,
+      if (remindTimezone != null) 'remindTimezone': remindTimezone,
+      if (journal != null)
+        'journal': journal?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+    };
+  }
+
+  static GoalInclude include({
+    _i2.UserInclude? user,
+    _i2.JournalLogIncludeList? journal,
+  }) {
+    return GoalInclude._(
+      user: user,
+      journal: journal,
+    );
+>>>>>>> Stashed changes
   }
 
   static GoalIncludeList includeList({
@@ -337,6 +397,11 @@ abstract class Goal extends _i1.TableRow {
       orderByList: orderByList?.call(Goal.t),
       include: include,
     );
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
   }
 }
 
@@ -487,9 +552,6 @@ class GoalTable extends _i1.Table {
   }
 }
 
-@Deprecated('Use GoalTable.t instead.')
-GoalTable tGoal = GoalTable();
-
 class GoalInclude extends _i1.IncludeObject {
   GoalInclude._({_i2.UserInclude? user}) {
     _user = user;
@@ -540,7 +602,7 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return session.dbNext.find<Goal>(
+    return session.db.find<Goal>(
       where: where?.call(Goal.t),
       orderBy: orderBy?.call(Goal.t),
       orderByList: orderByList?.call(Goal.t),
@@ -562,7 +624,7 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return session.dbNext.findFirstRow<Goal>(
+    return session.db.findFirstRow<Goal>(
       where: where?.call(Goal.t),
       orderBy: orderBy?.call(Goal.t),
       orderByList: orderByList?.call(Goal.t),
@@ -579,7 +641,7 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return session.dbNext.findById<Goal>(
+    return session.db.findById<Goal>(
       id,
       transaction: transaction,
       include: include,
@@ -591,7 +653,7 @@ class GoalRepository {
     List<Goal> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insert<Goal>(
+    return session.db.insert<Goal>(
       rows,
       transaction: transaction,
     );
@@ -602,7 +664,7 @@ class GoalRepository {
     Goal row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insertRow<Goal>(
+    return session.db.insertRow<Goal>(
       row,
       transaction: transaction,
     );
@@ -614,7 +676,7 @@ class GoalRepository {
     _i1.ColumnSelections<GoalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.update<Goal>(
+    return session.db.update<Goal>(
       rows,
       columns: columns?.call(Goal.t),
       transaction: transaction,
@@ -627,41 +689,41 @@ class GoalRepository {
     _i1.ColumnSelections<GoalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.updateRow<Goal>(
+    return session.db.updateRow<Goal>(
       row,
       columns: columns?.call(Goal.t),
       transaction: transaction,
     );
   }
 
-  Future<List<int>> delete(
+  Future<List<Goal>> delete(
     _i1.Session session,
     List<Goal> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.delete<Goal>(
+    return session.db.delete<Goal>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<int> deleteRow(
+  Future<Goal> deleteRow(
     _i1.Session session,
     Goal row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteRow<Goal>(
+    return session.db.deleteRow<Goal>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<int>> deleteWhere(
+  Future<List<Goal>> deleteWhere(
     _i1.Session session, {
     required _i1.WhereExpressionBuilder<GoalTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteWhere<Goal>(
+    return session.db.deleteWhere<Goal>(
       where: where(Goal.t),
       transaction: transaction,
     );
@@ -673,7 +735,7 @@ class GoalRepository {
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.count<Goal>(
+    return session.db.count<Goal>(
       where: where?.call(Goal.t),
       limit: limit,
       transaction: transaction,
@@ -681,6 +743,33 @@ class GoalRepository {
   }
 }
 
+<<<<<<< Updated upstream
+=======
+class GoalAttachRepository {
+  const GoalAttachRepository._();
+
+  Future<void> journal(
+    _i1.Session session,
+    Goal goal,
+    List<_i2.JournalLog> journalLog,
+  ) async {
+    if (journalLog.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('journalLog.id');
+    }
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
+    }
+
+    var $journalLog =
+        journalLog.map((e) => e.copyWith(goalId: goal.id)).toList();
+    await session.db.update<_i2.JournalLog>(
+      $journalLog,
+      columns: [_i2.JournalLog.t.goalId],
+    );
+  }
+}
+
+>>>>>>> Stashed changes
 class GoalAttachRowRepository {
   const GoalAttachRowRepository._();
 
@@ -697,9 +786,69 @@ class GoalAttachRowRepository {
     }
 
     var $goal = goal.copyWith(userId: user.id);
-    await session.dbNext.updateRow<Goal>(
+    await session.db.updateRow<Goal>(
       $goal,
       columns: [Goal.t.userId],
     );
   }
+<<<<<<< Updated upstream
+=======
+
+  Future<void> journal(
+    _i1.Session session,
+    Goal goal,
+    _i2.JournalLog journalLog,
+  ) async {
+    if (journalLog.id == null) {
+      throw ArgumentError.notNull('journalLog.id');
+    }
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
+    }
+
+    var $journalLog = journalLog.copyWith(goalId: goal.id);
+    await session.db.updateRow<_i2.JournalLog>(
+      $journalLog,
+      columns: [_i2.JournalLog.t.goalId],
+    );
+  }
+}
+
+class GoalDetachRepository {
+  const GoalDetachRepository._();
+
+  Future<void> journal(
+    _i1.Session session,
+    List<_i2.JournalLog> journalLog,
+  ) async {
+    if (journalLog.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('journalLog.id');
+    }
+
+    var $journalLog = journalLog.map((e) => e.copyWith(goalId: null)).toList();
+    await session.db.update<_i2.JournalLog>(
+      $journalLog,
+      columns: [_i2.JournalLog.t.goalId],
+    );
+  }
+}
+
+class GoalDetachRowRepository {
+  const GoalDetachRowRepository._();
+
+  Future<void> journal(
+    _i1.Session session,
+    _i2.JournalLog journalLog,
+  ) async {
+    if (journalLog.id == null) {
+      throw ArgumentError.notNull('journalLog.id');
+    }
+
+    var $journalLog = journalLog.copyWith(goalId: null);
+    await session.db.updateRow<_i2.JournalLog>(
+      $journalLog,
+      columns: [_i2.JournalLog.t.goalId],
+    );
+  }
+>>>>>>> Stashed changes
 }

@@ -10,12 +10,12 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-enum Repetition with _i1.SerializableEntity {
+enum Repetition implements _i1.SerializableModel {
   Daily,
   Weekly,
   Monthly;
 
-  static Repetition? fromJson(String name) {
+  static Repetition fromJson(String name) {
     switch (name) {
       case 'Daily':
         return Daily;
@@ -24,12 +24,13 @@ enum Repetition with _i1.SerializableEntity {
       case 'Monthly':
         return Monthly;
       default:
-        return null;
+        throw ArgumentError(
+            'Value "$name" cannot be converted to "Repetition"');
     }
   }
 
   @override
   String toJson() => name;
   @override
-  String toString() => toJson();
+  String toString() => name;
 }

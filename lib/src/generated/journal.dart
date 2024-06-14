@@ -12,8 +12,14 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'protocol.dart' as _i2;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
 abstract class Journal extends _i1.TableRow {
   Journal._({
+=======
+abstract class JournalLog extends _i1.TableRow
+    implements _i1.ProtocolSerialization {
+  JournalLog._({
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
     int? id,
     required this.userId,
     this.user,
@@ -31,6 +37,7 @@ abstract class Journal extends _i1.TableRow {
     List<String>? pictures,
   }) = _JournalImpl;
 
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
   factory Journal.fromJson(
     Map<String, dynamic> jsonSerialization,
     _i1.SerializationManager serializationManager,
@@ -46,6 +53,19 @@ abstract class Journal extends _i1.TableRow {
           serializationManager.deserialize<DateTime>(jsonSerialization['date']),
       pictures: serializationManager
           .deserialize<List<String>?>(jsonSerialization['pictures']),
+=======
+  factory JournalLog.fromJson(Map<String, dynamic> jsonSerialization) {
+    return JournalLog(
+      id: jsonSerialization['id'] as int?,
+      goalId: jsonSerialization['goalId'] as int,
+      goal: jsonSerialization['goal'] == null
+          ? null
+          : _i2.Goal.fromJson(
+              (jsonSerialization['goal'] as Map<String, dynamic>)),
+      text: jsonSerialization['text'] as String,
+      date: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['date']),
+      picture: jsonSerialization['picture'] as String?,
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
     );
   }
 
@@ -87,6 +107,7 @@ abstract class Journal extends _i1.TableRow {
   }
 
   @override
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
   @Deprecated('Will be removed in 2.0.0')
   Map<String, dynamic> toJsonForDatabase() {
     return {
@@ -104,12 +125,20 @@ abstract class Journal extends _i1.TableRow {
       if (id != null) 'id': id,
       'userId': userId,
       if (user != null) 'user': user?.allToJson(),
+=======
+  Map<String, dynamic> toJsonForProtocol() {
+    return {
+      if (id != null) 'id': id,
+      'goalId': goalId,
+      if (goal != null) 'goal': goal?.toJsonForProtocol(),
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       'text': text,
       'date': date.toJson(),
       if (pictures != null) 'pictures': pictures?.toJson(),
     };
   }
 
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
   @override
   @Deprecated('Will be removed in 2.0.0')
   void setColumn(
@@ -264,6 +293,10 @@ abstract class Journal extends _i1.TableRow {
 
   static JournalInclude include({_i2.UserInclude? user}) {
     return JournalInclude._(user: user);
+=======
+  static JournalLogInclude include({_i2.GoalInclude? goal}) {
+    return JournalLogInclude._(goal: goal);
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
   }
 
   static JournalIncludeList includeList({
@@ -284,6 +317,11 @@ abstract class Journal extends _i1.TableRow {
       orderByList: orderByList?.call(Journal.t),
       include: include,
     );
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
   }
 }
 
@@ -387,12 +425,18 @@ class JournalTable extends _i1.Table {
   }
 }
 
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
 @Deprecated('Use JournalTable.t instead.')
 JournalTable tJournal = JournalTable();
 
 class JournalInclude extends _i1.IncludeObject {
   JournalInclude._({_i2.UserInclude? user}) {
     _user = user;
+=======
+class JournalLogInclude extends _i1.IncludeObject {
+  JournalLogInclude._({_i2.GoalInclude? goal}) {
+    _goal = goal;
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
   }
 
   _i2.UserInclude? _user;
@@ -440,10 +484,17 @@ class JournalRepository {
     _i1.Transaction? transaction,
     JournalInclude? include,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.find<Journal>(
       where: where?.call(Journal.t),
       orderBy: orderBy?.call(Journal.t),
       orderByList: orderByList?.call(Journal.t),
+=======
+    return session.db.find<JournalLog>(
+      where: where?.call(JournalLog.t),
+      orderBy: orderBy?.call(JournalLog.t),
+      orderByList: orderByList?.call(JournalLog.t),
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
@@ -462,10 +513,17 @@ class JournalRepository {
     _i1.Transaction? transaction,
     JournalInclude? include,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.findFirstRow<Journal>(
       where: where?.call(Journal.t),
       orderBy: orderBy?.call(Journal.t),
       orderByList: orderByList?.call(Journal.t),
+=======
+    return session.db.findFirstRow<JournalLog>(
+      where: where?.call(JournalLog.t),
+      orderBy: orderBy?.call(JournalLog.t),
+      orderByList: orderByList?.call(JournalLog.t),
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
@@ -479,7 +537,11 @@ class JournalRepository {
     _i1.Transaction? transaction,
     JournalInclude? include,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.findById<Journal>(
+=======
+    return session.db.findById<JournalLog>(
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       id,
       transaction: transaction,
       include: include,
@@ -491,7 +553,11 @@ class JournalRepository {
     List<Journal> rows, {
     _i1.Transaction? transaction,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.insert<Journal>(
+=======
+    return session.db.insert<JournalLog>(
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       rows,
       transaction: transaction,
     );
@@ -502,7 +568,11 @@ class JournalRepository {
     Journal row, {
     _i1.Transaction? transaction,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.insertRow<Journal>(
+=======
+    return session.db.insertRow<JournalLog>(
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       row,
       transaction: transaction,
     );
@@ -514,7 +584,11 @@ class JournalRepository {
     _i1.ColumnSelections<JournalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.update<Journal>(
+=======
+    return session.db.update<JournalLog>(
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       rows,
       columns: columns?.call(Journal.t),
       transaction: transaction,
@@ -527,42 +601,59 @@ class JournalRepository {
     _i1.ColumnSelections<JournalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.updateRow<Journal>(
+=======
+    return session.db.updateRow<JournalLog>(
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       row,
       columns: columns?.call(Journal.t),
       transaction: transaction,
     );
   }
 
-  Future<List<int>> delete(
+  Future<List<JournalLog>> delete(
     _i1.Session session,
     List<Journal> rows, {
     _i1.Transaction? transaction,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.delete<Journal>(
+=======
+    return session.db.delete<JournalLog>(
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       rows,
       transaction: transaction,
     );
   }
 
-  Future<int> deleteRow(
+  Future<JournalLog> deleteRow(
     _i1.Session session,
     Journal row, {
     _i1.Transaction? transaction,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.deleteRow<Journal>(
+=======
+    return session.db.deleteRow<JournalLog>(
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<int>> deleteWhere(
+  Future<List<JournalLog>> deleteWhere(
     _i1.Session session, {
     required _i1.WhereExpressionBuilder<JournalTable> where,
     _i1.Transaction? transaction,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.deleteWhere<Journal>(
       where: where(Journal.t),
+=======
+    return session.db.deleteWhere<JournalLog>(
+      where: where(JournalLog.t),
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       transaction: transaction,
     );
   }
@@ -573,8 +664,13 @@ class JournalRepository {
     int? limit,
     _i1.Transaction? transaction,
   }) async {
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     return session.dbNext.count<Journal>(
       where: where?.call(Journal.t),
+=======
+    return session.db.count<JournalLog>(
+      where: where?.call(JournalLog.t),
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
       limit: limit,
       transaction: transaction,
     );
@@ -596,10 +692,17 @@ class JournalAttachRowRepository {
       throw ArgumentError.notNull('user.id');
     }
 
+<<<<<<< Updated upstream:lib/src/generated/journal.dart
     var $journal = journal.copyWith(userId: user.id);
     await session.dbNext.updateRow<Journal>(
       $journal,
       columns: [Journal.t.userId],
+=======
+    var $journalLog = journalLog.copyWith(goalId: goal.id);
+    await session.db.updateRow<JournalLog>(
+      $journalLog,
+      columns: [JournalLog.t.goalId],
+>>>>>>> Stashed changes:lib/src/generated/journal_log.dart
     );
   }
 }
