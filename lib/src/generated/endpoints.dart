@@ -15,7 +15,7 @@ import '../endpoints/journal_endpoint.dart' as _i4;
 import '../endpoints/profile_endpoint.dart' as _i5;
 import 'package:fixie_server/src/generated/goal.dart' as _i6;
 import 'package:fixie_server/src/generated/journal_log.dart' as _i7;
-import 'package:serverpod_auth_server/module.dart' as _i8;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i8;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override

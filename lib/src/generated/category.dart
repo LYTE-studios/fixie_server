@@ -10,7 +10,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-abstract class Category extends _i1.TableRow {
+abstract class Category extends _i1.TableRow
+    implements _i1.ProtocolSerialization {
   Category._({
     int? id,
     required this.title,
@@ -25,17 +26,12 @@ abstract class Category extends _i1.TableRow {
     required String icon,
   }) = _CategoryImpl;
 
-  factory Category.fromJson(
-    Map<String, dynamic> jsonSerialization,
-    _i1.SerializationManager serializationManager,
-  ) {
+  factory Category.fromJson(Map<String, dynamic> jsonSerialization) {
     return Category(
-      id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      title:
-          serializationManager.deserialize<String>(jsonSerialization['title']),
-      color:
-          serializationManager.deserialize<String>(jsonSerialization['color']),
-      icon: serializationManager.deserialize<String>(jsonSerialization['icon']),
+      id: jsonSerialization['id'] as int?,
+      title: jsonSerialization['title'] as String,
+      color: jsonSerialization['color'] as String,
+      icon: jsonSerialization['icon'] as String,
     );
   }
 
@@ -69,165 +65,13 @@ abstract class Category extends _i1.TableRow {
   }
 
   @override
-  @Deprecated('Will be removed in 2.0.0')
-  Map<String, dynamic> toJsonForDatabase() {
-    return {
-      'id': id,
-      'title': title,
-      'color': color,
-      'icon': icon,
-    };
-  }
-
-  @override
-  Map<String, dynamic> allToJson() {
+  Map<String, dynamic> toJsonForProtocol() {
     return {
       if (id != null) 'id': id,
       'title': title,
       'color': color,
       'icon': icon,
     };
-  }
-
-  @override
-  @Deprecated('Will be removed in 2.0.0')
-  void setColumn(
-    String columnName,
-    value,
-  ) {
-    switch (columnName) {
-      case 'id':
-        id = value;
-        return;
-      case 'title':
-        title = value;
-        return;
-      case 'color':
-        color = value;
-        return;
-      case 'icon':
-        icon = value;
-        return;
-      default:
-        throw UnimplementedError();
-    }
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.find instead.')
-  static Future<List<Category>> find(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<CategoryTable>? where,
-    int? limit,
-    int? offset,
-    _i1.Column? orderBy,
-    List<_i1.Order>? orderByList,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.find<Category>(
-      where: where != null ? where(Category.t) : null,
-      limit: limit,
-      offset: offset,
-      orderBy: orderBy,
-      orderByList: orderByList,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findRow instead.')
-  static Future<Category?> findSingleRow(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<CategoryTable>? where,
-    int? offset,
-    _i1.Column? orderBy,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.findSingleRow<Category>(
-      where: where != null ? where(Category.t) : null,
-      offset: offset,
-      orderBy: orderBy,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
-  static Future<Category?> findById(
-    _i1.Session session,
-    int id,
-  ) async {
-    return session.db.findById<Category>(id);
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
-  static Future<int> delete(
-    _i1.Session session, {
-    required _i1.WhereExpressionBuilder<CategoryTable> where,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.delete<Category>(
-      where: where(Category.t),
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteRow instead.')
-  static Future<bool> deleteRow(
-    _i1.Session session,
-    Category row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.deleteRow(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.update instead.')
-  static Future<bool> update(
-    _i1.Session session,
-    Category row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.update(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated(
-      'Will be removed in 2.0.0. Use: db.insert instead. Important note: In db.insert, the object you pass in is no longer modified, instead a new copy with the added row is returned which contains the inserted id.')
-  static Future<void> insert(
-    _i1.Session session,
-    Category row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.insert(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.count instead.')
-  static Future<int> count(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<CategoryTable>? where,
-    int? limit,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.count<Category>(
-      where: where != null ? where(Category.t) : null,
-      limit: limit,
-      useCache: useCache,
-      transaction: transaction,
-    );
   }
 
   static CategoryInclude include() {
@@ -252,6 +96,11 @@ abstract class Category extends _i1.TableRow {
       orderByList: orderByList?.call(Category.t),
       include: include,
     );
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
   }
 }
 
@@ -317,9 +166,6 @@ class CategoryTable extends _i1.Table {
       ];
 }
 
-@Deprecated('Use CategoryTable.t instead.')
-CategoryTable tCategory = CategoryTable();
-
 class CategoryInclude extends _i1.IncludeObject {
   CategoryInclude._();
 
@@ -363,7 +209,7 @@ class CategoryRepository {
     _i1.OrderByListBuilder<CategoryTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.find<Category>(
+    return session.db.find<Category>(
       where: where?.call(Category.t),
       orderBy: orderBy?.call(Category.t),
       orderByList: orderByList?.call(Category.t),
@@ -383,7 +229,7 @@ class CategoryRepository {
     _i1.OrderByListBuilder<CategoryTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.findFirstRow<Category>(
+    return session.db.findFirstRow<Category>(
       where: where?.call(Category.t),
       orderBy: orderBy?.call(Category.t),
       orderByList: orderByList?.call(Category.t),
@@ -398,7 +244,7 @@ class CategoryRepository {
     int id, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.findById<Category>(
+    return session.db.findById<Category>(
       id,
       transaction: transaction,
     );
@@ -409,7 +255,7 @@ class CategoryRepository {
     List<Category> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insert<Category>(
+    return session.db.insert<Category>(
       rows,
       transaction: transaction,
     );
@@ -420,7 +266,7 @@ class CategoryRepository {
     Category row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insertRow<Category>(
+    return session.db.insertRow<Category>(
       row,
       transaction: transaction,
     );
@@ -432,7 +278,7 @@ class CategoryRepository {
     _i1.ColumnSelections<CategoryTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.update<Category>(
+    return session.db.update<Category>(
       rows,
       columns: columns?.call(Category.t),
       transaction: transaction,
@@ -445,41 +291,41 @@ class CategoryRepository {
     _i1.ColumnSelections<CategoryTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.updateRow<Category>(
+    return session.db.updateRow<Category>(
       row,
       columns: columns?.call(Category.t),
       transaction: transaction,
     );
   }
 
-  Future<List<int>> delete(
+  Future<List<Category>> delete(
     _i1.Session session,
     List<Category> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.delete<Category>(
+    return session.db.delete<Category>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<int> deleteRow(
+  Future<Category> deleteRow(
     _i1.Session session,
     Category row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteRow<Category>(
+    return session.db.deleteRow<Category>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<int>> deleteWhere(
+  Future<List<Category>> deleteWhere(
     _i1.Session session, {
     required _i1.WhereExpressionBuilder<CategoryTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteWhere<Category>(
+    return session.db.deleteWhere<Category>(
       where: where(Category.t),
       transaction: transaction,
     );
@@ -491,7 +337,7 @@ class CategoryRepository {
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.count<Category>(
+    return session.db.count<Category>(
       where: where?.call(Category.t),
       limit: limit,
       transaction: transaction,

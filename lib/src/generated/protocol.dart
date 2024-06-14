@@ -11,7 +11,7 @@ library protocol; // ignore_for_file: no_leading_underscores_for_library_prefixe
 
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
-import 'package:serverpod_auth_server/module.dart' as _i3;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
 import 'category.dart' as _i4;
 import 'days.dart' as _i5;
 import 'endpoint_exception.dart' as _i6;
@@ -41,8 +41,6 @@ class Protocol extends _i1.SerializationManagerServer {
 
   factory Protocol() => _instance;
 
-  static final Map<Type, _i1.constructor> customConstructors = {};
-
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
@@ -54,7 +52,7 @@ class Protocol extends _i1.SerializationManagerServer {
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int?',
           columnDefault: 'nextval(\'category_id_seq\'::regclass)',
@@ -104,7 +102,7 @@ class Protocol extends _i1.SerializationManagerServer {
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int?',
           columnDefault: 'nextval(\'goal_id_seq\'::regclass)',
@@ -117,7 +115,7 @@ class Protocol extends _i1.SerializationManagerServer {
         ),
         _i2.ColumnDefinition(
           name: 'userId',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int',
         ),
@@ -129,13 +127,13 @@ class Protocol extends _i1.SerializationManagerServer {
         ),
         _i2.ColumnDefinition(
           name: 'target',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int',
         ),
         _i2.ColumnDefinition(
           name: 'targetPeriod',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'protocol:TargetPeriod',
         ),
@@ -177,13 +175,13 @@ class Protocol extends _i1.SerializationManagerServer {
         ),
         _i2.ColumnDefinition(
           name: 'remindHour',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: true,
           dartType: 'int?',
         ),
         _i2.ColumnDefinition(
           name: 'remindMinutes',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: true,
           dartType: 'int?',
         ),
@@ -237,14 +235,14 @@ class Protocol extends _i1.SerializationManagerServer {
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int?',
           columnDefault: 'nextval(\'journal_log_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
           name: 'goalId',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int',
         ),
@@ -304,14 +302,14 @@ class Protocol extends _i1.SerializationManagerServer {
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int?',
           columnDefault: 'nextval(\'user_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
           name: 'userInfoId',
-          columnType: _i2.ColumnType.integer,
+          columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int',
         ),
@@ -374,26 +372,23 @@ class Protocol extends _i1.SerializationManagerServer {
     Type? t,
   ]) {
     t ??= T;
-    if (customConstructors.containsKey(t)) {
-      return customConstructors[t]!(data, this) as T;
-    }
     if (t == _i4.Category) {
-      return _i4.Category.fromJson(data, this) as T;
+      return _i4.Category.fromJson(data) as T;
     }
     if (t == _i5.Days) {
       return _i5.Days.fromJson(data) as T;
     }
     if (t == _i6.EndpointException) {
-      return _i6.EndpointException.fromJson(data, this) as T;
+      return _i6.EndpointException.fromJson(data) as T;
     }
     if (t == _i7.ErrorType) {
       return _i7.ErrorType.fromJson(data) as T;
     }
     if (t == _i8.Goal) {
-      return _i8.Goal.fromJson(data, this) as T;
+      return _i8.Goal.fromJson(data) as T;
     }
     if (t == _i9.JournalLog) {
-      return _i9.JournalLog.fromJson(data, this) as T;
+      return _i9.JournalLog.fromJson(data) as T;
     }
     if (t == _i10.Repetition) {
       return _i10.Repetition.fromJson(data) as T;
@@ -402,29 +397,28 @@ class Protocol extends _i1.SerializationManagerServer {
       return _i11.TargetPeriod.fromJson(data) as T;
     }
     if (t == _i12.User) {
-      return _i12.User.fromJson(data, this) as T;
+      return _i12.User.fromJson(data) as T;
     }
     if (t == _i13.UserProfile) {
-      return _i13.UserProfile.fromJson(data, this) as T;
+      return _i13.UserProfile.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Category?>()) {
-      return (data != null ? _i4.Category.fromJson(data, this) : null) as T;
+      return (data != null ? _i4.Category.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i5.Days?>()) {
       return (data != null ? _i5.Days.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i6.EndpointException?>()) {
-      return (data != null ? _i6.EndpointException.fromJson(data, this) : null)
-          as T;
+      return (data != null ? _i6.EndpointException.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i7.ErrorType?>()) {
       return (data != null ? _i7.ErrorType.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i8.Goal?>()) {
-      return (data != null ? _i8.Goal.fromJson(data, this) : null) as T;
+      return (data != null ? _i8.Goal.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i9.JournalLog?>()) {
-      return (data != null ? _i9.JournalLog.fromJson(data, this) : null) as T;
+      return (data != null ? _i9.JournalLog.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i10.Repetition?>()) {
       return (data != null ? _i10.Repetition.fromJson(data) : null) as T;
@@ -433,10 +427,10 @@ class Protocol extends _i1.SerializationManagerServer {
       return (data != null ? _i11.TargetPeriod.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i12.User?>()) {
-      return (data != null ? _i12.User.fromJson(data, this) : null) as T;
+      return (data != null ? _i12.User.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i13.UserProfile?>()) {
-      return (data != null ? _i13.UserProfile.fromJson(data, this) : null) as T;
+      return (data != null ? _i13.UserProfile.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<List<_i14.Days>?>()) {
       return (data != null
@@ -465,10 +459,10 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
-    } catch (_) {}
+    } on _i1.DeserializationTypeNotFoundException catch (_) {}
     try {
       return _i2.Protocol().deserialize<T>(data, t);
-    } catch (_) {}
+    } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
 

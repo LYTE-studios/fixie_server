@@ -24,59 +24,81 @@ class ProfileEndpoint extends Endpoint {
   }
 
   Future<UserProfile> getProfileData(Session session) async {
-    int? authenticatedUserId = await session.auth.authenticatedUserId;
-    UserInfo? user = await UserInfo.db.findById(session, authenticatedUserId!);
+    User? user = await AuthUtils.getAuthenticatedUser(session);
 
     if (user == null) {
       throw EndpointException(
-          message: "User could not be found. Are you authenticated?",
-          errorType: ErrorType.authenticationError);
-    } else {
-      int daysSinceCreation = DateTime.now().difference(user.created).inDays;
-      UserProfile userProfileData = UserProfile(
-          name: user.fullName!,
-          email: user.email!,
-          daysSinceCreation: daysSinceCreation);
-      return userProfileData;
+        message: "User could not be found. Are you authenticated?",
+        errorType: ErrorType.authenticationError,
+      );
     }
+
+    UserInfo? userInfo = user.userInfo;
+
+    if (userInfo == null) {
+      throw EndpointException(
+        message: "User info not found.",
+        errorType: ErrorType.notFound,
+      );
+    }
+
+    int daysSinceCreation = DateTime.now().difference(userInfo.created).inDays;
+
+    UserProfile userProfileData = UserProfile(
+      name: userInfo.fullName!,
+      email: userInfo.email!,
+      daysSinceCreation: daysSinceCreation,
+    );
+
+    return userProfileData;
   }
 
   Future<int> updateBirthday(Session session, DateTime birthday) async {
     var user = await AuthUtils.getAuthenticatedUser(session);
+
     if (user == null) {
       throw EndpointException(
-          message: "User could not be found. Are you authenticated?",
-          errorType: ErrorType.authenticationError);
+        message: "User could not be found. Are you authenticated?",
+        errorType: ErrorType.authenticationError,
+      );
+    }
+    user.birthday = birthday;
+    var updatedUser = await User.db.updateRow(session, user);
+
+    if (updatedUser.birthday.isAtSameMomentAs(birthday)) {
+      return HttpStatus.ok;
     } else {
-      user.birthday = birthday;
-      var updatedUser = await User.db.updateRow(session, user);
-      if (updatedUser.birthday.isAtSameMomentAs(birthday)) {
-        return HttpStatus.ok;
-      } else {
-        return HttpStatus.notModified;
-      }
+      return HttpStatus.internalServerError;
     }
   }
 
   Future<int> updateName(Session session, String name) async {
-    int? authenticatedUserId = await session.auth.authenticatedUserId;
-    UserInfo? user = await UserInfo.db.findFirstRow(
-      session,
-      where: (t) => t.id.equals(authenticatedUserId),
-    );
+    User? user = await AuthUtils.getAuthenticatedUser(session);
+
     if (user == null) {
       throw EndpointException(
-          message: "User could not be found",
-          errorType: ErrorType.authenticationError);
+        message: "User could not be found. Are you authenticated?",
+        errorType: ErrorType.authenticationError,
+      );
+    }
+
+    UserInfo? userInfo = user.userInfo;
+
+    if (userInfo == null) {
+      throw EndpointException(
+        message: "User info not found.",
+        errorType: ErrorType.notFound,
+      );
+    }
+
+    userInfo.fullName = name;
+    var updatedUser = await UserInfo.db.updateRow(session, userInfo);
+    var fullName = updatedUser.fullName;
+
+    if (fullName != null && fullName == name) {
+      return HttpStatus.ok;
     } else {
-      user.fullName = name;
-      var updatedUser = await UserInfo.db.updateRow(session, user);
-      var fullName = updatedUser.fullName;
-      if (fullName != null && fullName == name) {
-        return HttpStatus.ok;
-      } else {
-        return HttpStatus.notModified;
-      }
+      return HttpStatus.internalServerError;
     }
   }
 }

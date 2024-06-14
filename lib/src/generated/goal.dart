@@ -12,7 +12,7 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'protocol.dart' as _i2;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class Goal extends _i1.TableRow {
+abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
   Goal._({
     int? id,
     required this.title,
@@ -55,46 +55,38 @@ abstract class Goal extends _i1.TableRow {
     List<_i2.JournalLog>? journal,
   }) = _GoalImpl;
 
-  factory Goal.fromJson(
-    Map<String, dynamic> jsonSerialization,
-    _i1.SerializationManager serializationManager,
-  ) {
+  factory Goal.fromJson(Map<String, dynamic> jsonSerialization) {
     return Goal(
-      id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      title:
-          serializationManager.deserialize<String>(jsonSerialization['title']),
-      userId:
-          serializationManager.deserialize<int>(jsonSerialization['userId']),
-      user: serializationManager
-          .deserialize<_i2.User?>(jsonSerialization['user']),
-      picture: serializationManager
-          .deserialize<String?>(jsonSerialization['picture']),
-      target:
-          serializationManager.deserialize<int>(jsonSerialization['target']),
-      targetPeriod: serializationManager
-          .deserialize<_i2.TargetPeriod>(jsonSerialization['targetPeriod']),
-      category: serializationManager
-          .deserialize<_i2.Category>(jsonSerialization['category']),
-      repetition: serializationManager
-          .deserialize<_i2.Repetition>(jsonSerialization['repetition']),
-      days: serializationManager
-          .deserialize<List<_i2.Days>?>(jsonSerialization['days']),
-      setEnd:
-          serializationManager.deserialize<bool>(jsonSerialization['setEnd']),
-      end:
-          serializationManager.deserialize<DateTime?>(jsonSerialization['end']),
-      setRemind: serializationManager
-          .deserialize<bool>(jsonSerialization['setRemind']),
-      remindHour: serializationManager
-          .deserialize<int?>(jsonSerialization['remindHour']),
-      remindMinutes: serializationManager
-          .deserialize<int?>(jsonSerialization['remindMinutes']),
-      remindHalf: serializationManager
-          .deserialize<bool?>(jsonSerialization['remindHalf']),
-      remindTimezone: serializationManager
-          .deserialize<String?>(jsonSerialization['remindTimezone']),
-      journal: serializationManager
-          .deserialize<List<_i2.JournalLog>?>(jsonSerialization['journal']),
+      id: jsonSerialization['id'] as int?,
+      title: jsonSerialization['title'] as String,
+      userId: jsonSerialization['userId'] as int,
+      user: jsonSerialization['user'] == null
+          ? null
+          : _i2.User.fromJson(
+              (jsonSerialization['user'] as Map<String, dynamic>)),
+      picture: jsonSerialization['picture'] as String?,
+      target: jsonSerialization['target'] as int,
+      targetPeriod:
+          _i2.TargetPeriod.fromJson((jsonSerialization['targetPeriod'] as int)),
+      category: _i2.Category.fromJson(
+          (jsonSerialization['category'] as Map<String, dynamic>)),
+      repetition:
+          _i2.Repetition.fromJson((jsonSerialization['repetition'] as String)),
+      days: (jsonSerialization['days'] as List?)
+          ?.map((e) => _i2.Days.fromJson((e as int)))
+          .toList(),
+      setEnd: jsonSerialization['setEnd'] as bool,
+      end: jsonSerialization['end'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['end']),
+      setRemind: jsonSerialization['setRemind'] as bool,
+      remindHour: jsonSerialization['remindHour'] as int?,
+      remindMinutes: jsonSerialization['remindMinutes'] as int?,
+      remindHalf: jsonSerialization['remindHalf'] as bool?,
+      remindTimezone: jsonSerialization['remindTimezone'] as String?,
+      journal: (jsonSerialization['journal'] as List?)
+          ?.map((e) => _i2.JournalLog.fromJson((e as Map<String, dynamic>)))
+          .toList(),
     );
   }
 
@@ -185,39 +177,16 @@ abstract class Goal extends _i1.TableRow {
   }
 
   @override
-  @Deprecated('Will be removed in 2.0.0')
-  Map<String, dynamic> toJsonForDatabase() {
-    return {
-      'id': id,
-      'title': title,
-      'userId': userId,
-      'picture': picture,
-      'target': target,
-      'targetPeriod': targetPeriod,
-      'category': category,
-      'repetition': repetition,
-      'days': days,
-      'setEnd': setEnd,
-      'end': end,
-      'setRemind': setRemind,
-      'remindHour': remindHour,
-      'remindMinutes': remindMinutes,
-      'remindHalf': remindHalf,
-      'remindTimezone': remindTimezone,
-    };
-  }
-
-  @override
-  Map<String, dynamic> allToJson() {
+  Map<String, dynamic> toJsonForProtocol() {
     return {
       if (id != null) 'id': id,
       'title': title,
       'userId': userId,
-      if (user != null) 'user': user?.allToJson(),
+      if (user != null) 'user': user?.toJsonForProtocol(),
       if (picture != null) 'picture': picture,
       'target': target,
       'targetPeriod': targetPeriod.toJson(),
-      'category': category.allToJson(),
+      'category': category.toJsonForProtocol(),
       'repetition': repetition.toJson(),
       if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
       'setEnd': setEnd,
@@ -228,193 +197,8 @@ abstract class Goal extends _i1.TableRow {
       if (remindHalf != null) 'remindHalf': remindHalf,
       if (remindTimezone != null) 'remindTimezone': remindTimezone,
       if (journal != null)
-        'journal': journal?.toJson(valueToJson: (v) => v.allToJson()),
+        'journal': journal?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
     };
-  }
-
-  @override
-  @Deprecated('Will be removed in 2.0.0')
-  void setColumn(
-    String columnName,
-    value,
-  ) {
-    switch (columnName) {
-      case 'id':
-        id = value;
-        return;
-      case 'title':
-        title = value;
-        return;
-      case 'userId':
-        userId = value;
-        return;
-      case 'picture':
-        picture = value;
-        return;
-      case 'target':
-        target = value;
-        return;
-      case 'targetPeriod':
-        targetPeriod = value;
-        return;
-      case 'category':
-        category = value;
-        return;
-      case 'repetition':
-        repetition = value;
-        return;
-      case 'days':
-        days = value;
-        return;
-      case 'setEnd':
-        setEnd = value;
-        return;
-      case 'end':
-        end = value;
-        return;
-      case 'setRemind':
-        setRemind = value;
-        return;
-      case 'remindHour':
-        remindHour = value;
-        return;
-      case 'remindMinutes':
-        remindMinutes = value;
-        return;
-      case 'remindHalf':
-        remindHalf = value;
-        return;
-      case 'remindTimezone':
-        remindTimezone = value;
-        return;
-      default:
-        throw UnimplementedError();
-    }
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.find instead.')
-  static Future<List<Goal>> find(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<GoalTable>? where,
-    int? limit,
-    int? offset,
-    _i1.Column? orderBy,
-    List<_i1.Order>? orderByList,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-    GoalInclude? include,
-  }) async {
-    return session.db.find<Goal>(
-      where: where != null ? where(Goal.t) : null,
-      limit: limit,
-      offset: offset,
-      orderBy: orderBy,
-      orderByList: orderByList,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-      include: include,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findRow instead.')
-  static Future<Goal?> findSingleRow(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<GoalTable>? where,
-    int? offset,
-    _i1.Column? orderBy,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-    GoalInclude? include,
-  }) async {
-    return session.db.findSingleRow<Goal>(
-      where: where != null ? where(Goal.t) : null,
-      offset: offset,
-      orderBy: orderBy,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-      include: include,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
-  static Future<Goal?> findById(
-    _i1.Session session,
-    int id, {
-    GoalInclude? include,
-  }) async {
-    return session.db.findById<Goal>(
-      id,
-      include: include,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
-  static Future<int> delete(
-    _i1.Session session, {
-    required _i1.WhereExpressionBuilder<GoalTable> where,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.delete<Goal>(
-      where: where(Goal.t),
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteRow instead.')
-  static Future<bool> deleteRow(
-    _i1.Session session,
-    Goal row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.deleteRow(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.update instead.')
-  static Future<bool> update(
-    _i1.Session session,
-    Goal row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.update(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated(
-      'Will be removed in 2.0.0. Use: db.insert instead. Important note: In db.insert, the object you pass in is no longer modified, instead a new copy with the added row is returned which contains the inserted id.')
-  static Future<void> insert(
-    _i1.Session session,
-    Goal row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.insert(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.count instead.')
-  static Future<int> count(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<GoalTable>? where,
-    int? limit,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.count<Goal>(
-      where: where != null ? where(Goal.t) : null,
-      limit: limit,
-      useCache: useCache,
-      transaction: transaction,
-    );
   }
 
   static GoalInclude include({
@@ -445,6 +229,11 @@ abstract class Goal extends _i1.TableRow {
       orderByList: orderByList?.call(Goal.t),
       include: include,
     );
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
   }
 }
 
@@ -715,9 +504,6 @@ class GoalTable extends _i1.Table {
   }
 }
 
-@Deprecated('Use GoalTable.t instead.')
-GoalTable tGoal = GoalTable();
-
 class GoalInclude extends _i1.IncludeObject {
   GoalInclude._({
     _i2.UserInclude? user,
@@ -783,7 +569,7 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return session.dbNext.find<Goal>(
+    return session.db.find<Goal>(
       where: where?.call(Goal.t),
       orderBy: orderBy?.call(Goal.t),
       orderByList: orderByList?.call(Goal.t),
@@ -805,7 +591,7 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return session.dbNext.findFirstRow<Goal>(
+    return session.db.findFirstRow<Goal>(
       where: where?.call(Goal.t),
       orderBy: orderBy?.call(Goal.t),
       orderByList: orderByList?.call(Goal.t),
@@ -822,7 +608,7 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return session.dbNext.findById<Goal>(
+    return session.db.findById<Goal>(
       id,
       transaction: transaction,
       include: include,
@@ -834,7 +620,7 @@ class GoalRepository {
     List<Goal> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insert<Goal>(
+    return session.db.insert<Goal>(
       rows,
       transaction: transaction,
     );
@@ -845,7 +631,7 @@ class GoalRepository {
     Goal row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insertRow<Goal>(
+    return session.db.insertRow<Goal>(
       row,
       transaction: transaction,
     );
@@ -857,7 +643,7 @@ class GoalRepository {
     _i1.ColumnSelections<GoalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.update<Goal>(
+    return session.db.update<Goal>(
       rows,
       columns: columns?.call(Goal.t),
       transaction: transaction,
@@ -870,41 +656,41 @@ class GoalRepository {
     _i1.ColumnSelections<GoalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.updateRow<Goal>(
+    return session.db.updateRow<Goal>(
       row,
       columns: columns?.call(Goal.t),
       transaction: transaction,
     );
   }
 
-  Future<List<int>> delete(
+  Future<List<Goal>> delete(
     _i1.Session session,
     List<Goal> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.delete<Goal>(
+    return session.db.delete<Goal>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<int> deleteRow(
+  Future<Goal> deleteRow(
     _i1.Session session,
     Goal row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteRow<Goal>(
+    return session.db.deleteRow<Goal>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<int>> deleteWhere(
+  Future<List<Goal>> deleteWhere(
     _i1.Session session, {
     required _i1.WhereExpressionBuilder<GoalTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteWhere<Goal>(
+    return session.db.deleteWhere<Goal>(
       where: where(Goal.t),
       transaction: transaction,
     );
@@ -916,7 +702,7 @@ class GoalRepository {
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.count<Goal>(
+    return session.db.count<Goal>(
       where: where?.call(Goal.t),
       limit: limit,
       transaction: transaction,
@@ -941,7 +727,7 @@ class GoalAttachRepository {
 
     var $journalLog =
         journalLog.map((e) => e.copyWith(goalId: goal.id)).toList();
-    await session.dbNext.update<_i2.JournalLog>(
+    await session.db.update<_i2.JournalLog>(
       $journalLog,
       columns: [_i2.JournalLog.t.goalId],
     );
@@ -964,7 +750,7 @@ class GoalAttachRowRepository {
     }
 
     var $goal = goal.copyWith(userId: user.id);
-    await session.dbNext.updateRow<Goal>(
+    await session.db.updateRow<Goal>(
       $goal,
       columns: [Goal.t.userId],
     );
@@ -983,7 +769,7 @@ class GoalAttachRowRepository {
     }
 
     var $journalLog = journalLog.copyWith(goalId: goal.id);
-    await session.dbNext.updateRow<_i2.JournalLog>(
+    await session.db.updateRow<_i2.JournalLog>(
       $journalLog,
       columns: [_i2.JournalLog.t.goalId],
     );
@@ -1002,7 +788,7 @@ class GoalDetachRepository {
     }
 
     var $journalLog = journalLog.map((e) => e.copyWith(goalId: null)).toList();
-    await session.dbNext.update<_i2.JournalLog>(
+    await session.db.update<_i2.JournalLog>(
       $journalLog,
       columns: [_i2.JournalLog.t.goalId],
     );
@@ -1021,7 +807,7 @@ class GoalDetachRowRepository {
     }
 
     var $journalLog = journalLog.copyWith(goalId: null);
-    await session.dbNext.updateRow<_i2.JournalLog>(
+    await session.db.updateRow<_i2.JournalLog>(
       $journalLog,
       columns: [_i2.JournalLog.t.goalId],
     );

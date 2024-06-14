@@ -10,7 +10,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-abstract class UserProfile extends _i1.SerializableEntity {
+abstract class UserProfile
+    implements _i1.SerializableModel, _i1.ProtocolSerialization {
   UserProfile._({
     required this.name,
     required this.email,
@@ -23,16 +24,11 @@ abstract class UserProfile extends _i1.SerializableEntity {
     required int daysSinceCreation,
   }) = _UserProfileImpl;
 
-  factory UserProfile.fromJson(
-    Map<String, dynamic> jsonSerialization,
-    _i1.SerializationManager serializationManager,
-  ) {
+  factory UserProfile.fromJson(Map<String, dynamic> jsonSerialization) {
     return UserProfile(
-      name: serializationManager.deserialize<String>(jsonSerialization['name']),
-      email:
-          serializationManager.deserialize<String>(jsonSerialization['email']),
-      daysSinceCreation: serializationManager
-          .deserialize<int>(jsonSerialization['daysSinceCreation']),
+      name: jsonSerialization['name'] as String,
+      email: jsonSerialization['email'] as String,
+      daysSinceCreation: jsonSerialization['daysSinceCreation'] as int,
     );
   }
 
@@ -57,12 +53,17 @@ abstract class UserProfile extends _i1.SerializableEntity {
   }
 
   @override
-  Map<String, dynamic> allToJson() {
+  Map<String, dynamic> toJsonForProtocol() {
     return {
       'name': name,
       'email': email,
       'daysSinceCreation': daysSinceCreation,
     };
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
   }
 }
 

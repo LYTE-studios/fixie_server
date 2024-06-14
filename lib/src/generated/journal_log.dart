@@ -12,7 +12,8 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'protocol.dart' as _i2;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class JournalLog extends _i1.TableRow {
+abstract class JournalLog extends _i1.TableRow
+    implements _i1.ProtocolSerialization {
   JournalLog._({
     int? id,
     required this.goalId,
@@ -31,21 +32,17 @@ abstract class JournalLog extends _i1.TableRow {
     String? picture,
   }) = _JournalLogImpl;
 
-  factory JournalLog.fromJson(
-    Map<String, dynamic> jsonSerialization,
-    _i1.SerializationManager serializationManager,
-  ) {
+  factory JournalLog.fromJson(Map<String, dynamic> jsonSerialization) {
     return JournalLog(
-      id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      goalId:
-          serializationManager.deserialize<int>(jsonSerialization['goalId']),
-      goal: serializationManager
-          .deserialize<_i2.Goal?>(jsonSerialization['goal']),
-      text: serializationManager.deserialize<String>(jsonSerialization['text']),
-      date:
-          serializationManager.deserialize<DateTime>(jsonSerialization['date']),
-      picture: serializationManager
-          .deserialize<String?>(jsonSerialization['picture']),
+      id: jsonSerialization['id'] as int?,
+      goalId: jsonSerialization['goalId'] as int,
+      goal: jsonSerialization['goal'] == null
+          ? null
+          : _i2.Goal.fromJson(
+              (jsonSerialization['goal'] as Map<String, dynamic>)),
+      text: jsonSerialization['text'] as String,
+      date: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['date']),
+      picture: jsonSerialization['picture'] as String?,
     );
   }
 
@@ -87,179 +84,15 @@ abstract class JournalLog extends _i1.TableRow {
   }
 
   @override
-  @Deprecated('Will be removed in 2.0.0')
-  Map<String, dynamic> toJsonForDatabase() {
-    return {
-      'id': id,
-      'goalId': goalId,
-      'text': text,
-      'date': date,
-      'picture': picture,
-    };
-  }
-
-  @override
-  Map<String, dynamic> allToJson() {
+  Map<String, dynamic> toJsonForProtocol() {
     return {
       if (id != null) 'id': id,
       'goalId': goalId,
-      if (goal != null) 'goal': goal?.allToJson(),
+      if (goal != null) 'goal': goal?.toJsonForProtocol(),
       'text': text,
       'date': date.toJson(),
       if (picture != null) 'picture': picture,
     };
-  }
-
-  @override
-  @Deprecated('Will be removed in 2.0.0')
-  void setColumn(
-    String columnName,
-    value,
-  ) {
-    switch (columnName) {
-      case 'id':
-        id = value;
-        return;
-      case 'goalId':
-        goalId = value;
-        return;
-      case 'text':
-        text = value;
-        return;
-      case 'date':
-        date = value;
-        return;
-      case 'picture':
-        picture = value;
-        return;
-      default:
-        throw UnimplementedError();
-    }
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.find instead.')
-  static Future<List<JournalLog>> find(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<JournalLogTable>? where,
-    int? limit,
-    int? offset,
-    _i1.Column? orderBy,
-    List<_i1.Order>? orderByList,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-    JournalLogInclude? include,
-  }) async {
-    return session.db.find<JournalLog>(
-      where: where != null ? where(JournalLog.t) : null,
-      limit: limit,
-      offset: offset,
-      orderBy: orderBy,
-      orderByList: orderByList,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-      include: include,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findRow instead.')
-  static Future<JournalLog?> findSingleRow(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<JournalLogTable>? where,
-    int? offset,
-    _i1.Column? orderBy,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-    JournalLogInclude? include,
-  }) async {
-    return session.db.findSingleRow<JournalLog>(
-      where: where != null ? where(JournalLog.t) : null,
-      offset: offset,
-      orderBy: orderBy,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-      include: include,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
-  static Future<JournalLog?> findById(
-    _i1.Session session,
-    int id, {
-    JournalLogInclude? include,
-  }) async {
-    return session.db.findById<JournalLog>(
-      id,
-      include: include,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
-  static Future<int> delete(
-    _i1.Session session, {
-    required _i1.WhereExpressionBuilder<JournalLogTable> where,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.delete<JournalLog>(
-      where: where(JournalLog.t),
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteRow instead.')
-  static Future<bool> deleteRow(
-    _i1.Session session,
-    JournalLog row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.deleteRow(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.update instead.')
-  static Future<bool> update(
-    _i1.Session session,
-    JournalLog row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.update(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated(
-      'Will be removed in 2.0.0. Use: db.insert instead. Important note: In db.insert, the object you pass in is no longer modified, instead a new copy with the added row is returned which contains the inserted id.')
-  static Future<void> insert(
-    _i1.Session session,
-    JournalLog row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.insert(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.count instead.')
-  static Future<int> count(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<JournalLogTable>? where,
-    int? limit,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.count<JournalLog>(
-      where: where != null ? where(JournalLog.t) : null,
-      limit: limit,
-      useCache: useCache,
-      transaction: transaction,
-    );
   }
 
   static JournalLogInclude include({_i2.GoalInclude? goal}) {
@@ -284,6 +117,11 @@ abstract class JournalLog extends _i1.TableRow {
       orderByList: orderByList?.call(JournalLog.t),
       include: include,
     );
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
   }
 }
 
@@ -387,9 +225,6 @@ class JournalLogTable extends _i1.Table {
   }
 }
 
-@Deprecated('Use JournalLogTable.t instead.')
-JournalLogTable tJournalLog = JournalLogTable();
-
 class JournalLogInclude extends _i1.IncludeObject {
   JournalLogInclude._({_i2.GoalInclude? goal}) {
     _goal = goal;
@@ -440,7 +275,7 @@ class JournalLogRepository {
     _i1.Transaction? transaction,
     JournalLogInclude? include,
   }) async {
-    return session.dbNext.find<JournalLog>(
+    return session.db.find<JournalLog>(
       where: where?.call(JournalLog.t),
       orderBy: orderBy?.call(JournalLog.t),
       orderByList: orderByList?.call(JournalLog.t),
@@ -462,7 +297,7 @@ class JournalLogRepository {
     _i1.Transaction? transaction,
     JournalLogInclude? include,
   }) async {
-    return session.dbNext.findFirstRow<JournalLog>(
+    return session.db.findFirstRow<JournalLog>(
       where: where?.call(JournalLog.t),
       orderBy: orderBy?.call(JournalLog.t),
       orderByList: orderByList?.call(JournalLog.t),
@@ -479,7 +314,7 @@ class JournalLogRepository {
     _i1.Transaction? transaction,
     JournalLogInclude? include,
   }) async {
-    return session.dbNext.findById<JournalLog>(
+    return session.db.findById<JournalLog>(
       id,
       transaction: transaction,
       include: include,
@@ -491,7 +326,7 @@ class JournalLogRepository {
     List<JournalLog> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insert<JournalLog>(
+    return session.db.insert<JournalLog>(
       rows,
       transaction: transaction,
     );
@@ -502,7 +337,7 @@ class JournalLogRepository {
     JournalLog row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insertRow<JournalLog>(
+    return session.db.insertRow<JournalLog>(
       row,
       transaction: transaction,
     );
@@ -514,7 +349,7 @@ class JournalLogRepository {
     _i1.ColumnSelections<JournalLogTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.update<JournalLog>(
+    return session.db.update<JournalLog>(
       rows,
       columns: columns?.call(JournalLog.t),
       transaction: transaction,
@@ -527,41 +362,41 @@ class JournalLogRepository {
     _i1.ColumnSelections<JournalLogTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.updateRow<JournalLog>(
+    return session.db.updateRow<JournalLog>(
       row,
       columns: columns?.call(JournalLog.t),
       transaction: transaction,
     );
   }
 
-  Future<List<int>> delete(
+  Future<List<JournalLog>> delete(
     _i1.Session session,
     List<JournalLog> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.delete<JournalLog>(
+    return session.db.delete<JournalLog>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<int> deleteRow(
+  Future<JournalLog> deleteRow(
     _i1.Session session,
     JournalLog row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteRow<JournalLog>(
+    return session.db.deleteRow<JournalLog>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<int>> deleteWhere(
+  Future<List<JournalLog>> deleteWhere(
     _i1.Session session, {
     required _i1.WhereExpressionBuilder<JournalLogTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteWhere<JournalLog>(
+    return session.db.deleteWhere<JournalLog>(
       where: where(JournalLog.t),
       transaction: transaction,
     );
@@ -573,7 +408,7 @@ class JournalLogRepository {
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.count<JournalLog>(
+    return session.db.count<JournalLog>(
       where: where?.call(JournalLog.t),
       limit: limit,
       transaction: transaction,
@@ -597,7 +432,7 @@ class JournalLogAttachRowRepository {
     }
 
     var $journalLog = journalLog.copyWith(goalId: goal.id);
-    await session.dbNext.updateRow<JournalLog>(
+    await session.db.updateRow<JournalLog>(
       $journalLog,
       columns: [JournalLog.t.goalId],
     );

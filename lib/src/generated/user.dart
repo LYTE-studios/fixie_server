@@ -9,11 +9,11 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import 'package:serverpod_auth_server/module.dart' as _i2;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i2;
 import 'protocol.dart' as _i3;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class User extends _i1.TableRow {
+abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
   User._({
     int? id,
     required this.userInfoId,
@@ -30,20 +30,19 @@ abstract class User extends _i1.TableRow {
     List<_i3.Goal>? goals,
   }) = _UserImpl;
 
-  factory User.fromJson(
-    Map<String, dynamic> jsonSerialization,
-    _i1.SerializationManager serializationManager,
-  ) {
+  factory User.fromJson(Map<String, dynamic> jsonSerialization) {
     return User(
-      id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      userInfoId: serializationManager
-          .deserialize<int>(jsonSerialization['userInfoId']),
-      userInfo: serializationManager
-          .deserialize<_i2.UserInfo?>(jsonSerialization['userInfo']),
-      birthday: serializationManager
-          .deserialize<DateTime>(jsonSerialization['birthday']),
-      goals: serializationManager
-          .deserialize<List<_i3.Goal>?>(jsonSerialization['goals']),
+      id: jsonSerialization['id'] as int?,
+      userInfoId: jsonSerialization['userInfoId'] as int,
+      userInfo: jsonSerialization['userInfo'] == null
+          ? null
+          : _i2.UserInfo.fromJson(
+              (jsonSerialization['userInfo'] as Map<String, dynamic>)),
+      birthday:
+          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['birthday']),
+      goals: (jsonSerialization['goals'] as List?)
+          ?.map((e) => _i3.Goal.fromJson((e as Map<String, dynamic>)))
+          .toList(),
     );
   }
 
@@ -81,171 +80,15 @@ abstract class User extends _i1.TableRow {
   }
 
   @override
-  @Deprecated('Will be removed in 2.0.0')
-  Map<String, dynamic> toJsonForDatabase() {
-    return {
-      'id': id,
-      'userInfoId': userInfoId,
-      'birthday': birthday,
-    };
-  }
-
-  @override
-  Map<String, dynamic> allToJson() {
+  Map<String, dynamic> toJsonForProtocol() {
     return {
       if (id != null) 'id': id,
       'userInfoId': userInfoId,
-      if (userInfo != null) 'userInfo': userInfo?.allToJson(),
+      if (userInfo != null) 'userInfo': userInfo?.toJsonForProtocol(),
       'birthday': birthday.toJson(),
       if (goals != null)
-        'goals': goals?.toJson(valueToJson: (v) => v.allToJson()),
+        'goals': goals?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
     };
-  }
-
-  @override
-  @Deprecated('Will be removed in 2.0.0')
-  void setColumn(
-    String columnName,
-    value,
-  ) {
-    switch (columnName) {
-      case 'id':
-        id = value;
-        return;
-      case 'userInfoId':
-        userInfoId = value;
-        return;
-      case 'birthday':
-        birthday = value;
-        return;
-      default:
-        throw UnimplementedError();
-    }
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.find instead.')
-  static Future<List<User>> find(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserTable>? where,
-    int? limit,
-    int? offset,
-    _i1.Column? orderBy,
-    List<_i1.Order>? orderByList,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-    UserInclude? include,
-  }) async {
-    return session.db.find<User>(
-      where: where != null ? where(User.t) : null,
-      limit: limit,
-      offset: offset,
-      orderBy: orderBy,
-      orderByList: orderByList,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-      include: include,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findRow instead.')
-  static Future<User?> findSingleRow(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserTable>? where,
-    int? offset,
-    _i1.Column? orderBy,
-    bool orderDescending = false,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-    UserInclude? include,
-  }) async {
-    return session.db.findSingleRow<User>(
-      where: where != null ? where(User.t) : null,
-      offset: offset,
-      orderBy: orderBy,
-      orderDescending: orderDescending,
-      useCache: useCache,
-      transaction: transaction,
-      include: include,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
-  static Future<User?> findById(
-    _i1.Session session,
-    int id, {
-    UserInclude? include,
-  }) async {
-    return session.db.findById<User>(
-      id,
-      include: include,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
-  static Future<int> delete(
-    _i1.Session session, {
-    required _i1.WhereExpressionBuilder<UserTable> where,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.delete<User>(
-      where: where(User.t),
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.deleteRow instead.')
-  static Future<bool> deleteRow(
-    _i1.Session session,
-    User row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.deleteRow(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.update instead.')
-  static Future<bool> update(
-    _i1.Session session,
-    User row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.update(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated(
-      'Will be removed in 2.0.0. Use: db.insert instead. Important note: In db.insert, the object you pass in is no longer modified, instead a new copy with the added row is returned which contains the inserted id.')
-  static Future<void> insert(
-    _i1.Session session,
-    User row, {
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.insert(
-      row,
-      transaction: transaction,
-    );
-  }
-
-  @Deprecated('Will be removed in 2.0.0. Use: db.count instead.')
-  static Future<int> count(
-    _i1.Session session, {
-    _i1.WhereExpressionBuilder<UserTable>? where,
-    int? limit,
-    bool useCache = true,
-    _i1.Transaction? transaction,
-  }) async {
-    return session.db.count<User>(
-      where: where != null ? where(User.t) : null,
-      limit: limit,
-      useCache: useCache,
-      transaction: transaction,
-    );
   }
 
   static UserInclude include({
@@ -276,6 +119,11 @@ abstract class User extends _i1.TableRow {
       orderByList: orderByList?.call(User.t),
       include: include,
     );
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
   }
 }
 
@@ -400,9 +248,6 @@ class UserTable extends _i1.Table {
   }
 }
 
-@Deprecated('Use UserTable.t instead.')
-UserTable tUser = UserTable();
-
 class UserInclude extends _i1.IncludeObject {
   UserInclude._({
     _i2.UserInfoInclude? userInfo,
@@ -464,7 +309,7 @@ class UserRepository {
     _i1.Transaction? transaction,
     UserInclude? include,
   }) async {
-    return session.dbNext.find<User>(
+    return session.db.find<User>(
       where: where?.call(User.t),
       orderBy: orderBy?.call(User.t),
       orderByList: orderByList?.call(User.t),
@@ -486,7 +331,7 @@ class UserRepository {
     _i1.Transaction? transaction,
     UserInclude? include,
   }) async {
-    return session.dbNext.findFirstRow<User>(
+    return session.db.findFirstRow<User>(
       where: where?.call(User.t),
       orderBy: orderBy?.call(User.t),
       orderByList: orderByList?.call(User.t),
@@ -503,7 +348,7 @@ class UserRepository {
     _i1.Transaction? transaction,
     UserInclude? include,
   }) async {
-    return session.dbNext.findById<User>(
+    return session.db.findById<User>(
       id,
       transaction: transaction,
       include: include,
@@ -515,7 +360,7 @@ class UserRepository {
     List<User> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insert<User>(
+    return session.db.insert<User>(
       rows,
       transaction: transaction,
     );
@@ -526,7 +371,7 @@ class UserRepository {
     User row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insertRow<User>(
+    return session.db.insertRow<User>(
       row,
       transaction: transaction,
     );
@@ -538,7 +383,7 @@ class UserRepository {
     _i1.ColumnSelections<UserTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.update<User>(
+    return session.db.update<User>(
       rows,
       columns: columns?.call(User.t),
       transaction: transaction,
@@ -551,41 +396,41 @@ class UserRepository {
     _i1.ColumnSelections<UserTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.updateRow<User>(
+    return session.db.updateRow<User>(
       row,
       columns: columns?.call(User.t),
       transaction: transaction,
     );
   }
 
-  Future<List<int>> delete(
+  Future<List<User>> delete(
     _i1.Session session,
     List<User> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.delete<User>(
+    return session.db.delete<User>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<int> deleteRow(
+  Future<User> deleteRow(
     _i1.Session session,
     User row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteRow<User>(
+    return session.db.deleteRow<User>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<int>> deleteWhere(
+  Future<List<User>> deleteWhere(
     _i1.Session session, {
     required _i1.WhereExpressionBuilder<UserTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteWhere<User>(
+    return session.db.deleteWhere<User>(
       where: where(User.t),
       transaction: transaction,
     );
@@ -597,7 +442,7 @@ class UserRepository {
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.count<User>(
+    return session.db.count<User>(
       where: where?.call(User.t),
       limit: limit,
       transaction: transaction,
@@ -621,7 +466,7 @@ class UserAttachRepository {
     }
 
     var $goal = goal.map((e) => e.copyWith(userId: user.id)).toList();
-    await session.dbNext.update<_i3.Goal>(
+    await session.db.update<_i3.Goal>(
       $goal,
       columns: [_i3.Goal.t.userId],
     );
@@ -644,7 +489,7 @@ class UserAttachRowRepository {
     }
 
     var $user = user.copyWith(userInfoId: userInfo.id);
-    await session.dbNext.updateRow<User>(
+    await session.db.updateRow<User>(
       $user,
       columns: [User.t.userInfoId],
     );
@@ -663,7 +508,7 @@ class UserAttachRowRepository {
     }
 
     var $goal = goal.copyWith(userId: user.id);
-    await session.dbNext.updateRow<_i3.Goal>(
+    await session.db.updateRow<_i3.Goal>(
       $goal,
       columns: [_i3.Goal.t.userId],
     );

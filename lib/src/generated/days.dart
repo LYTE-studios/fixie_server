@@ -10,7 +10,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-enum Days with _i1.SerializableEntity {
+enum Days implements _i1.SerializableModel {
   Monday,
   Tuesday,
   Wednesday,
@@ -19,7 +19,7 @@ enum Days with _i1.SerializableEntity {
   Saturday,
   Sunday;
 
-  static Days? fromJson(int index) {
+  static Days fromJson(int index) {
     switch (index) {
       case 0:
         return Monday;
@@ -36,10 +36,12 @@ enum Days with _i1.SerializableEntity {
       case 6:
         return Sunday;
       default:
-        return null;
+        throw ArgumentError('Value "$index" cannot be converted to "Days"');
     }
   }
 
   @override
   int toJson() => index;
+  @override
+  String toString() => name;
 }
