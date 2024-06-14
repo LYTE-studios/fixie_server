@@ -3,11 +3,12 @@ import 'package:serverpod/serverpod.dart';
 
 class AuthUtils {
   static Future<User?> getAuthenticatedUser(Session session) async {
-    var authenticatedUserId = await session.auth.authenticatedUserId;
-    if (authenticatedUserId != null) {
+    AuthenticationInfo? info = await session.authenticated;
+
+    if (info != null) {
       return await User.db.findFirstRow(
         session,
-        where: (p0) => p0.userInfoId.equals(authenticatedUserId),
+        where: (p0) => p0.userInfoId.equals(info.userId),
       );
     }
     return null;

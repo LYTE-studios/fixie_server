@@ -8,8 +8,8 @@ environment:
 
 dependencies:
   mailer: 6.1.0
-  serverpod: 1.2.5
-  serverpod_auth_server: 1.2.5
+  serverpod: ^2.0.1
+  serverpod_auth_server: ^2.0.1
   test: ^1.25.4
 
 dev_dependencies:
