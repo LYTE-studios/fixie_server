@@ -2,8 +2,6 @@ sudo systemctl daemon-reload
 
 setsid start_server.sh >/dev/null 2>&1 < /dev/null &
 
-sudo systemctl status fixie.socket
-
 sudo rm /etc/nginx/certificate.crt
 sudo rm /etc/nginx/private.key
 
