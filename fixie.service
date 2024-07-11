@@ -6,6 +6,6 @@ After=network.target
 User=root
 Group=root
 WorkingDirectory=/var/www/fixie_server
-ExecStart=dart bin/main.dart --mode production --bind unix:/run/api.sock api.wsgi:application
+ExecStart=dart bin/main.dart --mode production
 [Install]
 WantedBy=multi-user.target
