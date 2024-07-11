@@ -1,6 +1,6 @@
 sudo systemctl daemon-reload
 
-setsid start_server.sh >/dev/null 2>&1 < /dev/null &
+daemon --name="fixie" --output=log.txt sh start_server.sh
 
 sudo rm /etc/nginx/certificate.crt
 sudo rm /etc/nginx/private.key
