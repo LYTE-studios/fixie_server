@@ -6,6 +6,6 @@ After=network.target
 User=root
 Group=root
 WorkingDirectory=/var/www/fixie_server
-ExecStart=wine "bin/main.exe /nogui"
+ExecStart=dart bin/main.dart
 [Install]
 WantedBy=multi-user.target
