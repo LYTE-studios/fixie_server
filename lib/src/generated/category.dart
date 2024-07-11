@@ -10,26 +10,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-<<<<<<< Updated upstream
-enum Category with _i1.SerializableEntity {
-  Reading,
-  Writing,
-  Learning;
-
-  static Category? fromJson(String name) {
-    switch (name) {
-      case 'Reading':
-        return Reading;
-      case 'Writing':
-        return Writing;
-      case 'Learning':
-        return Learning;
-      default:
-        return null;
-    }
-  }
-
-=======
 abstract class Category extends _i1.TableRow
     implements _i1.ProtocolSerialization {
   Category._({
@@ -139,13 +119,45 @@ class _CategoryImpl extends Category {
           icon: icon,
         );
 
->>>>>>> Stashed changes
   @override
-  String toJson() => name;
+  Category copyWith({
+    Object? id = _Undefined,
+    String? title,
+    String? color,
+    String? icon,
+  }) {
+    return Category(
+      id: id is int? ? id : this.id,
+      title: title ?? this.title,
+      color: color ?? this.color,
+      icon: icon ?? this.icon,
+    );
+  }
+}
+
+class CategoryTable extends _i1.Table {
+  CategoryTable({super.tableRelation}) : super(tableName: 'category') {
+    title = _i1.ColumnString(
+      'title',
+      this,
+    );
+    color = _i1.ColumnString(
+      'color',
+      this,
+    );
+    icon = _i1.ColumnString(
+      'icon',
+      this,
+    );
+  }
+
+  late final _i1.ColumnString title;
+
+  late final _i1.ColumnString color;
+
+  late final _i1.ColumnString icon;
+
   @override
-<<<<<<< Updated upstream
-  String toString() => toJson();
-=======
   List<_i1.Column> get columns => [
         id,
         title,
@@ -331,5 +343,4 @@ class CategoryRepository {
       transaction: transaction,
     );
   }
->>>>>>> Stashed changes
 }

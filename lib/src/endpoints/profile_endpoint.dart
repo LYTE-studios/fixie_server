@@ -5,35 +5,25 @@ import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
 
-/// Endpoint for users profile information
 class ProfileEndpoint extends Endpoint {
-  /// Create a new user
   Future<int> createUser(
-    Session session,
-    UserInfo? user,
-    DateTime birthday,
-  ) async {
+      Session session, UserInfo? user, DateTime birthday) async {
     if (user == null) {
       throw EndpointException(
-        message: "User could not be found. Are you authenticated?",
-        errorType: ErrorType.authenticationError,
-      );
+          message: "User could not be found. Are you authenticated?",
+          errorType: ErrorType.authenticationError);
+    } else {
+      var newUser = await User.db
+          .insertRow(session, User(userInfoId: user.id!, birthday: birthday));
+      if (newUser.userInfoId == user.id) {
+        return HttpStatus.ok;
+      } else {
+        return HttpStatus.notModified;
+      }
     }
-
-    var newUser = await User.db.insertRow(
-      session,
-      User(userInfoId: user.id!, birthday: birthday),
-    );
-
-    if (newUser.userInfoId == user.id) {
-      return HttpStatus.notModified;
-    }
-
-    return HttpStatus.ok;
   }
 
   Future<UserProfile> getProfileData(Session session) async {
-    // Get the user session
     User? user = await AuthUtils.getAuthenticatedUser(session);
 
     if (user == null) {
@@ -47,7 +37,7 @@ class ProfileEndpoint extends Endpoint {
 
     if (userInfo == null) {
       throw EndpointException(
-        message: "No user info could be found.",
+        message: "User info not found.",
         errorType: ErrorType.notFound,
       );
     }
@@ -63,37 +53,28 @@ class ProfileEndpoint extends Endpoint {
     return userProfileData;
   }
 
-  /// Update the birthday of a users profile
   Future<int> updateBirthday(Session session, DateTime birthday) async {
-    // Get the user session
-    User? user = await AuthUtils.getAuthenticatedUser(session);
+    var user = await AuthUtils.getAuthenticatedUser(session);
 
-    // Return auth error if not found
     if (user == null) {
       throw EndpointException(
         message: "User could not be found. Are you authenticated?",
         errorType: ErrorType.authenticationError,
       );
     }
-
-    // Update the birthday row
     user.birthday = birthday;
     var updatedUser = await User.db.updateRow(session, user);
 
-    // Return not modified if same
     if (updatedUser.birthday.isAtSameMomentAs(birthday)) {
-      return HttpStatus.notModified;
+      return HttpStatus.ok;
+    } else {
+      return HttpStatus.internalServerError;
     }
-
-    // Return ok
-    return HttpStatus.ok;
   }
 
   Future<int> updateName(Session session, String name) async {
-    // Get the user session
     User? user = await AuthUtils.getAuthenticatedUser(session);
 
-    // Return auth error if not found
     if (user == null) {
       throw EndpointException(
         message: "User could not be found. Are you authenticated?",
@@ -105,18 +86,19 @@ class ProfileEndpoint extends Endpoint {
 
     if (userInfo == null) {
       throw EndpointException(
-        message: "No user info could be found.",
+        message: "User info not found.",
         errorType: ErrorType.notFound,
       );
     }
 
+    userInfo.fullName = name;
     var updatedUser = await UserInfo.db.updateRow(session, userInfo);
     var fullName = updatedUser.fullName;
 
     if (fullName != null && fullName == name) {
-      return HttpStatus.notModified;
+      return HttpStatus.ok;
+    } else {
+      return HttpStatus.internalServerError;
     }
-
-    return HttpStatus.ok;
   }
 }

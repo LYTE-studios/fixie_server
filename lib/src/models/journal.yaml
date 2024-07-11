@@ -1,7 +1,0 @@
-class: Journal
-table: journal
-fields:
-  user: User?, relation(name=user_journals)
-  text: String
-  date: DateTime
-  pictures: List<String>?

@@ -60,7 +60,7 @@ use_top_domain_for_web = false
 # Note: For some regions the t2.micro is not available. If so, consult the AWS
 # documentation to find another instance type that suits your needs.
 instance_type                = "t2.micro"
-instance_ami                 = "ami-0183b16fc359a89dd"
+instance_ami                 = "ami-0578f46b79ca9e3e7"
 autoscaling_min_size         = 1
 autoscaling_max_size         = 1
 autoscaling_desired_capacity = 1

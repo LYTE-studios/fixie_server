@@ -8,9 +8,8 @@ class JournalEndpoint extends Endpoint {
   Future<int> addLog(Session session, int goalId, JournalLog log) async {
     if (await AuthUtils.getAuthenticatedUser(session) == null) {
       throw EndpointException(
-        message: "User could not be found. Are you authenticated?",
-        errorType: ErrorType.authenticationError,
-      );
+          message: "User could not be found. Are you authenticated?",
+          errorType: ErrorType.authenticationError);
     } else {
       var goal = await Goal.db.findById(session, goalId);
       if (goal == null) {

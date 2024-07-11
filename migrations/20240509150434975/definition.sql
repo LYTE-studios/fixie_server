@@ -1,6 +1,16 @@
 BEGIN;
 
 --
+-- Class Category as table category
+--
+CREATE TABLE "category" (
+    "id" serial PRIMARY KEY,
+    "title" text NOT NULL,
+    "color" text NOT NULL,
+    "icon" text NOT NULL
+);
+
+--
 -- Class Goal as table goal
 --
 CREATE TABLE "goal" (
@@ -10,9 +20,27 @@ CREATE TABLE "goal" (
     "picture" text,
     "target" integer NOT NULL,
     "targetPeriod" integer NOT NULL,
-    "category" text NOT NULL,
+    "category" json NOT NULL,
     "repetition" text NOT NULL,
-    "days" json
+    "days" json,
+    "setEnd" boolean NOT NULL,
+    "end" timestamp without time zone,
+    "setRemind" boolean NOT NULL,
+    "remindHour" integer,
+    "remindMinutes" integer,
+    "remindHalf" boolean,
+    "remindTimezone" text
+);
+
+--
+-- Class JournalLog as table journal_log
+--
+CREATE TABLE "journal_log" (
+    "id" serial PRIMARY KEY,
+    "goalId" integer NOT NULL,
+    "text" text NOT NULL,
+    "date" timestamp without time zone NOT NULL,
+    "picture" text
 );
 
 --
@@ -356,6 +384,16 @@ ALTER TABLE ONLY "goal"
     ON UPDATE NO ACTION;
 
 --
+-- Foreign relations for "journal_log" table
+--
+ALTER TABLE ONLY "journal_log"
+    ADD CONSTRAINT "journal_log_fk_0"
+    FOREIGN KEY("goalId")
+    REFERENCES "goal"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
 -- Foreign relations for "user" table
 --
 ALTER TABLE ONLY "user"
@@ -400,9 +438,9 @@ ALTER TABLE ONLY "serverpod_query_log"
 -- MIGRATION VERSION FOR fixie
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
-    VALUES ('fixie', '20240505145920141', now())
+    VALUES ('fixie', '20240509150434975', now())
     ON CONFLICT ("module")
-    DO UPDATE SET "version" = '20240505145920141', "timestamp" = now();
+    DO UPDATE SET "version" = '20240509150434975', "timestamp" = now();
 
 --
 -- MIGRATION VERSION FOR serverpod

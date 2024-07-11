@@ -17,19 +17,20 @@ import 'days.dart' as _i5;
 import 'endpoint_exception.dart' as _i6;
 import 'error_types.dart' as _i7;
 import 'goal.dart' as _i8;
-import 'journal.dart' as _i9;
+import 'journal_log.dart' as _i9;
 import 'repetition.dart' as _i10;
 import 'target_period.dart' as _i11;
 import 'user.dart' as _i12;
 import 'userProfile.dart' as _i13;
 import 'protocol.dart' as _i14;
 import 'package:fixie_server/src/generated/goal.dart' as _i15;
+import 'package:fixie_server/src/generated/journal_log.dart' as _i16;
 export 'category.dart';
 export 'days.dart';
 export 'endpoint_exception.dart';
 export 'error_types.dart';
 export 'goal.dart';
-export 'journal.dart';
+export 'journal_log.dart';
 export 'repetition.dart';
 export 'target_period.dart';
 export 'user.dart';
@@ -44,8 +45,6 @@ class Protocol extends _i1.SerializationManagerServer {
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
     _i2.TableDefinition(
-<<<<<<< Updated upstream
-=======
       name: 'category',
       dartName: 'Category',
       schema: 'public',
@@ -96,7 +95,6 @@ class Protocol extends _i1.SerializationManagerServer {
       managed: true,
     ),
     _i2.TableDefinition(
->>>>>>> Stashed changes
       name: 'goal',
       dartName: 'Goal',
       schema: 'public',
@@ -141,7 +139,7 @@ class Protocol extends _i1.SerializationManagerServer {
         ),
         _i2.ColumnDefinition(
           name: 'category',
-          columnType: _i2.ColumnType.text,
+          columnType: _i2.ColumnType.json,
           isNullable: false,
           dartType: 'protocol:Category',
         ),
@@ -157,8 +155,6 @@ class Protocol extends _i1.SerializationManagerServer {
           isNullable: true,
           dartType: 'List<protocol:Days>?',
         ),
-<<<<<<< Updated upstream
-=======
         _i2.ColumnDefinition(
           name: 'setEnd',
           columnType: _i2.ColumnType.boolean,
@@ -201,7 +197,6 @@ class Protocol extends _i1.SerializationManagerServer {
           isNullable: true,
           dartType: 'String?',
         ),
->>>>>>> Stashed changes
       ],
       foreignKeys: [
         _i2.ForeignKeyDefinition(
@@ -233,8 +228,8 @@ class Protocol extends _i1.SerializationManagerServer {
       managed: true,
     ),
     _i2.TableDefinition(
-      name: 'journal',
-      dartName: 'Journal',
+      name: 'journal_log',
+      dartName: 'JournalLog',
       schema: 'public',
       module: 'fixie',
       columns: [
@@ -243,16 +238,11 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.bigint,
           isNullable: false,
           dartType: 'int?',
-          columnDefault: 'nextval(\'journal_id_seq\'::regclass)',
+          columnDefault: 'nextval(\'journal_log_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
-<<<<<<< Updated upstream
-          name: 'userId',
-          columnType: _i2.ColumnType.integer,
-=======
           name: 'goalId',
           columnType: _i2.ColumnType.bigint,
->>>>>>> Stashed changes
           isNullable: false,
           dartType: 'int',
         ),
@@ -269,17 +259,17 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'DateTime',
         ),
         _i2.ColumnDefinition(
-          name: 'pictures',
-          columnType: _i2.ColumnType.json,
+          name: 'picture',
+          columnType: _i2.ColumnType.text,
           isNullable: true,
-          dartType: 'List<String>?',
+          dartType: 'String?',
         ),
       ],
       foreignKeys: [
         _i2.ForeignKeyDefinition(
-          constraintName: 'journal_fk_0',
-          columns: ['userId'],
-          referenceTable: 'user',
+          constraintName: 'journal_log_fk_0',
+          columns: ['goalId'],
+          referenceTable: 'goal',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: _i2.ForeignKeyAction.noAction,
@@ -289,7 +279,7 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       indexes: [
         _i2.IndexDefinition(
-          indexName: 'journal_pkey',
+          indexName: 'journal_log_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
@@ -397,13 +387,8 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i8.Goal) {
       return _i8.Goal.fromJson(data) as T;
     }
-<<<<<<< Updated upstream
-    if (t == _i9.Journal) {
-      return _i9.Journal.fromJson(data, this) as T;
-=======
     if (t == _i9.JournalLog) {
       return _i9.JournalLog.fromJson(data) as T;
->>>>>>> Stashed changes
     }
     if (t == _i10.Repetition) {
       return _i10.Repetition.fromJson(data) as T;
@@ -432,13 +417,8 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i8.Goal?>()) {
       return (data != null ? _i8.Goal.fromJson(data) : null) as T;
     }
-<<<<<<< Updated upstream
-    if (t == _i1.getType<_i9.Journal?>()) {
-      return (data != null ? _i9.Journal.fromJson(data, this) : null) as T;
-=======
     if (t == _i1.getType<_i9.JournalLog?>()) {
       return (data != null ? _i9.JournalLog.fromJson(data) : null) as T;
->>>>>>> Stashed changes
     }
     if (t == _i1.getType<_i10.Repetition?>()) {
       return (data != null ? _i10.Repetition.fromJson(data) : null) as T;
@@ -457,9 +437,9 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<_i14.Days>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<String>?>()) {
+    if (t == _i1.getType<List<_i14.JournalLog>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<String>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i14.JournalLog>(e)).toList()
           : null) as dynamic;
     }
     if (t == _i1.getType<List<_i14.Goal>?>()) {
@@ -467,14 +447,14 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<_i14.Goal>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i14.Journal>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<_i14.Journal>(e)).toList()
-          : null) as dynamic;
-    }
     if (t == _i1.getType<List<_i15.Goal>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i15.Goal>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<_i16.JournalLog>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i16.JournalLog>(e)).toList()
           : null) as dynamic;
     }
     try {
@@ -508,8 +488,8 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i8.Goal) {
       return 'Goal';
     }
-    if (data is _i9.Journal) {
-      return 'Journal';
+    if (data is _i9.JournalLog) {
+      return 'JournalLog';
     }
     if (data is _i10.Repetition) {
       return 'Repetition';
@@ -547,8 +527,8 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'Goal') {
       return deserialize<_i8.Goal>(data['data']);
     }
-    if (data['className'] == 'Journal') {
-      return deserialize<_i9.Journal>(data['data']);
+    if (data['className'] == 'JournalLog') {
+      return deserialize<_i9.JournalLog>(data['data']);
     }
     if (data['className'] == 'Repetition') {
       return deserialize<_i10.Repetition>(data['data']);
@@ -580,10 +560,12 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
+      case _i4.Category:
+        return _i4.Category.t;
       case _i8.Goal:
         return _i8.Goal.t;
-      case _i9.Journal:
-        return _i9.Journal.t;
+      case _i9.JournalLog:
+        return _i9.JournalLog.t;
       case _i12.User:
         return _i12.User.t;
     }
