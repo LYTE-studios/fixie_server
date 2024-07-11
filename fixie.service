@@ -6,6 +6,6 @@ After=network.target
 User=root
 Group=root
 WorkingDirectory=/var/www/fixie_server
-ExecStart=dart bin/main.dart
+ExecStart=dart bin/main.dart --role monolith
 [Install]
 WantedBy=multi-user.target
