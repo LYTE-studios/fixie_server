@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=root
 Group=root
-WorkingDirectory=/var/www/get-a-wash-api
-ExecStart=/usr/bin/gunicorn --preload --workers 3 --bind unix:/run/api.sock api.wsgi:application
+WorkingDirectory=/var/www/fixie_server
+ExecStart=dart bin/main.dart --mode production --bind unix:/run/api.sock api.wsgi:application
 [Install]
 WantedBy=multi-user.target
