@@ -13,4 +13,4 @@ sudo systemctl daemon-reload
 sudo systemctl restart nginx
 sudo systemctl status nginx
 
-docker build .
+docker run $(docker build -q .)
