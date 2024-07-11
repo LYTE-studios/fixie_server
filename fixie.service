@@ -1,6 +1,6 @@
 [Unit]
 Description=Serverpod daemon
-Requires=api.socket
+Requires=fixie.socket
 After=network.target
 [Service]
 User=root

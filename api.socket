@@ -1,6 +1,0 @@
-[Unit]
-Description=api sock
-[Socket]
-ListenStream=/run/api.sock
-[Install]
-WantedBy=sockets.target
