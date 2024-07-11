@@ -6,6 +6,6 @@ After=network.target
 User=root
 Group=root
 WorkingDirectory=/var/www/fixie_server
-ExecStart=bin/main.exe
+ExecStart=wine bin/main.exe
 [Install]
 WantedBy=multi-user.target
