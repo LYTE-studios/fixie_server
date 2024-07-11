@@ -12,3 +12,4 @@ doc/api/
 config/passwords.yaml
 
 .DS_Store
+bin/main.exe
