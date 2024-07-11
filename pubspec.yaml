@@ -10,7 +10,8 @@ dependencies:
   mailer: 6.1.0
   serverpod: ^2.0.1
   serverpod_auth_server: ^2.0.1
-  test: ^1.25.4
+  test: any
+  sentry_flutter: ^8.3.0
 
 dev_dependencies:
   lints: ^3.0.0
