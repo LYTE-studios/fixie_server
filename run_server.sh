@@ -10,7 +10,6 @@ sudo cp fixie.service /etc/systemd/system/fixie.service
 sudo systemctl daemon-reload
 
 dart compile exe bin/main.dart
-set |grep DISPLAY
 
 sudo systemctl start fixie.socket
 sudo systemctl start fixie.service
