@@ -1,6 +1,6 @@
 sudo systemctl daemon-reload
 
-dart bin/main.dart --mode production --server-id 2
+setsid start_server.sh >/dev/null 2>&1 < /dev/null &
 
 sudo systemctl status fixie.socket
 

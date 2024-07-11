@@ -1,0 +1,1 @@
+dart bin/main.dart --mode production --server-id 2
