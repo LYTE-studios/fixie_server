@@ -1,18 +1,18 @@
-sudo rm /etc/systemd/system/api.socket
-sudo rm /etc/systemd/system/api.service
+sudo rm /etc/systemd/system/fixie.socket
+sudo rm /etc/systemd/system/fixie.service
 
-sudo touch /etc/systemd/system/api.socket
-sudo touch /etc/systemd/system/api.service
+sudo touch /etc/systemd/system/fixie.socket
+sudo touch /etc/systemd/system/fixie.service
 
-sudo cp api.socket /etc/systemd/system/api.socket
-sudo cp api.service /etc/systemd/system/api.service
+sudo cp fixie.socket /etc/systemd/system/fixie.socket
+sudo cp fixie.service /etc/systemd/system/fixie.service
 
 sudo systemctl daemon-reload
 
-sudo systemctl start api.socket
-sudo systemctl start api.service
+sudo systemctl start fixie.socket
+sudo systemctl start fixie.service
 
-sudo systemctl status api.socket
+sudo systemctl status fixie.socket
 
 sudo rm /etc/nginx/certificate.crt
 sudo rm /etc/nginx/private.key
