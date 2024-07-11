@@ -1,0 +1,11 @@
+[Unit]
+Description=fixie
+Requires=fixie.socket
+After=network.target
+[Service]
+User=root
+Group=root
+WorkingDirectory=/var/www/fixie_server
+ExecStart=dart bin/main.dart --mode production
+[Install]
+WantedBy=multi-user.target

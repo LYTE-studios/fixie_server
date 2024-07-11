@@ -1,0 +1,6 @@
+[Unit]
+Description=fixie socket
+[Socket]
+ListenStream=/run/fixie.sock
+[Install]
+WantedBy=sockets.target
