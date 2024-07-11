@@ -8,9 +8,9 @@ sudo cp nginx.conf /etc/nginx/nginx.conf
 sudo cp certificate.crt /etc/nginx/certificate.crt
 sudo cp private.key /etc/nginx/private.key
 
-docker run $(docker build -q .) 8080:8080
-
 sudo systemctl daemon-reload
 
 sudo systemctl restart nginx
 sudo systemctl status nginx
+
+docker run $(docker build -q .) 8080:8080
