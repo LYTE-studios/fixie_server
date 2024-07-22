@@ -1,6 +1,7 @@
 docker build -t fixie_server .
 
 docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
 
 docker run -dp 127.0.0.1:8080:8080 fixie_server
 
