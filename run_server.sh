@@ -13,6 +13,6 @@ sudo systemctl daemon-reload
 sudo systemctl restart nginx
 sudo systemctl status nginx
 
-docker build . 'fixie_server'
+docker build -t fixie_server .
 
-docker run 'fixie_server'
+docker run -dp 127.0.0.1:8080:8080 fixie_server
