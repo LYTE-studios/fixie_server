@@ -7,7 +7,7 @@ void main(List<String> args) {
   Sentry.init(
     (options) {
       options.dsn =
-          'https://fa2b7c080a4ff33fe2aa52e6e30df08b@o4506789659475968.ingest.us.sentry.io/4507582210179072';
+          'https://989ced15e6ac1dc6a970834037e19345@o4506789659475968.ingest.us.sentry.io/4507582246879232';
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
       // We recommend adjusting this value in production.
       options.tracesSampleRate = 1.0;
