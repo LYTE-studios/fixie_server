@@ -22,8 +22,8 @@ class AuthUtils {
       }
     }
 
-    Sentry.captureMessage(
-      'User was not found.',
+    Sentry.captureException(
+      'User was not found. $info',
     );
 
     return null;
