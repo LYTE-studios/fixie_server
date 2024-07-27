@@ -9,9 +9,6 @@ CREATE TABLE "fixie_user" (
     "birthday" timestamp without time zone
 );
 
--- Indexes
-CREATE UNIQUE INDEX "user_info_id_unique_idx" ON "fixie_user" USING btree ("userInfoId");
-
 --
 -- ACTION ALTER TABLE
 --
