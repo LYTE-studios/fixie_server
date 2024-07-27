@@ -24,8 +24,9 @@ class GoalsEndpoint extends Endpoint {
   Future<Goal?> getGoal(Session session, int? goalId) async {
     if (await AuthUtils.getAuthenticatedUser(session) == null) {
       throw EndpointException(
-          message: "User could not be found. Are you authenticated?",
-          errorType: ErrorType.authenticationError);
+        message: "User could not be found. Are you authenticated?",
+        errorType: ErrorType.authenticationError,
+      );
     } else {
       var goal = await Goal.db.findById(session, goalId!);
       if (goal == null) {

@@ -1,4 +1,5 @@
 import 'package:fixie_server/src/generated/protocol.dart';
+import 'package:sentry/sentry.dart';
 import 'package:serverpod/serverpod.dart';
 
 class AuthUtils {
@@ -8,11 +9,22 @@ class AuthUtils {
     int? authenticatedUserId = info?.userId;
 
     if (authenticatedUserId != null) {
-      return await User.db.findFirstRow(
-        session,
-        where: (p0) => p0.userInfoId.equals(authenticatedUserId),
-      );
+      try {
+        return await User.db.findFirstRow(
+          session,
+          where: (p0) => p0.userInfoId.equals(authenticatedUserId),
+        );
+      } catch (exception, stackTrace) {
+        await Sentry.captureException(
+          exception,
+          stackTrace: stackTrace,
+        );
+      }
     }
+
+    Sentry.captureMessage(
+      'User was not found.',
+    );
 
     return null;
   }
