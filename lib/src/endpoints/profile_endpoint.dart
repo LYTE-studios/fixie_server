@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
+import 'package:sentry/sentry.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
 
@@ -27,6 +28,12 @@ class ProfileEndpoint extends Endpoint {
     User? user = await AuthUtils.getAuthenticatedUser(session);
 
     if (user == null) {
+      Sentry.captureException(
+        EndpointException(
+          message: "User could not be found. Are you authenticated?",
+          errorType: ErrorType.authenticationError,
+        ),
+      );
       throw EndpointException(
         message: "User could not be found. Are you authenticated?",
         errorType: ErrorType.authenticationError,
