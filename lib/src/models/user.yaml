@@ -1,5 +1,5 @@
 class: User
-table: user
+table: fixie_user
 fields:
   userInfo: module:auth:UserInfo?, relation
   birthday: DateTime?
