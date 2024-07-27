@@ -7,7 +7,7 @@ class AuthUtils {
     Session session,
     int userId,
   ) async {
-    Sentry.captureMessage(
+    Sentry.captureException(
       'Creating new user profile with id $userId',
     );
 
