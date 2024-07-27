@@ -6,7 +6,6 @@ WORKDIR /app
 COPY . .
 
 RUN dart pub get
-RUN dart run bin/main.dart --mode proudction --role maintenance --apply-migrations
 RUN dart compile exe bin/main.dart -o bin/main
 
 # If you update the busybox version, make sure the image is
@@ -27,4 +26,4 @@ EXPOSE 8080
 EXPOSE 8081
 EXPOSE 8082
 
-CMD app/bin/main --mode $runmode --server-id $serverid --logging $logging --role $role
+CMD app/bin/main --mode $runmode --server-id $serverid --logging $logging --role $role --apply-migrations
