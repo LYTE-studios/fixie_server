@@ -4,7 +4,3 @@ fields:
   userInfo: module:auth:UserInfo?, relation
   birthday: DateTime?
   goals: List<Goal>?, relation(name=user_goals)
-indexes:
-  user_info_id_unique_idx:
-    fields: userInfoId
-    unique: true
