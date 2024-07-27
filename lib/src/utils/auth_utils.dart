@@ -20,7 +20,7 @@ class AuthUtils {
     );
   }
 
-  static Future<User?> getAuthenticatedUser(Session session) async {
+  static Future<User> getAuthenticatedUser(Session session) async {
     AuthenticationInfo? info = await session.authenticated;
 
     int? authenticatedUserId = info?.userId;
@@ -49,6 +49,9 @@ class AuthUtils {
       }
     }
 
-    return null;
+    throw EndpointException(
+      message: "User could not be found. Are you authenticated?",
+      errorType: ErrorType.authenticationError,
+    );
   }
 }

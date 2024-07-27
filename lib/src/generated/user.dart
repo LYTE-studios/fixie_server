@@ -18,7 +18,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     int? id,
     required this.userInfoId,
     this.userInfo,
-    required this.birthday,
+    this.birthday,
     this.goals,
   }) : super(id);
 
@@ -26,7 +26,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     int? id,
     required int userInfoId,
     _i2.UserInfo? userInfo,
-    required DateTime birthday,
+    DateTime? birthday,
     List<_i3.Goal>? goals,
   }) = _UserImpl;
 
@@ -38,8 +38,9 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
           ? null
           : _i2.UserInfo.fromJson(
               (jsonSerialization['userInfo'] as Map<String, dynamic>)),
-      birthday:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['birthday']),
+      birthday: jsonSerialization['birthday'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['birthday']),
       goals: (jsonSerialization['goals'] as List?)
           ?.map((e) => _i3.Goal.fromJson((e as Map<String, dynamic>)))
           .toList(),
@@ -54,7 +55,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   _i2.UserInfo? userInfo;
 
-  DateTime birthday;
+  DateTime? birthday;
 
   List<_i3.Goal>? goals;
 
@@ -74,7 +75,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (id != null) 'id': id,
       'userInfoId': userInfoId,
       if (userInfo != null) 'userInfo': userInfo?.toJson(),
-      'birthday': birthday.toJson(),
+      if (birthday != null) 'birthday': birthday?.toJson(),
       if (goals != null) 'goals': goals?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
@@ -85,7 +86,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (id != null) 'id': id,
       'userInfoId': userInfoId,
       if (userInfo != null) 'userInfo': userInfo?.toJsonForProtocol(),
-      'birthday': birthday.toJson(),
+      if (birthday != null) 'birthday': birthday?.toJson(),
       if (goals != null)
         'goals': goals?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
     };
@@ -134,7 +135,7 @@ class _UserImpl extends User {
     int? id,
     required int userInfoId,
     _i2.UserInfo? userInfo,
-    required DateTime birthday,
+    DateTime? birthday,
     List<_i3.Goal>? goals,
   }) : super._(
           id: id,
@@ -149,7 +150,7 @@ class _UserImpl extends User {
     Object? id = _Undefined,
     int? userInfoId,
     Object? userInfo = _Undefined,
-    DateTime? birthday,
+    Object? birthday = _Undefined,
     Object? goals = _Undefined,
   }) {
     return User(
@@ -157,7 +158,7 @@ class _UserImpl extends User {
       userInfoId: userInfoId ?? this.userInfoId,
       userInfo:
           userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
-      birthday: birthday ?? this.birthday,
+      birthday: birthday is DateTime? ? birthday : this.birthday,
       goals: goals is List<_i3.Goal>? ? goals : this.goals?.clone(),
     );
   }
