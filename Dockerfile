@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 RUN dart pub get
-RUN dart run bin/main.dart --role maintenance --apply-migrations
+RUN dart run bin/main.dart --mode proudction --role maintenance --apply-migrations
 RUN dart compile exe bin/main.dart -o bin/main
 
 # If you update the busybox version, make sure the image is
