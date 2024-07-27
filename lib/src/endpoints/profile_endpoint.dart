@@ -52,8 +52,8 @@ class ProfileEndpoint extends Endpoint {
     int daysSinceCreation = DateTime.now().difference(userInfo.created).inDays;
 
     UserProfile userProfileData = UserProfile(
-      name: userInfo.fullName!,
-      email: userInfo.email!,
+      name: userInfo.fullName ?? '',
+      email: userInfo.email ?? '',
       daysSinceCreation: daysSinceCreation,
     );
 

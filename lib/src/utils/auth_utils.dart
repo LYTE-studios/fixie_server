@@ -7,6 +7,10 @@ class AuthUtils {
     Session session,
     int userId,
   ) async {
+    Sentry.captureMessage(
+      'Creating new user profile with id $userId',
+    );
+
     return User.db.insertRow(
       session,
       User(
