@@ -435,9 +435,9 @@ ALTER TABLE ONLY "serverpod_query_log"
 -- MIGRATION VERSION FOR fixie
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
-    VALUES ('fixie', '20240727123446085', now())
+    VALUES ('fixie', '20240801110020466', now())
     ON CONFLICT ("module")
-    DO UPDATE SET "version" = '20240727123446085', "timestamp" = now();
+    DO UPDATE SET "version" = '20240801110020466', "timestamp" = now();
 
 --
 -- MIGRATION VERSION FOR serverpod
