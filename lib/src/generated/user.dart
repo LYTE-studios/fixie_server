@@ -20,6 +20,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.userInfo,
     this.birthday,
     this.goals,
+    this.highestStreak,
   }) : super(id);
 
   factory User({
@@ -28,6 +29,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
+    int? highestStreak,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -44,6 +46,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       goals: (jsonSerialization['goals'] as List?)
           ?.map((e) => _i3.Goal.fromJson((e as Map<String, dynamic>)))
           .toList(),
+      highestStreak: jsonSerialization['highestStreak'] as int?,
     );
   }
 
@@ -59,6 +62,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   List<_i3.Goal>? goals;
 
+  int? highestStreak;
+
   @override
   _i1.Table get table => t;
 
@@ -68,6 +73,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
+    int? highestStreak,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -77,6 +83,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (userInfo != null) 'userInfo': userInfo?.toJson(),
       if (birthday != null) 'birthday': birthday?.toJson(),
       if (goals != null) 'goals': goals?.toJson(valueToJson: (v) => v.toJson()),
+      if (highestStreak != null) 'highestStreak': highestStreak,
     };
   }
 
@@ -89,6 +96,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (birthday != null) 'birthday': birthday?.toJson(),
       if (goals != null)
         'goals': goals?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+      if (highestStreak != null) 'highestStreak': highestStreak,
     };
   }
 
@@ -137,12 +145,14 @@ class _UserImpl extends User {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
+    int? highestStreak,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
           userInfo: userInfo,
           birthday: birthday,
           goals: goals,
+          highestStreak: highestStreak,
         );
 
   @override
@@ -152,6 +162,7 @@ class _UserImpl extends User {
     Object? userInfo = _Undefined,
     Object? birthday = _Undefined,
     Object? goals = _Undefined,
+    Object? highestStreak = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -160,18 +171,23 @@ class _UserImpl extends User {
           userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
       birthday: birthday is DateTime? ? birthday : this.birthday,
       goals: goals is List<_i3.Goal>? ? goals : this.goals?.clone(),
+      highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
     );
   }
 }
 
 class UserTable extends _i1.Table {
-  UserTable({super.tableRelation}) : super(tableName: 'user') {
+  UserTable({super.tableRelation}) : super(tableName: 'fixie_user') {
     userInfoId = _i1.ColumnInt(
       'userInfoId',
       this,
     );
     birthday = _i1.ColumnDateTime(
       'birthday',
+      this,
+    );
+    highestStreak = _i1.ColumnInt(
+      'highestStreak',
       this,
     );
   }
@@ -185,6 +201,8 @@ class UserTable extends _i1.Table {
   _i3.GoalTable? ___goals;
 
   _i1.ManyRelation<_i3.GoalTable>? _goals;
+
+  late final _i1.ColumnInt highestStreak;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -235,6 +253,7 @@ class UserTable extends _i1.Table {
         id,
         userInfoId,
         birthday,
+        highestStreak,
       ];
 
   @override

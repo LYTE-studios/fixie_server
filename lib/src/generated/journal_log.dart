@@ -19,8 +19,10 @@ abstract class JournalLog extends _i1.TableRow
     required this.goalId,
     this.goal,
     required this.text,
-    required this.date,
     this.picture,
+    this.loggedValue,
+    required this.createdAt,
+    required this.modifiedAt,
   }) : super(id);
 
   factory JournalLog({
@@ -28,8 +30,10 @@ abstract class JournalLog extends _i1.TableRow
     required int goalId,
     _i2.Goal? goal,
     required String text,
-    required DateTime date,
     String? picture,
+    double? loggedValue,
+    required DateTime createdAt,
+    required DateTime modifiedAt,
   }) = _JournalLogImpl;
 
   factory JournalLog.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -41,8 +45,12 @@ abstract class JournalLog extends _i1.TableRow
           : _i2.Goal.fromJson(
               (jsonSerialization['goal'] as Map<String, dynamic>)),
       text: jsonSerialization['text'] as String,
-      date: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['date']),
       picture: jsonSerialization['picture'] as String?,
+      loggedValue: (jsonSerialization['loggedValue'] as num?)?.toDouble(),
+      createdAt:
+          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      modifiedAt:
+          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['modifiedAt']),
     );
   }
 
@@ -56,9 +64,13 @@ abstract class JournalLog extends _i1.TableRow
 
   String text;
 
-  DateTime date;
-
   String? picture;
+
+  double? loggedValue;
+
+  DateTime createdAt;
+
+  DateTime modifiedAt;
 
   @override
   _i1.Table get table => t;
@@ -68,8 +80,10 @@ abstract class JournalLog extends _i1.TableRow
     int? goalId,
     _i2.Goal? goal,
     String? text,
-    DateTime? date,
     String? picture,
+    double? loggedValue,
+    DateTime? createdAt,
+    DateTime? modifiedAt,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -78,8 +92,10 @@ abstract class JournalLog extends _i1.TableRow
       'goalId': goalId,
       if (goal != null) 'goal': goal?.toJson(),
       'text': text,
-      'date': date.toJson(),
       if (picture != null) 'picture': picture,
+      if (loggedValue != null) 'loggedValue': loggedValue,
+      'createdAt': createdAt.toJson(),
+      'modifiedAt': modifiedAt.toJson(),
     };
   }
 
@@ -90,8 +106,10 @@ abstract class JournalLog extends _i1.TableRow
       'goalId': goalId,
       if (goal != null) 'goal': goal?.toJsonForProtocol(),
       'text': text,
-      'date': date.toJson(),
       if (picture != null) 'picture': picture,
+      if (loggedValue != null) 'loggedValue': loggedValue,
+      'createdAt': createdAt.toJson(),
+      'modifiedAt': modifiedAt.toJson(),
     };
   }
 
@@ -133,15 +151,19 @@ class _JournalLogImpl extends JournalLog {
     required int goalId,
     _i2.Goal? goal,
     required String text,
-    required DateTime date,
     String? picture,
+    double? loggedValue,
+    required DateTime createdAt,
+    required DateTime modifiedAt,
   }) : super._(
           id: id,
           goalId: goalId,
           goal: goal,
           text: text,
-          date: date,
           picture: picture,
+          loggedValue: loggedValue,
+          createdAt: createdAt,
+          modifiedAt: modifiedAt,
         );
 
   @override
@@ -150,16 +172,20 @@ class _JournalLogImpl extends JournalLog {
     int? goalId,
     Object? goal = _Undefined,
     String? text,
-    DateTime? date,
     Object? picture = _Undefined,
+    Object? loggedValue = _Undefined,
+    DateTime? createdAt,
+    DateTime? modifiedAt,
   }) {
     return JournalLog(
       id: id is int? ? id : this.id,
       goalId: goalId ?? this.goalId,
       goal: goal is _i2.Goal? ? goal : this.goal?.copyWith(),
       text: text ?? this.text,
-      date: date ?? this.date,
       picture: picture is String? ? picture : this.picture,
+      loggedValue: loggedValue is double? ? loggedValue : this.loggedValue,
+      createdAt: createdAt ?? this.createdAt,
+      modifiedAt: modifiedAt ?? this.modifiedAt,
     );
   }
 }
@@ -174,12 +200,20 @@ class JournalLogTable extends _i1.Table {
       'text',
       this,
     );
-    date = _i1.ColumnDateTime(
-      'date',
-      this,
-    );
     picture = _i1.ColumnString(
       'picture',
+      this,
+    );
+    loggedValue = _i1.ColumnDouble(
+      'loggedValue',
+      this,
+    );
+    createdAt = _i1.ColumnDateTime(
+      'createdAt',
+      this,
+    );
+    modifiedAt = _i1.ColumnDateTime(
+      'modifiedAt',
       this,
     );
   }
@@ -190,9 +224,13 @@ class JournalLogTable extends _i1.Table {
 
   late final _i1.ColumnString text;
 
-  late final _i1.ColumnDateTime date;
-
   late final _i1.ColumnString picture;
+
+  late final _i1.ColumnDouble loggedValue;
+
+  late final _i1.ColumnDateTime createdAt;
+
+  late final _i1.ColumnDateTime modifiedAt;
 
   _i2.GoalTable get goal {
     if (_goal != null) return _goal!;
@@ -212,8 +250,10 @@ class JournalLogTable extends _i1.Table {
         id,
         goalId,
         text,
-        date,
         picture,
+        loggedValue,
+        createdAt,
+        modifiedAt,
       ];
 
   @override

@@ -8,6 +8,8 @@ goals:
   - updateGoal:
   - deleteGoal:
 journal:
+  - getImageUploadDescription:
+  - verifyUpload:
   - addLog:
   - getLog:
   - getJournal:

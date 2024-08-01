@@ -179,6 +179,49 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'journal',
       endpoint: endpoints['journal']!,
       methodConnectors: {
+        'getImageUploadDescription': _i1.MethodConnector(
+          name: 'getImageUploadDescription',
+          params: {
+            'log': _i1.ParameterDescription(
+              name: 'log',
+              type: _i1.getType<_i7.JournalLog>(),
+              nullable: false,
+            ),
+            'fileName': _i1.ParameterDescription(
+              name: 'fileName',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['journal'] as _i4.JournalEndpoint)
+                  .getImageUploadDescription(
+            session,
+            log: params['log'],
+            fileName: params['fileName'],
+          ),
+        ),
+        'verifyUpload': _i1.MethodConnector(
+          name: 'verifyUpload',
+          params: {
+            'path': _i1.ParameterDescription(
+              name: 'path',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['journal'] as _i4.JournalEndpoint).verifyUpload(
+            session,
+            params['path'],
+          ),
+        ),
         'addLog': _i1.MethodConnector(
           name: 'addLog',
           params: {

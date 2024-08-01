@@ -1,6 +1,7 @@
 class: User
 table: fixie_user
 fields:
-  userInfo: module:auth:UserInfo?, relation
+  userInfo: module:auth:UserInfo?, relation # Base user info model
   birthday: DateTime?
-  goals: List<Goal>?, relation(name=user_goals)
+  goals: List<Goal>?, relation(name=user_goals) # The goals connected to the users' profile
+  highestStreak: int? # The longest streak a user has been able to maintain

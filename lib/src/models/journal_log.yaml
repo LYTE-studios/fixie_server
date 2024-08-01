@@ -2,6 +2,8 @@ class: JournalLog
 table: journal_log
 fields:
   goal: Goal?, relation(name=goal_journal)
-  text: String
-  date: DateTime
-  picture: String?
+  text: String # A note the user can leave
+  picture: String? # Stored image for the registration stored via url
+  loggedValue: double? # The amount registered by the user
+  createdAt: DateTime # Creation time
+  modifiedAt: DateTime # Last modification time

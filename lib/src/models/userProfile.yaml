@@ -4,3 +4,4 @@ fields:
   email: String
   birthday: DateTime?
   daysSinceCreation: int
+  highestStreak: int?

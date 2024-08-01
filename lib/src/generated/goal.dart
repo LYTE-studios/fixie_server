@@ -32,6 +32,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.remindHalf,
     this.remindTimezone,
     this.journal,
+    this.currentStreak,
+    this.highestStreak,
+    this.unit,
   }) : super(id);
 
   factory Goal({
@@ -53,6 +56,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     bool? remindHalf,
     String? remindTimezone,
     List<_i2.JournalLog>? journal,
+    int? currentStreak,
+    int? highestStreak,
+    String? unit,
   }) = _GoalImpl;
 
   factory Goal.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -87,6 +93,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       journal: (jsonSerialization['journal'] as List?)
           ?.map((e) => _i2.JournalLog.fromJson((e as Map<String, dynamic>)))
           .toList(),
+      currentStreak: jsonSerialization['currentStreak'] as int?,
+      highestStreak: jsonSerialization['highestStreak'] as int?,
+      unit: jsonSerialization['unit'] as String?,
     );
   }
 
@@ -128,6 +137,12 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   List<_i2.JournalLog>? journal;
 
+  int? currentStreak;
+
+  int? highestStreak;
+
+  String? unit;
+
   @override
   _i1.Table get table => t;
 
@@ -150,6 +165,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     bool? remindHalf,
     String? remindTimezone,
     List<_i2.JournalLog>? journal,
+    int? currentStreak,
+    int? highestStreak,
+    String? unit,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -173,6 +191,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (remindTimezone != null) 'remindTimezone': remindTimezone,
       if (journal != null)
         'journal': journal?.toJson(valueToJson: (v) => v.toJson()),
+      if (currentStreak != null) 'currentStreak': currentStreak,
+      if (highestStreak != null) 'highestStreak': highestStreak,
+      if (unit != null) 'unit': unit,
     };
   }
 
@@ -198,6 +219,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (remindTimezone != null) 'remindTimezone': remindTimezone,
       if (journal != null)
         'journal': journal?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+      if (currentStreak != null) 'currentStreak': currentStreak,
+      if (highestStreak != null) 'highestStreak': highestStreak,
+      if (unit != null) 'unit': unit,
     };
   }
 
@@ -259,6 +283,9 @@ class _GoalImpl extends Goal {
     bool? remindHalf,
     String? remindTimezone,
     List<_i2.JournalLog>? journal,
+    int? currentStreak,
+    int? highestStreak,
+    String? unit,
   }) : super._(
           id: id,
           title: title,
@@ -278,6 +305,9 @@ class _GoalImpl extends Goal {
           remindHalf: remindHalf,
           remindTimezone: remindTimezone,
           journal: journal,
+          currentStreak: currentStreak,
+          highestStreak: highestStreak,
+          unit: unit,
         );
 
   @override
@@ -300,6 +330,9 @@ class _GoalImpl extends Goal {
     Object? remindHalf = _Undefined,
     Object? remindTimezone = _Undefined,
     Object? journal = _Undefined,
+    Object? currentStreak = _Undefined,
+    Object? highestStreak = _Undefined,
+    Object? unit = _Undefined,
   }) {
     return Goal(
       id: id is int? ? id : this.id,
@@ -322,6 +355,9 @@ class _GoalImpl extends Goal {
           remindTimezone is String? ? remindTimezone : this.remindTimezone,
       journal:
           journal is List<_i2.JournalLog>? ? journal : this.journal?.clone(),
+      currentStreak: currentStreak is int? ? currentStreak : this.currentStreak,
+      highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
+      unit: unit is String? ? unit : this.unit,
     );
   }
 }
@@ -390,6 +426,18 @@ class GoalTable extends _i1.Table {
       'remindTimezone',
       this,
     );
+    currentStreak = _i1.ColumnInt(
+      'currentStreak',
+      this,
+    );
+    highestStreak = _i1.ColumnInt(
+      'highestStreak',
+      this,
+    );
+    unit = _i1.ColumnString(
+      'unit',
+      this,
+    );
   }
 
   late final _i1.ColumnString title;
@@ -427,6 +475,12 @@ class GoalTable extends _i1.Table {
   _i2.JournalLogTable? ___journal;
 
   _i1.ManyRelation<_i2.JournalLogTable>? _journal;
+
+  late final _i1.ColumnInt currentStreak;
+
+  late final _i1.ColumnInt highestStreak;
+
+  late final _i1.ColumnString unit;
 
   _i2.UserTable get user {
     if (_user != null) return _user!;
@@ -490,6 +544,9 @@ class GoalTable extends _i1.Table {
         remindMinutes,
         remindHalf,
         remindTimezone,
+        currentStreak,
+        highestStreak,
+        unit,
       ];
 
   @override

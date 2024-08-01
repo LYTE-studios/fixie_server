@@ -1,10 +1,37 @@
 import 'dart:io';
 
+import 'package:fixie_server/src/generated/journal_log.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 
 class JournalEndpoint extends Endpoint {
+  Future<Map<String, String?>> getImageUploadDescription(
+    Session session, {
+    required JournalLog log,
+    required String fileName,
+  }) async {
+    String path = 'logs/${log.id}/images/$fileName';
+
+    String? description =
+        await session.storage.createDirectFileUploadDescription(
+      storageId: 'public',
+      path: path,
+    );
+
+    return {
+      'description': description,
+      'path': path,
+    };
+  }
+
+  Future<bool> verifyUpload(Session session, String path) async {
+    return await session.storage.verifyDirectFileUpload(
+      storageId: 'public',
+      path: path,
+    );
+  }
+
   Future<int> addLog(Session session, int goalId, JournalLog log) async {
     await AuthUtils.getAuthenticatedUser(session);
 
