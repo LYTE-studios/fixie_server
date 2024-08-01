@@ -72,8 +72,8 @@ class Protocol extends _i1.SerializationManagerServer {
         _i2.ColumnDefinition(
           name: 'icon',
           columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
+          isNullable: true,
+          dartType: 'String?',
         ),
       ],
       foreignKeys: [],
@@ -214,7 +214,7 @@ class Protocol extends _i1.SerializationManagerServer {
           name: 'days',
           columnType: _i2.ColumnType.json,
           isNullable: true,
-          dartType: 'List<protocol:Days>?',
+          dartType: 'List<int>?',
         ),
         _i2.ColumnDefinition(
           name: 'setEnd',
@@ -455,9 +455,9 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i13.UserProfile?>()) {
       return (data != null ? _i13.UserProfile.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<List<_i14.Days>?>()) {
+    if (t == _i1.getType<List<int>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i14.Days>(e)).toList()
+          ? (data as List).map((e) => deserialize<int>(e)).toList()
           : null) as dynamic;
     }
     if (t == _i1.getType<List<_i14.JournalLog>?>()) {

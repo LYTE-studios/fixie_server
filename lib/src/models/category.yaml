@@ -3,5 +3,5 @@ table: category
 fields:
   title: String
   color: String
-  icon: String
+  icon: String?
 

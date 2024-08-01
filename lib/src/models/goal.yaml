@@ -8,7 +8,7 @@ fields:
   targetPeriod: TargetPeriod
   category: Category
   repetition: Repetition
-  days: List<Days>?
+  days: List<int>?
   setEnd: bool
   end: DateTime?
   setRemind: bool

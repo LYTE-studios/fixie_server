@@ -47,7 +47,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     required _i2.TargetPeriod targetPeriod,
     required _i2.Category category,
     required _i2.Repetition repetition,
-    List<_i2.Days>? days,
+    List<int>? days,
     required bool setEnd,
     DateTime? end,
     required bool setRemind,
@@ -78,9 +78,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
           (jsonSerialization['category'] as Map<String, dynamic>)),
       repetition:
           _i2.Repetition.fromJson((jsonSerialization['repetition'] as String)),
-      days: (jsonSerialization['days'] as List?)
-          ?.map((e) => _i2.Days.fromJson((e as int)))
-          .toList(),
+      days: (jsonSerialization['days'] as List?)?.map((e) => e as int).toList(),
       setEnd: jsonSerialization['setEnd'] as bool,
       end: jsonSerialization['end'] == null
           ? null
@@ -119,7 +117,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   _i2.Repetition repetition;
 
-  List<_i2.Days>? days;
+  List<int>? days;
 
   bool setEnd;
 
@@ -156,7 +154,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     _i2.TargetPeriod? targetPeriod,
     _i2.Category? category,
     _i2.Repetition? repetition,
-    List<_i2.Days>? days,
+    List<int>? days,
     bool? setEnd,
     DateTime? end,
     bool? setRemind,
@@ -181,7 +179,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       'targetPeriod': targetPeriod.toJson(),
       'category': category.toJson(),
       'repetition': repetition.toJson(),
-      if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+      if (days != null) 'days': days?.toJson(),
       'setEnd': setEnd,
       if (end != null) 'end': end?.toJson(),
       'setRemind': setRemind,
@@ -209,7 +207,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       'targetPeriod': targetPeriod.toJson(),
       'category': category.toJsonForProtocol(),
       'repetition': repetition.toJson(),
-      if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+      if (days != null) 'days': days?.toJson(),
       'setEnd': setEnd,
       if (end != null) 'end': end?.toJson(),
       'setRemind': setRemind,
@@ -274,7 +272,7 @@ class _GoalImpl extends Goal {
     required _i2.TargetPeriod targetPeriod,
     required _i2.Category category,
     required _i2.Repetition repetition,
-    List<_i2.Days>? days,
+    List<int>? days,
     required bool setEnd,
     DateTime? end,
     required bool setRemind,
@@ -344,7 +342,7 @@ class _GoalImpl extends Goal {
       targetPeriod: targetPeriod ?? this.targetPeriod,
       category: category ?? this.category.copyWith(),
       repetition: repetition ?? this.repetition,
-      days: days is List<_i2.Days>? ? days : this.days?.clone(),
+      days: days is List<int>? ? days : this.days?.clone(),
       setEnd: setEnd ?? this.setEnd,
       end: end is DateTime? ? end : this.end,
       setRemind: setRemind ?? this.setRemind,
