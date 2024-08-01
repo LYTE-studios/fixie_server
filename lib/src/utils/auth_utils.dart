@@ -7,15 +7,10 @@ class AuthUtils {
     Session session,
     int userId,
   ) async {
-    Sentry.captureException(
-      'Creating new user profile with id $userId',
-    );
-
     return User.db.insertRow(
       session,
       User(
         userInfoId: userId,
-        birthday: DateTime.now(),
       ),
     );
   }
