@@ -20,11 +20,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.user,
     this.picture,
     required this.target,
-    required this.targetPeriod,
+    this.unit,
     required this.category,
-    required this.repetition,
     this.days,
-    required this.setEnd,
     this.end,
     required this.setRemind,
     this.remindHour,
@@ -34,7 +32,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.journal,
     this.currentStreak,
     this.highestStreak,
-    this.unit,
   }) : super(id);
 
   factory Goal({
@@ -44,11 +41,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     _i2.User? user,
     String? picture,
     required int target,
-    required _i2.TargetPeriod targetPeriod,
+    String? unit,
     required _i2.Category category,
-    required _i2.Repetition repetition,
     List<_i2.RepeatableDays>? days,
-    required bool setEnd,
     DateTime? end,
     required bool setRemind,
     int? remindHour,
@@ -58,7 +53,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     List<_i2.JournalLog>? journal,
     int? currentStreak,
     int? highestStreak,
-    String? unit,
   }) = _GoalImpl;
 
   factory Goal.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -72,16 +66,12 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
               (jsonSerialization['user'] as Map<String, dynamic>)),
       picture: jsonSerialization['picture'] as String?,
       target: jsonSerialization['target'] as int,
-      targetPeriod:
-          _i2.TargetPeriod.fromJson((jsonSerialization['targetPeriod'] as int)),
+      unit: jsonSerialization['unit'] as String?,
       category: _i2.Category.fromJson(
           (jsonSerialization['category'] as Map<String, dynamic>)),
-      repetition:
-          _i2.Repetition.fromJson((jsonSerialization['repetition'] as String)),
       days: (jsonSerialization['days'] as List?)
           ?.map((e) => _i2.RepeatableDays.fromJson((e as Map<String, dynamic>)))
           .toList(),
-      setEnd: jsonSerialization['setEnd'] as bool,
       end: jsonSerialization['end'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['end']),
@@ -95,7 +85,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
           .toList(),
       currentStreak: jsonSerialization['currentStreak'] as int?,
       highestStreak: jsonSerialization['highestStreak'] as int?,
-      unit: jsonSerialization['unit'] as String?,
     );
   }
 
@@ -113,15 +102,11 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   int target;
 
-  _i2.TargetPeriod targetPeriod;
+  String? unit;
 
   _i2.Category category;
 
-  _i2.Repetition repetition;
-
   List<_i2.RepeatableDays>? days;
-
-  bool setEnd;
 
   DateTime? end;
 
@@ -141,8 +126,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   int? highestStreak;
 
-  String? unit;
-
   @override
   _i1.Table get table => t;
 
@@ -153,11 +136,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     _i2.User? user,
     String? picture,
     int? target,
-    _i2.TargetPeriod? targetPeriod,
+    String? unit,
     _i2.Category? category,
-    _i2.Repetition? repetition,
     List<_i2.RepeatableDays>? days,
-    bool? setEnd,
     DateTime? end,
     bool? setRemind,
     int? remindHour,
@@ -167,7 +148,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     List<_i2.JournalLog>? journal,
     int? currentStreak,
     int? highestStreak,
-    String? unit,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -178,11 +158,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (user != null) 'user': user?.toJson(),
       if (picture != null) 'picture': picture,
       'target': target,
-      'targetPeriod': targetPeriod.toJson(),
+      if (unit != null) 'unit': unit,
       'category': category.toJson(),
-      'repetition': repetition.toJson(),
       if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
-      'setEnd': setEnd,
       if (end != null) 'end': end?.toJson(),
       'setRemind': setRemind,
       if (remindHour != null) 'remindHour': remindHour,
@@ -193,7 +171,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
         'journal': journal?.toJson(valueToJson: (v) => v.toJson()),
       if (currentStreak != null) 'currentStreak': currentStreak,
       if (highestStreak != null) 'highestStreak': highestStreak,
-      if (unit != null) 'unit': unit,
     };
   }
 
@@ -206,12 +183,10 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (user != null) 'user': user?.toJsonForProtocol(),
       if (picture != null) 'picture': picture,
       'target': target,
-      'targetPeriod': targetPeriod.toJson(),
+      if (unit != null) 'unit': unit,
       'category': category.toJsonForProtocol(),
-      'repetition': repetition.toJson(),
       if (days != null)
         'days': days?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
-      'setEnd': setEnd,
       if (end != null) 'end': end?.toJson(),
       'setRemind': setRemind,
       if (remindHour != null) 'remindHour': remindHour,
@@ -222,7 +197,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
         'journal': journal?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
       if (currentStreak != null) 'currentStreak': currentStreak,
       if (highestStreak != null) 'highestStreak': highestStreak,
-      if (unit != null) 'unit': unit,
     };
   }
 
@@ -274,11 +248,9 @@ class _GoalImpl extends Goal {
     _i2.User? user,
     String? picture,
     required int target,
-    required _i2.TargetPeriod targetPeriod,
+    String? unit,
     required _i2.Category category,
-    required _i2.Repetition repetition,
     List<_i2.RepeatableDays>? days,
-    required bool setEnd,
     DateTime? end,
     required bool setRemind,
     int? remindHour,
@@ -288,7 +260,6 @@ class _GoalImpl extends Goal {
     List<_i2.JournalLog>? journal,
     int? currentStreak,
     int? highestStreak,
-    String? unit,
   }) : super._(
           id: id,
           title: title,
@@ -296,11 +267,9 @@ class _GoalImpl extends Goal {
           user: user,
           picture: picture,
           target: target,
-          targetPeriod: targetPeriod,
+          unit: unit,
           category: category,
-          repetition: repetition,
           days: days,
-          setEnd: setEnd,
           end: end,
           setRemind: setRemind,
           remindHour: remindHour,
@@ -310,7 +279,6 @@ class _GoalImpl extends Goal {
           journal: journal,
           currentStreak: currentStreak,
           highestStreak: highestStreak,
-          unit: unit,
         );
 
   @override
@@ -321,11 +289,9 @@ class _GoalImpl extends Goal {
     Object? user = _Undefined,
     Object? picture = _Undefined,
     int? target,
-    _i2.TargetPeriod? targetPeriod,
+    Object? unit = _Undefined,
     _i2.Category? category,
-    _i2.Repetition? repetition,
     Object? days = _Undefined,
-    bool? setEnd,
     Object? end = _Undefined,
     bool? setRemind,
     Object? remindHour = _Undefined,
@@ -335,7 +301,6 @@ class _GoalImpl extends Goal {
     Object? journal = _Undefined,
     Object? currentStreak = _Undefined,
     Object? highestStreak = _Undefined,
-    Object? unit = _Undefined,
   }) {
     return Goal(
       id: id is int? ? id : this.id,
@@ -344,11 +309,9 @@ class _GoalImpl extends Goal {
       user: user is _i2.User? ? user : this.user?.copyWith(),
       picture: picture is String? ? picture : this.picture,
       target: target ?? this.target,
-      targetPeriod: targetPeriod ?? this.targetPeriod,
+      unit: unit is String? ? unit : this.unit,
       category: category ?? this.category.copyWith(),
-      repetition: repetition ?? this.repetition,
       days: days is List<_i2.RepeatableDays>? ? days : this.days?.clone(),
-      setEnd: setEnd ?? this.setEnd,
       end: end is DateTime? ? end : this.end,
       setRemind: setRemind ?? this.setRemind,
       remindHour: remindHour is int? ? remindHour : this.remindHour,
@@ -360,7 +323,6 @@ class _GoalImpl extends Goal {
           journal is List<_i2.JournalLog>? ? journal : this.journal?.clone(),
       currentStreak: currentStreak is int? ? currentStreak : this.currentStreak,
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
-      unit: unit is String? ? unit : this.unit,
     );
   }
 }
@@ -383,22 +345,12 @@ class GoalTable extends _i1.Table {
       'target',
       this,
     );
-    targetPeriod = _i1.ColumnEnum(
-      'targetPeriod',
+    unit = _i1.ColumnString(
+      'unit',
       this,
-      _i1.EnumSerialization.byIndex,
     );
     category = _i1.ColumnSerializable(
       'category',
-      this,
-    );
-    repetition = _i1.ColumnEnum(
-      'repetition',
-      this,
-      _i1.EnumSerialization.byName,
-    );
-    setEnd = _i1.ColumnBool(
-      'setEnd',
       this,
     );
     end = _i1.ColumnDateTime(
@@ -433,10 +385,6 @@ class GoalTable extends _i1.Table {
       'highestStreak',
       this,
     );
-    unit = _i1.ColumnString(
-      'unit',
-      this,
-    );
   }
 
   late final _i1.ColumnString title;
@@ -449,17 +397,13 @@ class GoalTable extends _i1.Table {
 
   late final _i1.ColumnInt target;
 
-  late final _i1.ColumnEnum<_i2.TargetPeriod> targetPeriod;
+  late final _i1.ColumnString unit;
 
   late final _i1.ColumnSerializable category;
-
-  late final _i1.ColumnEnum<_i2.Repetition> repetition;
 
   _i2.RepeatableDaysTable? ___days;
 
   _i1.ManyRelation<_i2.RepeatableDaysTable>? _days;
-
-  late final _i1.ColumnBool setEnd;
 
   late final _i1.ColumnDateTime end;
 
@@ -480,8 +424,6 @@ class GoalTable extends _i1.Table {
   late final _i1.ColumnInt currentStreak;
 
   late final _i1.ColumnInt highestStreak;
-
-  late final _i1.ColumnString unit;
 
   _i2.UserTable get user {
     if (_user != null) return _user!;
@@ -565,10 +507,8 @@ class GoalTable extends _i1.Table {
         userId,
         picture,
         target,
-        targetPeriod,
+        unit,
         category,
-        repetition,
-        setEnd,
         end,
         setRemind,
         remindHour,
@@ -577,7 +517,6 @@ class GoalTable extends _i1.Table {
         remindTimezone,
         currentStreak,
         highestStreak,
-        unit,
       ];
 
   @override

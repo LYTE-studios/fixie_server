@@ -51,7 +51,7 @@ class JournalEndpoint extends Endpoint {
       ),
       where: (t) =>
           (t.userId.equals(user.id)) &
-          ((t.end > DateTime.now()) | t.setEnd.equals(false)),
+          ((t.end.notEquals(null) & (t.end > DateTime.now()))),
     );
 
     List<JournalLog> definedLogs = await JournalLog.db.find(
