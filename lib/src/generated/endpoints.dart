@@ -76,7 +76,17 @@ class Endpoints extends _i1.EndpointDispatch {
             session,
             params['dto'],
           ),
-        )
+        ),
+        'getActiveCategories': _i1.MethodConnector(
+          name: 'getActiveCategories',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['categories'] as _i2.CategoriesEndpoint)
+                  .getActiveCategories(session),
+        ),
       },
     );
     connectors['file'] = _i1.EndpointConnector(

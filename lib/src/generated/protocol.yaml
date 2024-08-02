@@ -1,5 +1,6 @@
 categories:
   - addCategory:
+  - getActiveCategories:
 file:
   - getUploadDescription:
   - verifyUpload:

@@ -24,8 +24,9 @@ import 'target_period.dart' as _i12;
 import 'user.dart' as _i13;
 import 'userProfile.dart' as _i14;
 import 'protocol.dart' as _i15;
-import 'package:fixie_server/src/generated/goal.dart' as _i16;
-import 'package:fixie_server/src/generated/journal_log.dart' as _i17;
+import 'package:fixie_server/src/generated/category/category.dart' as _i16;
+import 'package:fixie_server/src/generated/goal.dart' as _i17;
+import 'package:fixie_server/src/generated/journal_log.dart' as _i18;
 export 'category/category.dart';
 export 'category/create_category_dto.dart';
 export 'endpoint_exception.dart';
@@ -545,22 +546,26 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<_i15.Goal>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i16.Goal>?>()) {
+    if (t == List<_i16.Category>) {
+      return (data as List).map((e) => deserialize<_i16.Category>(e)).toList()
+          as dynamic;
+    }
+    if (t == _i1.getType<List<_i17.Goal>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i16.Goal>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i17.Goal>(e)).toList()
           : null) as dynamic;
     }
     if (t == Map<String, String?>) {
       return (data as Map).map((k, v) =>
           MapEntry(deserialize<String>(k), deserialize<String?>(v))) as dynamic;
     }
-    if (t == List<_i17.JournalLog>) {
-      return (data as List).map((e) => deserialize<_i17.JournalLog>(e)).toList()
+    if (t == List<_i18.JournalLog>) {
+      return (data as List).map((e) => deserialize<_i18.JournalLog>(e)).toList()
           as dynamic;
     }
-    if (t == _i1.getType<List<_i17.JournalLog>?>()) {
+    if (t == _i1.getType<List<_i18.JournalLog>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i17.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i18.JournalLog>(e)).toList()
           : null) as dynamic;
     }
     try {
