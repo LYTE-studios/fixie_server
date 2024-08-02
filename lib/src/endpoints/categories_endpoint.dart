@@ -1,5 +1,6 @@
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
+import 'package:sentry/sentry.dart';
 import 'package:serverpod/serverpod.dart';
 
 class CategoriesEndpoint extends Endpoint {
@@ -21,6 +22,8 @@ class CategoriesEndpoint extends Endpoint {
 
   Future<List<Category>> getActiveCategories(Session session) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
+
+    Sentry.captureException(user.id);
 
     List<Category> categories = [];
 
