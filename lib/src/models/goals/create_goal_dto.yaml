@@ -1,0 +1,14 @@
+class: CreateGoalDto
+fields:
+  title: String
+  picture: String?
+  target: int
+  unit: String? # The unit of measurement. For example Liters
+  category: Category?
+  days: List<RepeatableDays>?
+  end: DateTime?
+  setRemind: bool
+  remindHour: int? # 0-12h
+  remindMinutes: int? # 0-60m
+  remindHalf: bool? # 1 -> PM, 0 -> AM
+  remindTimezone: String?

@@ -1,14 +1,34 @@
 import 'dart:io';
 
+import 'package:fixie_server/src/endpoints/categories_endpoint.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 
 class GoalsEndpoint extends Endpoint {
-  Future<int> addGoal(Session session, Goal goal) async {
-    await AuthUtils.getAuthenticatedUser(session);
+  Future<int> addGoal(Session session, CreateGoalDto dto) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
 
-    await Goal.db.insertRow(session, goal);
+    await Goal.db.insertRow(
+      session,
+      Goal(
+        title: dto.title,
+        userId: user.id!,
+        target: dto.target,
+        categoryId: dto.category!.id!,
+        setRemind: dto.setRemind,
+        active: true,
+        archived: false,
+        picture: dto.picture,
+        unit: dto.unit,
+        days: dto.days,
+        end: dto.end,
+        remindMinutes: dto.remindMinutes,
+        remindHour: dto.remindHour,
+        remindHalf: dto.remindHalf,
+        remindTimezone: dto.remindTimezone,
+      ),
+    );
 
     return HttpStatus.ok;
   }

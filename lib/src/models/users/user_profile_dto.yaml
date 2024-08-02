@@ -1,7 +1,6 @@
-class: UserProfile
+class: UserProfileDto
 fields:
   name: String
-  email: String
   birthday: DateTime?
   daysSinceCreation: int
-  highestStreak: int?
+  email: String?

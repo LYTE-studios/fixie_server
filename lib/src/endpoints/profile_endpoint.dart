@@ -32,7 +32,7 @@ class ProfileEndpoint extends Endpoint {
     }
   }
 
-  Future<UserProfile> getProfileData(Session session) async {
+  Future<UserProfileDto> getProfileData(Session session) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
     UserInfo? userInfo = user.userInfo;
@@ -46,7 +46,7 @@ class ProfileEndpoint extends Endpoint {
 
     int daysSinceCreation = DateTime.now().difference(userInfo.created).inDays;
 
-    UserProfile userProfileData = UserProfile(
+    UserProfileDto userProfileData = UserProfileDto(
       name: userInfo.fullName ?? '',
       email: userInfo.email ?? '',
       daysSinceCreation: daysSinceCreation,

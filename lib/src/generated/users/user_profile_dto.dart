@@ -11,61 +11,54 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class UserProfile
+abstract class UserProfileDto
     implements _i1.SerializableModel, _i1.ProtocolSerialization {
-  UserProfile._({
+  UserProfileDto._({
     required this.name,
-    required this.email,
     this.birthday,
     required this.daysSinceCreation,
-    this.highestStreak,
+    this.email,
   });
 
-  factory UserProfile({
+  factory UserProfileDto({
     required String name,
-    required String email,
     DateTime? birthday,
     required int daysSinceCreation,
-    int? highestStreak,
-  }) = _UserProfileImpl;
+    String? email,
+  }) = _UserProfileDtoImpl;
 
-  factory UserProfile.fromJson(Map<String, dynamic> jsonSerialization) {
-    return UserProfile(
+  factory UserProfileDto.fromJson(Map<String, dynamic> jsonSerialization) {
+    return UserProfileDto(
       name: jsonSerialization['name'] as String,
-      email: jsonSerialization['email'] as String,
       birthday: jsonSerialization['birthday'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['birthday']),
       daysSinceCreation: jsonSerialization['daysSinceCreation'] as int,
-      highestStreak: jsonSerialization['highestStreak'] as int?,
+      email: jsonSerialization['email'] as String?,
     );
   }
 
   String name;
 
-  String email;
-
   DateTime? birthday;
 
   int daysSinceCreation;
 
-  int? highestStreak;
+  String? email;
 
-  UserProfile copyWith({
+  UserProfileDto copyWith({
     String? name,
-    String? email,
     DateTime? birthday,
     int? daysSinceCreation,
-    int? highestStreak,
+    String? email,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'email': email,
       if (birthday != null) 'birthday': birthday?.toJson(),
       'daysSinceCreation': daysSinceCreation,
-      if (highestStreak != null) 'highestStreak': highestStreak,
+      if (email != null) 'email': email,
     };
   }
 
@@ -73,10 +66,9 @@ abstract class UserProfile
   Map<String, dynamic> toJsonForProtocol() {
     return {
       'name': name,
-      'email': email,
       if (birthday != null) 'birthday': birthday?.toJson(),
       'daysSinceCreation': daysSinceCreation,
-      if (highestStreak != null) 'highestStreak': highestStreak,
+      if (email != null) 'email': email,
     };
   }
 
@@ -88,35 +80,31 @@ abstract class UserProfile
 
 class _Undefined {}
 
-class _UserProfileImpl extends UserProfile {
-  _UserProfileImpl({
+class _UserProfileDtoImpl extends UserProfileDto {
+  _UserProfileDtoImpl({
     required String name,
-    required String email,
     DateTime? birthday,
     required int daysSinceCreation,
-    int? highestStreak,
+    String? email,
   }) : super._(
           name: name,
-          email: email,
           birthday: birthday,
           daysSinceCreation: daysSinceCreation,
-          highestStreak: highestStreak,
+          email: email,
         );
 
   @override
-  UserProfile copyWith({
+  UserProfileDto copyWith({
     String? name,
-    String? email,
     Object? birthday = _Undefined,
     int? daysSinceCreation,
-    Object? highestStreak = _Undefined,
+    Object? email = _Undefined,
   }) {
-    return UserProfile(
+    return UserProfileDto(
       name: name ?? this.name,
-      email: email ?? this.email,
       birthday: birthday is DateTime? ? birthday : this.birthday,
       daysSinceCreation: daysSinceCreation ?? this.daysSinceCreation,
-      highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
+      email: email is String? ? email : this.email,
     );
   }
 }

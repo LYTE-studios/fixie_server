@@ -16,14 +16,12 @@ abstract class CreateCategoryDto
     required this.title,
     required this.color,
     this.icon,
-    required this.userId,
   });
 
   factory CreateCategoryDto({
     required String title,
     required String color,
     String? icon,
-    required int userId,
   }) = _CreateCategoryDtoImpl;
 
   factory CreateCategoryDto.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -31,7 +29,6 @@ abstract class CreateCategoryDto
       title: jsonSerialization['title'] as String,
       color: jsonSerialization['color'] as String,
       icon: jsonSerialization['icon'] as String?,
-      userId: jsonSerialization['userId'] as int,
     );
   }
 
@@ -41,13 +38,10 @@ abstract class CreateCategoryDto
 
   String? icon;
 
-  int userId;
-
   CreateCategoryDto copyWith({
     String? title,
     String? color,
     String? icon,
-    int? userId,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -55,7 +49,6 @@ abstract class CreateCategoryDto
       'title': title,
       'color': color,
       if (icon != null) 'icon': icon,
-      'userId': userId,
     };
   }
 
@@ -65,7 +58,6 @@ abstract class CreateCategoryDto
       'title': title,
       'color': color,
       if (icon != null) 'icon': icon,
-      'userId': userId,
     };
   }
 
@@ -82,12 +74,10 @@ class _CreateCategoryDtoImpl extends CreateCategoryDto {
     required String title,
     required String color,
     String? icon,
-    required int userId,
   }) : super._(
           title: title,
           color: color,
           icon: icon,
-          userId: userId,
         );
 
   @override
@@ -95,13 +85,11 @@ class _CreateCategoryDtoImpl extends CreateCategoryDto {
     String? title,
     String? color,
     Object? icon = _Undefined,
-    int? userId,
   }) {
     return CreateCategoryDto(
       title: title ?? this.title,
       color: color ?? this.color,
       icon: icon is String? ? icon : this.icon,
-      userId: userId ?? this.userId,
     );
   }
 }
