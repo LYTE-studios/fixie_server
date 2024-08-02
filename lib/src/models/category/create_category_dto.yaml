@@ -1,0 +1,6 @@
+class: CreateCategoryDto
+fields:
+  title: String
+  color: String
+  icon: String?
+  userId: int

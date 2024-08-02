@@ -33,6 +33,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.journal,
     this.currentStreak,
     this.highestStreak,
+    required this.active,
+    required this.archived,
   }) : super(id);
 
   factory Goal({
@@ -55,6 +57,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     List<_i2.JournalLog>? journal,
     int? currentStreak,
     int? highestStreak,
+    required bool active,
+    required bool archived,
   }) = _GoalImpl;
 
   factory Goal.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -90,6 +94,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
           .toList(),
       currentStreak: jsonSerialization['currentStreak'] as int?,
       highestStreak: jsonSerialization['highestStreak'] as int?,
+      active: jsonSerialization['active'] as bool,
+      archived: jsonSerialization['archived'] as bool,
     );
   }
 
@@ -133,6 +139,10 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   int? highestStreak;
 
+  bool active;
+
+  bool archived;
+
   @override
   _i1.Table get table => t;
 
@@ -156,6 +166,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     List<_i2.JournalLog>? journal,
     int? currentStreak,
     int? highestStreak,
+    bool? active,
+    bool? archived,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -180,6 +192,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
         'journal': journal?.toJson(valueToJson: (v) => v.toJson()),
       if (currentStreak != null) 'currentStreak': currentStreak,
       if (highestStreak != null) 'highestStreak': highestStreak,
+      'active': active,
+      'archived': archived,
     };
   }
 
@@ -207,6 +221,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
         'journal': journal?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
       if (currentStreak != null) 'currentStreak': currentStreak,
       if (highestStreak != null) 'highestStreak': highestStreak,
+      'active': active,
+      'archived': archived,
     };
   }
 
@@ -273,6 +289,8 @@ class _GoalImpl extends Goal {
     List<_i2.JournalLog>? journal,
     int? currentStreak,
     int? highestStreak,
+    required bool active,
+    required bool archived,
   }) : super._(
           id: id,
           title: title,
@@ -293,6 +311,8 @@ class _GoalImpl extends Goal {
           journal: journal,
           currentStreak: currentStreak,
           highestStreak: highestStreak,
+          active: active,
+          archived: archived,
         );
 
   @override
@@ -316,6 +336,8 @@ class _GoalImpl extends Goal {
     Object? journal = _Undefined,
     Object? currentStreak = _Undefined,
     Object? highestStreak = _Undefined,
+    bool? active,
+    bool? archived,
   }) {
     return Goal(
       id: id is int? ? id : this.id,
@@ -340,6 +362,8 @@ class _GoalImpl extends Goal {
           journal is List<_i2.JournalLog>? ? journal : this.journal?.clone(),
       currentStreak: currentStreak is int? ? currentStreak : this.currentStreak,
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
+      active: active ?? this.active,
+      archived: archived ?? this.archived,
     );
   }
 }
@@ -402,6 +426,14 @@ class GoalTable extends _i1.Table {
       'highestStreak',
       this,
     );
+    active = _i1.ColumnBool(
+      'active',
+      this,
+    );
+    archived = _i1.ColumnBool(
+      'archived',
+      this,
+    );
   }
 
   late final _i1.ColumnString title;
@@ -443,6 +475,10 @@ class GoalTable extends _i1.Table {
   late final _i1.ColumnInt currentStreak;
 
   late final _i1.ColumnInt highestStreak;
+
+  late final _i1.ColumnBool active;
+
+  late final _i1.ColumnBool archived;
 
   _i2.UserTable get user {
     if (_user != null) return _user!;
@@ -549,6 +585,8 @@ class GoalTable extends _i1.Table {
         remindTimezone,
         currentStreak,
         highestStreak,
+        active,
+        archived,
       ];
 
   @override

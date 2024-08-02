@@ -17,3 +17,5 @@ fields:
   journal: List<JournalLog>?, relation(name=goal_journal)
   currentStreak: int? # The streak the goal currently holds
   highestStreak: int? # The highest a streak has lasted for this goal
+  active: bool
+  archived: bool
