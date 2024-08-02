@@ -8,6 +8,10 @@ class GoalsEndpoint extends Endpoint {
   Future<int> addGoal(Session session, Goal goal) async {
     await AuthUtils.getAuthenticatedUser(session);
 
+    if (goal.category?.id == null) {
+      Category.db.insertRow(session, goal.category!);
+    }
+
     await Goal.db.insertRow(session, goal);
 
     return HttpStatus.ok;
