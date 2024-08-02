@@ -39,6 +39,9 @@ class CategoriesEndpoint extends Endpoint {
       if (goal.category == null) {
         continue;
       }
+      if (categories.contains(goal.category)) {
+        continue;
+      }
       categories.add(goal.category!);
     }
 
