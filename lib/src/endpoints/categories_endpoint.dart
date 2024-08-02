@@ -26,6 +26,9 @@ class CategoriesEndpoint extends Endpoint {
 
     List<Goal> activeGoals = await Goal.db.find(
       session,
+      include: Goal.include(
+        category: Category.include(),
+      ),
       where: (t) =>
           t.active.equals(true) &
           t.archived.equals(false) &
