@@ -21,7 +21,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.picture,
     required this.target,
     this.unit,
-    required this.category,
+    required this.categoryId,
+    this.category,
     this.days,
     this.end,
     required this.setRemind,
@@ -42,7 +43,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     String? picture,
     required int target,
     String? unit,
-    required _i2.Category category,
+    required int categoryId,
+    _i2.Category? category,
     List<_i2.RepeatableDays>? days,
     DateTime? end,
     required bool setRemind,
@@ -67,8 +69,11 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       picture: jsonSerialization['picture'] as String?,
       target: jsonSerialization['target'] as int,
       unit: jsonSerialization['unit'] as String?,
-      category: _i2.Category.fromJson(
-          (jsonSerialization['category'] as Map<String, dynamic>)),
+      categoryId: jsonSerialization['categoryId'] as int,
+      category: jsonSerialization['category'] == null
+          ? null
+          : _i2.Category.fromJson(
+              (jsonSerialization['category'] as Map<String, dynamic>)),
       days: (jsonSerialization['days'] as List?)
           ?.map((e) => _i2.RepeatableDays.fromJson((e as Map<String, dynamic>)))
           .toList(),
@@ -104,7 +109,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   String? unit;
 
-  _i2.Category category;
+  int categoryId;
+
+  _i2.Category? category;
 
   List<_i2.RepeatableDays>? days;
 
@@ -137,6 +144,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     String? picture,
     int? target,
     String? unit,
+    int? categoryId,
     _i2.Category? category,
     List<_i2.RepeatableDays>? days,
     DateTime? end,
@@ -159,7 +167,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (picture != null) 'picture': picture,
       'target': target,
       if (unit != null) 'unit': unit,
-      'category': category.toJson(),
+      'categoryId': categoryId,
+      if (category != null) 'category': category?.toJson(),
       if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
       if (end != null) 'end': end?.toJson(),
       'setRemind': setRemind,
@@ -184,7 +193,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (picture != null) 'picture': picture,
       'target': target,
       if (unit != null) 'unit': unit,
-      'category': category.toJsonForProtocol(),
+      'categoryId': categoryId,
+      if (category != null) 'category': category?.toJsonForProtocol(),
       if (days != null)
         'days': days?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
       if (end != null) 'end': end?.toJson(),
@@ -202,11 +212,13 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   static GoalInclude include({
     _i2.UserInclude? user,
+    _i2.CategoryInclude? category,
     _i2.RepeatableDaysIncludeList? days,
     _i2.JournalLogIncludeList? journal,
   }) {
     return GoalInclude._(
       user: user,
+      category: category,
       days: days,
       journal: journal,
     );
@@ -249,7 +261,8 @@ class _GoalImpl extends Goal {
     String? picture,
     required int target,
     String? unit,
-    required _i2.Category category,
+    required int categoryId,
+    _i2.Category? category,
     List<_i2.RepeatableDays>? days,
     DateTime? end,
     required bool setRemind,
@@ -268,6 +281,7 @@ class _GoalImpl extends Goal {
           picture: picture,
           target: target,
           unit: unit,
+          categoryId: categoryId,
           category: category,
           days: days,
           end: end,
@@ -290,7 +304,8 @@ class _GoalImpl extends Goal {
     Object? picture = _Undefined,
     int? target,
     Object? unit = _Undefined,
-    _i2.Category? category,
+    int? categoryId,
+    Object? category = _Undefined,
     Object? days = _Undefined,
     Object? end = _Undefined,
     bool? setRemind,
@@ -310,7 +325,9 @@ class _GoalImpl extends Goal {
       picture: picture is String? ? picture : this.picture,
       target: target ?? this.target,
       unit: unit is String? ? unit : this.unit,
-      category: category ?? this.category.copyWith(),
+      categoryId: categoryId ?? this.categoryId,
+      category:
+          category is _i2.Category? ? category : this.category?.copyWith(),
       days: days is List<_i2.RepeatableDays>? ? days : this.days?.clone(),
       end: end is DateTime? ? end : this.end,
       setRemind: setRemind ?? this.setRemind,
@@ -349,8 +366,8 @@ class GoalTable extends _i1.Table {
       'unit',
       this,
     );
-    category = _i1.ColumnSerializable(
-      'category',
+    categoryId = _i1.ColumnInt(
+      'categoryId',
       this,
     );
     end = _i1.ColumnDateTime(
@@ -399,7 +416,9 @@ class GoalTable extends _i1.Table {
 
   late final _i1.ColumnString unit;
 
-  late final _i1.ColumnSerializable category;
+  late final _i1.ColumnInt categoryId;
+
+  _i2.CategoryTable? _category;
 
   _i2.RepeatableDaysTable? ___days;
 
@@ -436,6 +455,19 @@ class GoalTable extends _i1.Table {
           _i2.UserTable(tableRelation: foreignTableRelation),
     );
     return _user!;
+  }
+
+  _i2.CategoryTable get category {
+    if (_category != null) return _category!;
+    _category = _i1.createRelationTable(
+      relationFieldName: 'category',
+      field: Goal.t.categoryId,
+      foreignField: _i2.Category.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i2.CategoryTable(tableRelation: foreignTableRelation),
+    );
+    return _category!;
   }
 
   _i2.RepeatableDaysTable get __days {
@@ -508,7 +540,7 @@ class GoalTable extends _i1.Table {
         picture,
         target,
         unit,
-        category,
+        categoryId,
         end,
         setRemind,
         remindHour,
@@ -524,6 +556,9 @@ class GoalTable extends _i1.Table {
     if (relationField == 'user') {
       return user;
     }
+    if (relationField == 'category') {
+      return category;
+    }
     if (relationField == 'days') {
       return __days;
     }
@@ -537,15 +572,19 @@ class GoalTable extends _i1.Table {
 class GoalInclude extends _i1.IncludeObject {
   GoalInclude._({
     _i2.UserInclude? user,
+    _i2.CategoryInclude? category,
     _i2.RepeatableDaysIncludeList? days,
     _i2.JournalLogIncludeList? journal,
   }) {
     _user = user;
+    _category = category;
     _days = days;
     _journal = journal;
   }
 
   _i2.UserInclude? _user;
+
+  _i2.CategoryInclude? _category;
 
   _i2.RepeatableDaysIncludeList? _days;
 
@@ -554,6 +593,7 @@ class GoalInclude extends _i1.IncludeObject {
   @override
   Map<String, _i1.Include?> get includes => {
         'user': _user,
+        'category': _category,
         'days': _days,
         'journal': _journal,
       };
@@ -812,6 +852,25 @@ class GoalAttachRowRepository {
     await session.db.updateRow<Goal>(
       $goal,
       columns: [Goal.t.userId],
+    );
+  }
+
+  Future<void> category(
+    _i1.Session session,
+    Goal goal,
+    _i2.Category category,
+  ) async {
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
+    }
+    if (category.id == null) {
+      throw ArgumentError.notNull('category.id');
+    }
+
+    var $goal = goal.copyWith(categoryId: category.id);
+    await session.db.updateRow<Goal>(
+      $goal,
+      columns: [Goal.t.categoryId],
     );
   }
 

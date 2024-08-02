@@ -1,0 +1,5 @@
+enum: Repetition
+values:
+ - Daily
+ - Weekly
+ - Monthly

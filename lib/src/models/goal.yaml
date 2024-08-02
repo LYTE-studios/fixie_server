@@ -6,7 +6,7 @@ fields:
   picture: String?
   target: int
   unit: String? # The unit of measurement. For example Liters
-  category: Category
+  category: Category?, relation
   days: List<RepeatableDays>?, relation
   end: DateTime?
   setRemind: bool
