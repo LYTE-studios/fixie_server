@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:fixie_server/src/endpoints/categories_endpoint.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
@@ -53,6 +52,9 @@ class GoalsEndpoint extends Endpoint {
 
     List<Goal> list = await Goal.db.find(
       session,
+      include: Goal.include(
+        category: Category.include(),
+      ),
       where: (p0) => p0.userId.equals(user.id),
     );
 
