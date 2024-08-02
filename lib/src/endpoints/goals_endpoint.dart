@@ -53,7 +53,7 @@ class GoalsEndpoint extends Endpoint {
 
     List<Goal> list = await Goal.db.find(
       session,
-      where: (p0) => p0.userId.equals(user.userInfoId),
+      where: (p0) => p0.userId.equals(user.id),
     );
 
     return list;
