@@ -1,0 +1,5 @@
+class: RepeatableDays
+table: repeatable_days
+fields:
+  day: int # Weekselection -> (1-7); Monthselection -> (8-39); RepeatEvery -> (39-inf)
+  extraInfo: String?

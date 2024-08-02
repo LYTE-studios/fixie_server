@@ -7,13 +7,6 @@ goals:
   - getGoals:
   - updateGoal:
   - deleteGoal:
-journal:
-  - getImageUploadDescription:
-  - verifyUpload:
-  - addLog:
-  - getLog:
-  - getJournal:
-  - updateLog:
 profile:
   - createUser:
   - getProfileData:

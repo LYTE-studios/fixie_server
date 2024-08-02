@@ -11,11 +11,9 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/file_endpoint.dart' as _i2;
 import '../endpoints/goals_endpoint.dart' as _i3;
-import '../endpoints/journal_endpoint.dart' as _i4;
-import '../endpoints/profile_endpoint.dart' as _i5;
-import 'package:fixie_server/src/generated/goal.dart' as _i6;
-import 'package:fixie_server/src/generated/journal_log.dart' as _i7;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i8;
+import '../endpoints/profile_endpoint.dart' as _i4;
+import 'package:fixie_server/src/generated/goal.dart' as _i5;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i6;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -33,13 +31,7 @@ class Endpoints extends _i1.EndpointDispatch {
           'goals',
           null,
         ),
-      'journal': _i4.JournalEndpoint()
-        ..initialize(
-          server,
-          'journal',
-          null,
-        ),
-      'profile': _i5.ProfileEndpoint()
+      'profile': _i4.ProfileEndpoint()
         ..initialize(
           server,
           'profile',
@@ -97,7 +89,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'goal': _i1.ParameterDescription(
               name: 'goal',
-              type: _i1.getType<_i6.Goal>(),
+              type: _i1.getType<_i5.Goal>(),
               nullable: false,
             )
           },
@@ -142,7 +134,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'newGoal': _i1.ParameterDescription(
               name: 'newGoal',
-              type: _i1.getType<_i6.Goal>(),
+              type: _i1.getType<_i5.Goal>(),
               nullable: false,
             )
           },
@@ -175,133 +167,6 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    connectors['journal'] = _i1.EndpointConnector(
-      name: 'journal',
-      endpoint: endpoints['journal']!,
-      methodConnectors: {
-        'getImageUploadDescription': _i1.MethodConnector(
-          name: 'getImageUploadDescription',
-          params: {
-            'log': _i1.ParameterDescription(
-              name: 'log',
-              type: _i1.getType<_i7.JournalLog>(),
-              nullable: false,
-            ),
-            'fileName': _i1.ParameterDescription(
-              name: 'fileName',
-              type: _i1.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['journal'] as _i4.JournalEndpoint)
-                  .getImageUploadDescription(
-            session,
-            log: params['log'],
-            fileName: params['fileName'],
-          ),
-        ),
-        'verifyUpload': _i1.MethodConnector(
-          name: 'verifyUpload',
-          params: {
-            'path': _i1.ParameterDescription(
-              name: 'path',
-              type: _i1.getType<String>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['journal'] as _i4.JournalEndpoint).verifyUpload(
-            session,
-            params['path'],
-          ),
-        ),
-        'addLog': _i1.MethodConnector(
-          name: 'addLog',
-          params: {
-            'goalId': _i1.ParameterDescription(
-              name: 'goalId',
-              type: _i1.getType<int>(),
-              nullable: false,
-            ),
-            'log': _i1.ParameterDescription(
-              name: 'log',
-              type: _i1.getType<_i7.JournalLog>(),
-              nullable: false,
-            ),
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['journal'] as _i4.JournalEndpoint).addLog(
-            session,
-            params['goalId'],
-            params['log'],
-          ),
-        ),
-        'getLog': _i1.MethodConnector(
-          name: 'getLog',
-          params: {
-            'logId': _i1.ParameterDescription(
-              name: 'logId',
-              type: _i1.getType<int?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['journal'] as _i4.JournalEndpoint).getLog(
-            session,
-            params['logId'],
-          ),
-        ),
-        'getJournal': _i1.MethodConnector(
-          name: 'getJournal',
-          params: {
-            'goalId': _i1.ParameterDescription(
-              name: 'goalId',
-              type: _i1.getType<int?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['journal'] as _i4.JournalEndpoint).getJournal(
-            session,
-            params['goalId'],
-          ),
-        ),
-        'updateLog': _i1.MethodConnector(
-          name: 'updateLog',
-          params: {
-            'editedLog': _i1.ParameterDescription(
-              name: 'editedLog',
-              type: _i1.getType<_i7.JournalLog>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['journal'] as _i4.JournalEndpoint).updateLog(
-            session,
-            params['editedLog'],
-          ),
-        ),
-      },
-    );
     connectors['profile'] = _i1.EndpointConnector(
       name: 'profile',
       endpoint: endpoints['profile']!,
@@ -311,7 +176,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'user': _i1.ParameterDescription(
               name: 'user',
-              type: _i1.getType<_i8.UserInfo?>(),
+              type: _i1.getType<_i6.UserInfo?>(),
               nullable: true,
             ),
             'birthday': _i1.ParameterDescription(
@@ -324,7 +189,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i5.ProfileEndpoint).createUser(
+              (endpoints['profile'] as _i4.ProfileEndpoint).createUser(
             session,
             params['user'],
             params['birthday'],
@@ -337,7 +202,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i5.ProfileEndpoint)
+              (endpoints['profile'] as _i4.ProfileEndpoint)
                   .getProfileData(session),
         ),
         'updateBirthday': _i1.MethodConnector(
@@ -353,7 +218,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i5.ProfileEndpoint).updateBirthday(
+              (endpoints['profile'] as _i4.ProfileEndpoint).updateBirthday(
             session,
             params['birthday'],
           ),
@@ -371,13 +236,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i5.ProfileEndpoint).updateName(
+              (endpoints['profile'] as _i4.ProfileEndpoint).updateName(
             session,
             params['name'],
           ),
         ),
       },
     );
-    modules['serverpod_auth'] = _i8.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i6.Endpoints()..initializeEndpoints(server);
   }
 }

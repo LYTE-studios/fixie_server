@@ -13,24 +13,23 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
 import 'category.dart' as _i4;
-import 'days.dart' as _i5;
-import 'endpoint_exception.dart' as _i6;
-import 'error_types.dart' as _i7;
-import 'goal.dart' as _i8;
-import 'journal_log.dart' as _i9;
+import 'endpoint_exception.dart' as _i5;
+import 'error_types.dart' as _i6;
+import 'goal.dart' as _i7;
+import 'journal_log.dart' as _i8;
+import 'repeatable_days.dart' as _i9;
 import 'repetition.dart' as _i10;
 import 'target_period.dart' as _i11;
 import 'user.dart' as _i12;
 import 'userProfile.dart' as _i13;
 import 'protocol.dart' as _i14;
 import 'package:fixie_server/src/generated/goal.dart' as _i15;
-import 'package:fixie_server/src/generated/journal_log.dart' as _i16;
 export 'category.dart';
-export 'days.dart';
 export 'endpoint_exception.dart';
 export 'error_types.dart';
 export 'goal.dart';
 export 'journal_log.dart';
+export 'repeatable_days.dart';
 export 'repetition.dart';
 export 'target_period.dart';
 export 'user.dart';
@@ -211,12 +210,6 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'protocol:Repetition',
         ),
         _i2.ColumnDefinition(
-          name: 'days',
-          columnType: _i2.ColumnType.json,
-          isNullable: true,
-          dartType: 'List<int>?',
-        ),
-        _i2.ColumnDefinition(
           name: 'setEnd',
           columnType: _i2.ColumnType.boolean,
           isNullable: false,
@@ -385,6 +378,67 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       managed: true,
     ),
+    _i2.TableDefinition(
+      name: 'repeatable_days',
+      dartName: 'RepeatableDays',
+      schema: 'public',
+      module: 'fixie',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'repeatable_days_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'day',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'extraInfo',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: '_goalDaysGoalId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'repeatable_days_fk_0',
+          columns: ['_goalDaysGoalId'],
+          referenceTable: 'goal',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'repeatable_days_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
     ..._i3.Protocol.targetTableDefinitions,
     ..._i2.Protocol.targetTableDefinitions,
   ];
@@ -398,20 +452,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i4.Category) {
       return _i4.Category.fromJson(data) as T;
     }
-    if (t == _i5.Days) {
-      return _i5.Days.fromJson(data) as T;
+    if (t == _i5.EndpointException) {
+      return _i5.EndpointException.fromJson(data) as T;
     }
-    if (t == _i6.EndpointException) {
-      return _i6.EndpointException.fromJson(data) as T;
+    if (t == _i6.ErrorType) {
+      return _i6.ErrorType.fromJson(data) as T;
     }
-    if (t == _i7.ErrorType) {
-      return _i7.ErrorType.fromJson(data) as T;
+    if (t == _i7.Goal) {
+      return _i7.Goal.fromJson(data) as T;
     }
-    if (t == _i8.Goal) {
-      return _i8.Goal.fromJson(data) as T;
+    if (t == _i8.JournalLog) {
+      return _i8.JournalLog.fromJson(data) as T;
     }
-    if (t == _i9.JournalLog) {
-      return _i9.JournalLog.fromJson(data) as T;
+    if (t == _i9.RepeatableDays) {
+      return _i9.RepeatableDays.fromJson(data) as T;
     }
     if (t == _i10.Repetition) {
       return _i10.Repetition.fromJson(data) as T;
@@ -428,20 +482,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i4.Category?>()) {
       return (data != null ? _i4.Category.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i5.Days?>()) {
-      return (data != null ? _i5.Days.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i5.EndpointException?>()) {
+      return (data != null ? _i5.EndpointException.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i6.EndpointException?>()) {
-      return (data != null ? _i6.EndpointException.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i6.ErrorType?>()) {
+      return (data != null ? _i6.ErrorType.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i7.ErrorType?>()) {
-      return (data != null ? _i7.ErrorType.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i7.Goal?>()) {
+      return (data != null ? _i7.Goal.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i8.Goal?>()) {
-      return (data != null ? _i8.Goal.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i8.JournalLog?>()) {
+      return (data != null ? _i8.JournalLog.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i9.JournalLog?>()) {
-      return (data != null ? _i9.JournalLog.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i9.RepeatableDays?>()) {
+      return (data != null ? _i9.RepeatableDays.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i10.Repetition?>()) {
       return (data != null ? _i10.Repetition.fromJson(data) : null) as T;
@@ -455,9 +509,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i13.UserProfile?>()) {
       return (data != null ? _i13.UserProfile.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<List<int>?>()) {
+    if (t == _i1.getType<List<_i14.RepeatableDays>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<int>(e)).toList()
+          ? (data as List)
+              .map((e) => deserialize<_i14.RepeatableDays>(e))
+              .toList()
           : null) as dynamic;
     }
     if (t == _i1.getType<List<_i14.JournalLog>?>()) {
@@ -473,15 +529,6 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<List<_i15.Goal>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i15.Goal>(e)).toList()
-          : null) as dynamic;
-    }
-    if (t == Map<String, String?>) {
-      return (data as Map).map((k, v) =>
-          MapEntry(deserialize<String>(k), deserialize<String?>(v))) as dynamic;
-    }
-    if (t == _i1.getType<List<_i16.JournalLog>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<_i16.JournalLog>(e)).toList()
           : null) as dynamic;
     }
     try {
@@ -503,20 +550,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i4.Category) {
       return 'Category';
     }
-    if (data is _i5.Days) {
-      return 'Days';
-    }
-    if (data is _i6.EndpointException) {
+    if (data is _i5.EndpointException) {
       return 'EndpointException';
     }
-    if (data is _i7.ErrorType) {
+    if (data is _i6.ErrorType) {
       return 'ErrorType';
     }
-    if (data is _i8.Goal) {
+    if (data is _i7.Goal) {
       return 'Goal';
     }
-    if (data is _i9.JournalLog) {
+    if (data is _i8.JournalLog) {
       return 'JournalLog';
+    }
+    if (data is _i9.RepeatableDays) {
+      return 'RepeatableDays';
     }
     if (data is _i10.Repetition) {
       return 'Repetition';
@@ -542,20 +589,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'Category') {
       return deserialize<_i4.Category>(data['data']);
     }
-    if (data['className'] == 'Days') {
-      return deserialize<_i5.Days>(data['data']);
-    }
     if (data['className'] == 'EndpointException') {
-      return deserialize<_i6.EndpointException>(data['data']);
+      return deserialize<_i5.EndpointException>(data['data']);
     }
     if (data['className'] == 'ErrorType') {
-      return deserialize<_i7.ErrorType>(data['data']);
+      return deserialize<_i6.ErrorType>(data['data']);
     }
     if (data['className'] == 'Goal') {
-      return deserialize<_i8.Goal>(data['data']);
+      return deserialize<_i7.Goal>(data['data']);
     }
     if (data['className'] == 'JournalLog') {
-      return deserialize<_i9.JournalLog>(data['data']);
+      return deserialize<_i8.JournalLog>(data['data']);
+    }
+    if (data['className'] == 'RepeatableDays') {
+      return deserialize<_i9.RepeatableDays>(data['data']);
     }
     if (data['className'] == 'Repetition') {
       return deserialize<_i10.Repetition>(data['data']);
@@ -589,10 +636,12 @@ class Protocol extends _i1.SerializationManagerServer {
     switch (t) {
       case _i4.Category:
         return _i4.Category.t;
-      case _i8.Goal:
-        return _i8.Goal.t;
-      case _i9.JournalLog:
-        return _i9.JournalLog.t;
+      case _i7.Goal:
+        return _i7.Goal.t;
+      case _i8.JournalLog:
+        return _i8.JournalLog.t;
+      case _i9.RepeatableDays:
+        return _i9.RepeatableDays.t;
       case _i12.User:
         return _i12.User.t;
     }

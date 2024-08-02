@@ -1,6 +1,5 @@
 import 'dart:io';
-
-import 'package:fixie_server/src/generated/journal_log.dart';
+import 'package:collection/collection.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
@@ -30,6 +29,61 @@ class JournalEndpoint extends Endpoint {
       storageId: 'public',
       path: path,
     );
+  }
+
+  Future<List<JournalLog>> getLogsForRange(
+    Session session, {
+    required DateTime start,
+    required DateTime end,
+  }) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
+
+    int monthIndex = start.day + 7;
+
+    int weekIndex = start.weekday;
+
+    List<Goal> goals = await Goal.db.find(
+      session,
+      include: Goal.include(
+        days: RepeatableDays.includeList(
+          where: (t) => t.day.equals(monthIndex) | t.day.equals(weekIndex),
+        ),
+      ),
+      where: (t) =>
+          (t.userId.equals(user.id)) &
+          ((t.end > DateTime.now()) | t.setEnd.equals(false)),
+    );
+
+    List<JournalLog> definedLogs = await JournalLog.db.find(
+      session,
+      where: (t) => t.goalId.inSet(
+        goals.map((e) => e.id!).toSet(),
+      ),
+    );
+
+    List<JournalLog> logs = [];
+
+    for (Goal goal in goals) {
+      JournalLog? definedLog = definedLogs.firstWhereOrNull(
+        (e) => e.goalId == goal.id,
+      );
+
+      if (definedLog != null) {
+        logs.add(definedLog);
+        continue;
+      }
+
+      logs.add(
+        JournalLog(
+          goalId: goal.id!,
+          text: '',
+          createdAt: DateTime.now(),
+          modifiedAt: DateTime.now(),
+        ),
+      );
+    }
+
+    return logs;
   }
 
   Future<int> addLog(Session session, int goalId, JournalLog log) async {

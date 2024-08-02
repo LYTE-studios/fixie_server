@@ -1,0 +1,166 @@
+{
+  "actions": [
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "goal",
+        "schema": "public",
+        "addColumns": [],
+        "deleteColumns": [
+          "targetPeriod",
+          "repetition",
+          "days",
+          "setEnd"
+        ],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [],
+        "deleteForeignKeys": [],
+        "warnings": [
+          {
+            "type": "columnDropped",
+            "message": "Column \"targetPeriod\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "targetPeriod"
+            ],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"repetition\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "repetition"
+            ],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"days\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "days"
+            ],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"setEnd\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "setEnd"
+            ],
+            "destrucive": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "repeatable_days",
+        "dartName": "RepeatableDays",
+        "module": "fixie",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('repeatable_days_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "day",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "extraInfo",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "name": "_goalDaysGoalId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "repeatable_days_fk_0",
+            "columns": [
+              "_goalDaysGoalId"
+            ],
+            "referenceTable": "goal",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "repeatable_days_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"targetPeriod\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "targetPeriod"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"repetition\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "repetition"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"days\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "days"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"setEnd\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "setEnd"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}
