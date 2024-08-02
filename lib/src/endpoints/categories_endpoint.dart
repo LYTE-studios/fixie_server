@@ -3,7 +3,7 @@ import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 
 class CategoriesEndpoint extends Endpoint {
-  Future<int?> addCategory(Session session, CreateCategoryDto dto) async {
+  Future<Category?> addCategory(Session session, CreateCategoryDto dto) async {
     await AuthUtils.getAuthenticatedUser(session);
 
     Category created = await Category.db.insertRow(
@@ -16,7 +16,7 @@ class CategoriesEndpoint extends Endpoint {
       ),
     );
 
-    return created.id;
+    return created;
   }
 
   Future<List<Category>> getActiveCategories(Session session) async {
