@@ -39,7 +39,7 @@ class CategoriesEndpoint extends Endpoint {
       if (goal.category == null) {
         continue;
       }
-      if (categories.contains(goal.category)) {
+      if (categories.map((e) => e.id).contains(goal.category?.id)) {
         continue;
       }
       categories.add(goal.category!);
