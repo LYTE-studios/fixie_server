@@ -4,6 +4,13 @@ categories:
 file:
   - getUploadDescription:
   - verifyUpload:
+goals:
+  - addGoal:
+  - addRepeatsForGoal:
+  - getGoal:
+  - getGoals:
+  - updateGoal:
+  - deleteGoal:
 journal:
   - getImageUploadDescription:
   - verifyUpload:
