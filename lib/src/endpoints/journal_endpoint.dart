@@ -45,6 +45,7 @@ class JournalEndpoint extends Endpoint {
     List<Goal> goals = await Goal.db.find(
       session,
       include: Goal.include(
+        category: Category.include(),
         days: RepeatableDays.includeList(
           where: (t) => t.day.equals(monthIndex) | t.day.equals(weekIndex),
         ),
@@ -79,6 +80,7 @@ class JournalEndpoint extends Endpoint {
       logs.add(
         JournalLog(
           goalId: goal.id!,
+          goal: goal,
           text: '',
           createdAt: DateTime.now(),
           modifiedAt: DateTime.now(),
