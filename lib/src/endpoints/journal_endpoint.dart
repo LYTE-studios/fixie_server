@@ -54,6 +54,11 @@ class JournalEndpoint extends Endpoint {
 
     List<JournalLog> definedLogs = await JournalLog.db.find(
       session,
+      include: JournalLog.include(
+        goal: Goal.include(
+          category: Category.include(),
+        ),
+      ),
       where: (t) => t.goalId.inSet(
         goals.map((e) => e.id!).toSet(),
       ),
