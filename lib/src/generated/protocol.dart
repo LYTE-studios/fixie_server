@@ -25,8 +25,7 @@ import 'users/user.dart' as _i13;
 import 'users/user_profile_dto.dart' as _i14;
 import 'protocol.dart' as _i15;
 import 'package:fixie_server/src/generated/category/category.dart' as _i16;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i17;
-import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i18;
+import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i17;
 export 'category/category.dart';
 export 'category/create_category_dto.dart';
 export 'endpoint_exception.dart';
@@ -418,16 +417,16 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'String?',
         ),
         _i2.ColumnDefinition(
-          name: '_goalDaysGoalId',
+          name: 'goalId',
           columnType: _i2.ColumnType.bigint,
-          isNullable: true,
-          dartType: 'int?',
+          isNullable: false,
+          dartType: 'int',
         ),
       ],
       foreignKeys: [
         _i2.ForeignKeyDefinition(
           constraintName: 'repeatable_days_fk_0',
-          columns: ['_goalDaysGoalId'],
+          columns: ['goalId'],
           referenceTable: 'goal',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
@@ -557,22 +556,17 @@ class Protocol extends _i1.SerializationManagerServer {
       return (data as List).map((e) => deserialize<_i16.Category>(e)).toList()
           as dynamic;
     }
-    if (t == _i1.getType<List<_i17.Goal>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<_i17.Goal>(e)).toList()
-          : null) as dynamic;
-    }
     if (t == Map<String, String?>) {
       return (data as Map).map((k, v) =>
           MapEntry(deserialize<String>(k), deserialize<String?>(v))) as dynamic;
     }
-    if (t == List<_i18.JournalLog>) {
-      return (data as List).map((e) => deserialize<_i18.JournalLog>(e)).toList()
+    if (t == List<_i17.JournalLog>) {
+      return (data as List).map((e) => deserialize<_i17.JournalLog>(e)).toList()
           as dynamic;
     }
-    if (t == _i1.getType<List<_i18.JournalLog>?>()) {
+    if (t == _i1.getType<List<_i17.JournalLog>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i18.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i17.JournalLog>(e)).toList()
           : null) as dynamic;
     }
     try {

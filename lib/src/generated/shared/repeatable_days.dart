@@ -9,6 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import '../protocol.dart' as _i2;
 
 abstract class RepeatableDays extends _i1.TableRow
     implements _i1.ProtocolSerialization {
@@ -16,12 +17,16 @@ abstract class RepeatableDays extends _i1.TableRow
     int? id,
     required this.day,
     this.extraInfo,
+    required this.goalId,
+    this.goal,
   }) : super(id);
 
   factory RepeatableDays({
     int? id,
     required int day,
     String? extraInfo,
+    required int goalId,
+    _i2.Goal? goal,
   }) = _RepeatableDaysImpl;
 
   factory RepeatableDays.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -29,6 +34,11 @@ abstract class RepeatableDays extends _i1.TableRow
       id: jsonSerialization['id'] as int?,
       day: jsonSerialization['day'] as int,
       extraInfo: jsonSerialization['extraInfo'] as String?,
+      goalId: jsonSerialization['goalId'] as int,
+      goal: jsonSerialization['goal'] == null
+          ? null
+          : _i2.Goal.fromJson(
+              (jsonSerialization['goal'] as Map<String, dynamic>)),
     );
   }
 
@@ -40,7 +50,9 @@ abstract class RepeatableDays extends _i1.TableRow
 
   String? extraInfo;
 
-  int? _goalDaysGoalId;
+  int goalId;
+
+  _i2.Goal? goal;
 
   @override
   _i1.Table get table => t;
@@ -49,6 +61,8 @@ abstract class RepeatableDays extends _i1.TableRow
     int? id,
     int? day,
     String? extraInfo,
+    int? goalId,
+    _i2.Goal? goal,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -56,7 +70,8 @@ abstract class RepeatableDays extends _i1.TableRow
       if (id != null) 'id': id,
       'day': day,
       if (extraInfo != null) 'extraInfo': extraInfo,
-      if (_goalDaysGoalId != null) '_goalDaysGoalId': _goalDaysGoalId,
+      'goalId': goalId,
+      if (goal != null) 'goal': goal?.toJson(),
     };
   }
 
@@ -66,11 +81,13 @@ abstract class RepeatableDays extends _i1.TableRow
       if (id != null) 'id': id,
       'day': day,
       if (extraInfo != null) 'extraInfo': extraInfo,
+      'goalId': goalId,
+      if (goal != null) 'goal': goal?.toJsonForProtocol(),
     };
   }
 
-  static RepeatableDaysInclude include() {
-    return RepeatableDaysInclude._();
+  static RepeatableDaysInclude include({_i2.GoalInclude? goal}) {
+    return RepeatableDaysInclude._(goal: goal);
   }
 
   static RepeatableDaysIncludeList includeList({
@@ -106,10 +123,14 @@ class _RepeatableDaysImpl extends RepeatableDays {
     int? id,
     required int day,
     String? extraInfo,
+    required int goalId,
+    _i2.Goal? goal,
   }) : super._(
           id: id,
           day: day,
           extraInfo: extraInfo,
+          goalId: goalId,
+          goal: goal,
         );
 
   @override
@@ -117,46 +138,16 @@ class _RepeatableDaysImpl extends RepeatableDays {
     Object? id = _Undefined,
     int? day,
     Object? extraInfo = _Undefined,
+    int? goalId,
+    Object? goal = _Undefined,
   }) {
     return RepeatableDays(
       id: id is int? ? id : this.id,
       day: day ?? this.day,
       extraInfo: extraInfo is String? ? extraInfo : this.extraInfo,
+      goalId: goalId ?? this.goalId,
+      goal: goal is _i2.Goal? ? goal : this.goal?.copyWith(),
     );
-  }
-}
-
-class RepeatableDaysImplicit extends _RepeatableDaysImpl {
-  RepeatableDaysImplicit._({
-    int? id,
-    required int day,
-    String? extraInfo,
-    this.$_goalDaysGoalId,
-  }) : super(
-          id: id,
-          day: day,
-          extraInfo: extraInfo,
-        );
-
-  factory RepeatableDaysImplicit(
-    RepeatableDays repeatableDays, {
-    int? $_goalDaysGoalId,
-  }) {
-    return RepeatableDaysImplicit._(
-      id: repeatableDays.id,
-      day: repeatableDays.day,
-      extraInfo: repeatableDays.extraInfo,
-      $_goalDaysGoalId: $_goalDaysGoalId,
-    );
-  }
-
-  int? $_goalDaysGoalId;
-
-  @override
-  Map<String, dynamic> toJson() {
-    var jsonMap = super.toJson();
-    jsonMap.addAll({'_goalDaysGoalId': $_goalDaysGoalId});
-    return jsonMap;
   }
 }
 
@@ -171,8 +162,8 @@ class RepeatableDaysTable extends _i1.Table {
       'extraInfo',
       this,
     );
-    $_goalDaysGoalId = _i1.ColumnInt(
-      '_goalDaysGoalId',
+    goalId = _i1.ColumnInt(
+      'goalId',
       this,
     );
   }
@@ -181,22 +172,49 @@ class RepeatableDaysTable extends _i1.Table {
 
   late final _i1.ColumnString extraInfo;
 
-  late final _i1.ColumnInt $_goalDaysGoalId;
+  late final _i1.ColumnInt goalId;
+
+  _i2.GoalTable? _goal;
+
+  _i2.GoalTable get goal {
+    if (_goal != null) return _goal!;
+    _goal = _i1.createRelationTable(
+      relationFieldName: 'goal',
+      field: RepeatableDays.t.goalId,
+      foreignField: _i2.Goal.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i2.GoalTable(tableRelation: foreignTableRelation),
+    );
+    return _goal!;
+  }
 
   @override
   List<_i1.Column> get columns => [
         id,
         day,
         extraInfo,
-        $_goalDaysGoalId,
+        goalId,
       ];
+
+  @override
+  _i1.Table? getRelationTable(String relationField) {
+    if (relationField == 'goal') {
+      return goal;
+    }
+    return null;
+  }
 }
 
 class RepeatableDaysInclude extends _i1.IncludeObject {
-  RepeatableDaysInclude._();
+  RepeatableDaysInclude._({_i2.GoalInclude? goal}) {
+    _goal = goal;
+  }
+
+  _i2.GoalInclude? _goal;
 
   @override
-  Map<String, _i1.Include?> get includes => {};
+  Map<String, _i1.Include?> get includes => {'goal': _goal};
 
   @override
   _i1.Table get table => RepeatableDays.t;
@@ -225,6 +243,8 @@ class RepeatableDaysIncludeList extends _i1.IncludeList {
 class RepeatableDaysRepository {
   const RepeatableDaysRepository._();
 
+  final attachRow = const RepeatableDaysAttachRowRepository._();
+
   Future<List<RepeatableDays>> find(
     _i1.Session session, {
     _i1.WhereExpressionBuilder<RepeatableDaysTable>? where,
@@ -234,6 +254,7 @@ class RepeatableDaysRepository {
     bool orderDescending = false,
     _i1.OrderByListBuilder<RepeatableDaysTable>? orderByList,
     _i1.Transaction? transaction,
+    RepeatableDaysInclude? include,
   }) async {
     return session.db.find<RepeatableDays>(
       where: where?.call(RepeatableDays.t),
@@ -243,6 +264,7 @@ class RepeatableDaysRepository {
       limit: limit,
       offset: offset,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -254,6 +276,7 @@ class RepeatableDaysRepository {
     bool orderDescending = false,
     _i1.OrderByListBuilder<RepeatableDaysTable>? orderByList,
     _i1.Transaction? transaction,
+    RepeatableDaysInclude? include,
   }) async {
     return session.db.findFirstRow<RepeatableDays>(
       where: where?.call(RepeatableDays.t),
@@ -262,6 +285,7 @@ class RepeatableDaysRepository {
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -269,10 +293,12 @@ class RepeatableDaysRepository {
     _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
+    RepeatableDaysInclude? include,
   }) async {
     return session.db.findById<RepeatableDays>(
       id,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -367,6 +393,29 @@ class RepeatableDaysRepository {
       where: where?.call(RepeatableDays.t),
       limit: limit,
       transaction: transaction,
+    );
+  }
+}
+
+class RepeatableDaysAttachRowRepository {
+  const RepeatableDaysAttachRowRepository._();
+
+  Future<void> goal(
+    _i1.Session session,
+    RepeatableDays repeatableDays,
+    _i2.Goal goal,
+  ) async {
+    if (repeatableDays.id == null) {
+      throw ArgumentError.notNull('repeatableDays.id');
+    }
+    if (goal.id == null) {
+      throw ArgumentError.notNull('goal.id');
+    }
+
+    var $repeatableDays = repeatableDays.copyWith(goalId: goal.id);
+    await session.db.updateRow<RepeatableDays>(
+      $repeatableDays,
+      columns: [RepeatableDays.t.goalId],
     );
   }
 }

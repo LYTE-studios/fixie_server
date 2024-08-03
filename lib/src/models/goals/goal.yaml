@@ -7,7 +7,7 @@ fields:
   target: int
   unit: String? # The unit of measurement. For example Liters
   category: Category?, relation
-  days: List<RepeatableDays>?, relation
+  days: List<RepeatableDays>?, relation(name=goal_repeatable_days)
   end: DateTime?
   setRemind: bool
   remindHour: int? # 0-12h

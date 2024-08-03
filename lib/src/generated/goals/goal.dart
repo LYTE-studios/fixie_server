@@ -511,7 +511,7 @@ class GoalTable extends _i1.Table {
     ___days = _i1.createRelationTable(
       relationFieldName: '__days',
       field: Goal.t.id,
-      foreignField: _i2.RepeatableDays.t.$_goalDaysGoalId,
+      foreignField: _i2.RepeatableDays.t.goalId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
           _i2.RepeatableDaysTable(tableRelation: foreignTableRelation),
@@ -537,7 +537,7 @@ class GoalTable extends _i1.Table {
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'days',
       field: Goal.t.id,
-      foreignField: _i2.RepeatableDays.t.$_goalDaysGoalId,
+      foreignField: _i2.RepeatableDays.t.goalId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
           _i2.RepeatableDaysTable(tableRelation: foreignTableRelation),
@@ -838,15 +838,11 @@ class GoalAttachRepository {
       throw ArgumentError.notNull('goal.id');
     }
 
-    var $repeatableDays = repeatableDays
-        .map((e) => _i2.RepeatableDaysImplicit(
-              e,
-              $_goalDaysGoalId: goal.id,
-            ))
-        .toList();
+    var $repeatableDays =
+        repeatableDays.map((e) => e.copyWith(goalId: goal.id)).toList();
     await session.db.update<_i2.RepeatableDays>(
       $repeatableDays,
-      columns: [_i2.RepeatableDays.t.$_goalDaysGoalId],
+      columns: [_i2.RepeatableDays.t.goalId],
     );
   }
 
@@ -924,13 +920,10 @@ class GoalAttachRowRepository {
       throw ArgumentError.notNull('goal.id');
     }
 
-    var $repeatableDays = _i2.RepeatableDaysImplicit(
-      repeatableDays,
-      $_goalDaysGoalId: goal.id,
-    );
+    var $repeatableDays = repeatableDays.copyWith(goalId: goal.id);
     await session.db.updateRow<_i2.RepeatableDays>(
       $repeatableDays,
-      columns: [_i2.RepeatableDays.t.$_goalDaysGoalId],
+      columns: [_i2.RepeatableDays.t.goalId],
     );
   }
 
@@ -965,15 +958,11 @@ class GoalDetachRepository {
       throw ArgumentError.notNull('repeatableDays.id');
     }
 
-    var $repeatableDays = repeatableDays
-        .map((e) => _i2.RepeatableDaysImplicit(
-              e,
-              $_goalDaysGoalId: null,
-            ))
-        .toList();
+    var $repeatableDays =
+        repeatableDays.map((e) => e.copyWith(goalId: null)).toList();
     await session.db.update<_i2.RepeatableDays>(
       $repeatableDays,
-      columns: [_i2.RepeatableDays.t.$_goalDaysGoalId],
+      columns: [_i2.RepeatableDays.t.goalId],
     );
   }
 
@@ -1004,13 +993,10 @@ class GoalDetachRowRepository {
       throw ArgumentError.notNull('repeatableDays.id');
     }
 
-    var $repeatableDays = _i2.RepeatableDaysImplicit(
-      repeatableDays,
-      $_goalDaysGoalId: null,
-    );
+    var $repeatableDays = repeatableDays.copyWith(goalId: null);
     await session.db.updateRow<_i2.RepeatableDays>(
       $repeatableDays,
-      columns: [_i2.RepeatableDays.t.$_goalDaysGoalId],
+      columns: [_i2.RepeatableDays.t.goalId],
     );
   }
 

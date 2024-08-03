@@ -4,12 +4,6 @@ categories:
 file:
   - getUploadDescription:
   - verifyUpload:
-goals:
-  - addGoal:
-  - getGoal:
-  - getGoals:
-  - updateGoal:
-  - deleteGoal:
 journal:
   - getImageUploadDescription:
   - verifyUpload:

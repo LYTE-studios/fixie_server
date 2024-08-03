@@ -5,10 +5,10 @@ import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 
 class GoalsEndpoint extends Endpoint {
-  Future<int> addGoal(Session session, CreateGoalDto dto) async {
+  Future<Goal> addGoal(Session session, CreateGoalDto dto) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
-    await Goal.db.insertRow(
+    Goal goal = await Goal.db.insertRow(
       session,
       Goal(
         title: dto.title,
@@ -20,13 +20,47 @@ class GoalsEndpoint extends Endpoint {
         archived: false,
         picture: dto.picture,
         unit: dto.unit,
-        days: dto.days,
         end: dto.end,
         remindMinutes: dto.remindMinutes,
         remindHour: dto.remindHour,
         remindHalf: dto.remindHalf,
         remindTimezone: dto.remindTimezone,
       ),
+    );
+
+    if (dto.days != null) {
+      addRepeatsForGoal(
+        session,
+        goalId: goal.id!,
+        days: dto.days!,
+      );
+    }
+
+    return goal;
+  }
+
+  Future<int> addRepeatsForGoal(
+    Session session, {
+    required int goalId,
+    required List<RepeatableDays> days,
+  }) async {
+    await AuthUtils.getAuthenticatedUser(session);
+
+    List<RepeatableDays> newDays = [];
+
+    for (RepeatableDays day in days) {
+      newDays.add(
+        RepeatableDays(
+          day: day.day,
+          extraInfo: day.extraInfo,
+          goalId: goalId,
+        ),
+      );
+    }
+
+    await RepeatableDays.db.insert(
+      session,
+      newDays,
     );
 
     return HttpStatus.ok;
