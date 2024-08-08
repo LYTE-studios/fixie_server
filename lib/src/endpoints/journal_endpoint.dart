@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
@@ -96,7 +95,7 @@ class JournalEndpoint extends Endpoint {
     return logs;
   }
 
-  Future<int> addLog(Session session, int goalId, JournalLog log) async {
+  Future<JournalLog> addLog(Session session, int goalId, JournalLog log) async {
     await AuthUtils.getAuthenticatedUser(session);
 
     var goal = await Goal.db.findById(session, goalId);
@@ -113,10 +112,13 @@ class JournalEndpoint extends Endpoint {
     var journalCheck = await JournalLog.db.findById(session, newJournal.id!);
 
     if (journalCheck == null) {
-      return HttpStatus.notModified;
+      throw EndpointException(
+        message: 'Journal log could not be created.',
+        errorType: ErrorType.databaseError,
+      );
     }
 
-    return HttpStatus.ok;
+    return journalCheck;
   }
 
   Future<JournalLog?> getLog(Session session, int? logId) async {
