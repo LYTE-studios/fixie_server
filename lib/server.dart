@@ -64,8 +64,12 @@ void run(List<String> args) async {
       },
       sendPasswordResetEmail: (session, userInfo, validationCode) async {
         // Retrieve the credentials
-        final gmailEmail = session.serverpod.getPassword('gmailEmail')!;
-        final gmailPassword = session.serverpod.getPassword('gmailPassword')!;
+        final gmailEmail = session.serverpod.getPassword('gmailEmail');
+        final gmailPassword = session.serverpod.getPassword('gmailPassword');
+
+        if (gmailEmail == null || gmailPassword == null) {
+          throw Exception('Email setup incomplete');
+        }
 
         // Create a SMTP client for Gmail.
         final smtpServer = gmail(gmailEmail, gmailPassword);

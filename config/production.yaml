@@ -14,7 +14,7 @@ apiServer:
 # Configuration for the Insights server.
 insightsServer:
   port: 8081
-  publicHost: insights.fixie.lytestudios.be
+  publicHost: api.fixie.lytestudios.be
   publicPort: 443
   publicScheme: https
 
