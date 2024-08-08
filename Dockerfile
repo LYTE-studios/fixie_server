@@ -6,8 +6,6 @@ WORKDIR /app
 COPY . .
 
 RUN dart pub get
-RUN dart pub global activate serverpod_cli
-RUN dart run bin/main.dart --mode production --role maintenance --apply-migrations
 RUN dart compile exe bin/main.dart -o bin/main
 
 # If you update the busybox version, make sure the image is
