@@ -5,6 +5,7 @@ FROM dart:3.2.5 AS build
 WORKDIR /app
 COPY . .
 
+RUN apt upgrade dart
 RUN dart pub get
 RUN dart compile exe bin/main.dart -o bin/main
 
