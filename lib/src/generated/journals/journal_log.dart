@@ -23,6 +23,7 @@ abstract class JournalLog extends _i1.TableRow
     this.loggedValue,
     required this.createdAt,
     required this.modifiedAt,
+    required this.date,
   }) : super(id);
 
   factory JournalLog({
@@ -34,6 +35,7 @@ abstract class JournalLog extends _i1.TableRow
     double? loggedValue,
     required DateTime createdAt,
     required DateTime modifiedAt,
+    required DateTime date,
   }) = _JournalLogImpl;
 
   factory JournalLog.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -51,6 +53,7 @@ abstract class JournalLog extends _i1.TableRow
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
       modifiedAt:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['modifiedAt']),
+      date: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['date']),
     );
   }
 
@@ -72,6 +75,8 @@ abstract class JournalLog extends _i1.TableRow
 
   DateTime modifiedAt;
 
+  DateTime date;
+
   @override
   _i1.Table get table => t;
 
@@ -84,6 +89,7 @@ abstract class JournalLog extends _i1.TableRow
     double? loggedValue,
     DateTime? createdAt,
     DateTime? modifiedAt,
+    DateTime? date,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -96,6 +102,7 @@ abstract class JournalLog extends _i1.TableRow
       if (loggedValue != null) 'loggedValue': loggedValue,
       'createdAt': createdAt.toJson(),
       'modifiedAt': modifiedAt.toJson(),
+      'date': date.toJson(),
     };
   }
 
@@ -110,6 +117,7 @@ abstract class JournalLog extends _i1.TableRow
       if (loggedValue != null) 'loggedValue': loggedValue,
       'createdAt': createdAt.toJson(),
       'modifiedAt': modifiedAt.toJson(),
+      'date': date.toJson(),
     };
   }
 
@@ -155,6 +163,7 @@ class _JournalLogImpl extends JournalLog {
     double? loggedValue,
     required DateTime createdAt,
     required DateTime modifiedAt,
+    required DateTime date,
   }) : super._(
           id: id,
           goalId: goalId,
@@ -164,6 +173,7 @@ class _JournalLogImpl extends JournalLog {
           loggedValue: loggedValue,
           createdAt: createdAt,
           modifiedAt: modifiedAt,
+          date: date,
         );
 
   @override
@@ -176,6 +186,7 @@ class _JournalLogImpl extends JournalLog {
     Object? loggedValue = _Undefined,
     DateTime? createdAt,
     DateTime? modifiedAt,
+    DateTime? date,
   }) {
     return JournalLog(
       id: id is int? ? id : this.id,
@@ -186,6 +197,7 @@ class _JournalLogImpl extends JournalLog {
       loggedValue: loggedValue is double? ? loggedValue : this.loggedValue,
       createdAt: createdAt ?? this.createdAt,
       modifiedAt: modifiedAt ?? this.modifiedAt,
+      date: date ?? this.date,
     );
   }
 }
@@ -216,6 +228,10 @@ class JournalLogTable extends _i1.Table {
       'modifiedAt',
       this,
     );
+    date = _i1.ColumnDateTime(
+      'date',
+      this,
+    );
   }
 
   late final _i1.ColumnInt goalId;
@@ -231,6 +247,8 @@ class JournalLogTable extends _i1.Table {
   late final _i1.ColumnDateTime createdAt;
 
   late final _i1.ColumnDateTime modifiedAt;
+
+  late final _i1.ColumnDateTime date;
 
   _i2.GoalTable get goal {
     if (_goal != null) return _goal!;
@@ -254,6 +272,7 @@ class JournalLogTable extends _i1.Table {
         loggedValue,
         createdAt,
         modifiedAt,
+        date,
       ];
 
   @override

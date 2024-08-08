@@ -30,8 +30,14 @@
           {
             "name": "icon",
             "columnType": 0,
-            "isNullable": false,
-            "dartType": "String"
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "name": "userId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
           }
         ],
         "foreignKeys": [],
@@ -78,6 +84,12 @@
             "columnType": 4,
             "isNullable": true,
             "dartType": "DateTime?"
+          },
+          {
+            "name": "highestStreak",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
           }
         ],
         "foreignKeys": [
@@ -152,34 +164,16 @@
             "dartType": "int"
           },
           {
-            "name": "targetPeriod",
+            "name": "unit",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "name": "categoryId",
             "columnType": 6,
             "isNullable": false,
-            "dartType": "protocol:TargetPeriod"
-          },
-          {
-            "name": "category",
-            "columnType": 8,
-            "isNullable": false,
-            "dartType": "protocol:Category"
-          },
-          {
-            "name": "repetition",
-            "columnType": 0,
-            "isNullable": false,
-            "dartType": "protocol:Repetition"
-          },
-          {
-            "name": "days",
-            "columnType": 8,
-            "isNullable": true,
-            "dartType": "List<protocol:Days>?"
-          },
-          {
-            "name": "setEnd",
-            "columnType": 1,
-            "isNullable": false,
-            "dartType": "bool"
+            "dartType": "int"
           },
           {
             "name": "end",
@@ -216,6 +210,30 @@
             "columnType": 0,
             "isNullable": true,
             "dartType": "String?"
+          },
+          {
+            "name": "currentStreak",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          },
+          {
+            "name": "highestStreak",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          },
+          {
+            "name": "active",
+            "columnType": 1,
+            "isNullable": false,
+            "dartType": "bool"
+          },
+          {
+            "name": "archived",
+            "columnType": 1,
+            "isNullable": false,
+            "dartType": "bool"
           }
         ],
         "foreignKeys": [
@@ -225,6 +243,19 @@
               "userId"
             ],
             "referenceTable": "fixie_user",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "goal_fk_1",
+            "columns": [
+              "categoryId"
+            ],
+            "referenceTable": "category",
             "referenceTableSchema": "public",
             "referenceColumns": [
               "id"
@@ -278,16 +309,34 @@
             "dartType": "String"
           },
           {
-            "name": "date",
+            "name": "picture",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "name": "loggedValue",
+            "columnType": 3,
+            "isNullable": true,
+            "dartType": "double?"
+          },
+          {
+            "name": "createdAt",
             "columnType": 4,
             "isNullable": false,
             "dartType": "DateTime"
           },
           {
-            "name": "picture",
-            "columnType": 0,
-            "isNullable": true,
-            "dartType": "String?"
+            "name": "modifiedAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "date",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
           }
         ],
         "foreignKeys": [
@@ -308,6 +357,72 @@
         "indexes": [
           {
             "indexName": "journal_log_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "repeatable_days",
+        "dartName": "RepeatableDays",
+        "module": "fixie",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('repeatable_days_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "day",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "extraInfo",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "name": "goalId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "repeatable_days_fk_0",
+            "columns": [
+              "goalId"
+            ],
+            "referenceTable": "goal",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "repeatable_days_pkey",
             "elements": [
               {
                 "type": 0,

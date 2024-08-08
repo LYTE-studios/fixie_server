@@ -7,7 +7,8 @@ CREATE TABLE "category" (
     "id" bigserial PRIMARY KEY,
     "title" text NOT NULL,
     "color" text NOT NULL,
-    "icon" text NOT NULL
+    "icon" text,
+    "userId" bigint
 );
 
 --
@@ -29,11 +30,8 @@ CREATE TABLE "goal" (
     "userId" bigint NOT NULL,
     "picture" text,
     "target" bigint NOT NULL,
-    "targetPeriod" bigint NOT NULL,
-    "category" json NOT NULL,
-    "repetition" text NOT NULL,
-    "days" json,
-    "setEnd" boolean NOT NULL,
+    "unit" text,
+    "categoryId" bigint NOT NULL,
     "end" timestamp without time zone,
     "setRemind" boolean NOT NULL,
     "remindHour" bigint,
@@ -42,7 +40,8 @@ CREATE TABLE "goal" (
     "remindTimezone" text,
     "currentStreak" bigint,
     "highestStreak" bigint,
-    "unit" text
+    "active" boolean NOT NULL,
+    "archived" boolean NOT NULL
 );
 
 --
@@ -55,7 +54,18 @@ CREATE TABLE "journal_log" (
     "picture" text,
     "loggedValue" double precision,
     "createdAt" timestamp without time zone NOT NULL,
-    "modifiedAt" timestamp without time zone NOT NULL
+    "modifiedAt" timestamp without time zone NOT NULL,
+    "date" timestamp without time zone NOT NULL
+);
+
+--
+-- Class RepeatableDays as table repeatable_days
+--
+CREATE TABLE "repeatable_days" (
+    "id" bigserial PRIMARY KEY,
+    "day" bigint NOT NULL,
+    "extraInfo" text,
+    "goalId" bigint NOT NULL
 );
 
 --
@@ -395,12 +405,28 @@ ALTER TABLE ONLY "goal"
     REFERENCES "fixie_user"("id")
     ON DELETE NO ACTION
     ON UPDATE NO ACTION;
+ALTER TABLE ONLY "goal"
+    ADD CONSTRAINT "goal_fk_1"
+    FOREIGN KEY("categoryId")
+    REFERENCES "category"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
 
 --
 -- Foreign relations for "journal_log" table
 --
 ALTER TABLE ONLY "journal_log"
     ADD CONSTRAINT "journal_log_fk_0"
+    FOREIGN KEY("goalId")
+    REFERENCES "goal"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
+-- Foreign relations for "repeatable_days" table
+--
+ALTER TABLE ONLY "repeatable_days"
+    ADD CONSTRAINT "repeatable_days_fk_0"
     FOREIGN KEY("goalId")
     REFERENCES "goal"("id")
     ON DELETE NO ACTION
@@ -441,9 +467,9 @@ ALTER TABLE ONLY "serverpod_query_log"
 -- MIGRATION VERSION FOR fixie
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
-    VALUES ('fixie', '20240801144230253', now())
+    VALUES ('fixie', '20240808131426178', now())
     ON CONFLICT ("module")
-    DO UPDATE SET "version" = '20240801144230253', "timestamp" = now();
+    DO UPDATE SET "version" = '20240808131426178', "timestamp" = now();
 
 --
 -- MIGRATION VERSION FOR serverpod

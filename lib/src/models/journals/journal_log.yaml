@@ -7,3 +7,4 @@ fields:
   loggedValue: double? # The amount registered by the user
   createdAt: DateTime # Creation time
   modifiedAt: DateTime # Last modification time
+  date: DateTime # The date of journal log
