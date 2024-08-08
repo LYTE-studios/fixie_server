@@ -59,9 +59,14 @@ class JournalEndpoint extends Endpoint {
           category: Category.include(),
         ),
       ),
-      where: (t) => t.goalId.inSet(
-        goals.map((e) => e.id!).toSet(),
-      ),
+      where: (t) =>
+          t.goalId.inSet(
+            goals.map((e) => e.id!).toSet(),
+          ) &
+          t.date.between(
+            start,
+            end,
+          ),
     );
 
     List<JournalLog> logs = [];
