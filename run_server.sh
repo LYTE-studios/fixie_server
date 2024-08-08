@@ -3,7 +3,7 @@ docker build -t fixie_server .
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 
-docker run -dp 127.0.0.1:8080:8080 fixie_server
+docker run -d -p 8080:8080 -p 8081:8081 fixie_server
 
 sudo rm /etc/nginx/certificate.crt
 sudo rm /etc/nginx/private.key
