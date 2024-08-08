@@ -1,11 +1,10 @@
 # If you update the dart version, make sure the image is
 # compatible with the busybox image.
-FROM dart:3.2.5 AS build
+FROM dart:3.4.0 AS build
 
 WORKDIR /app
 COPY . .
 
-RUN apt upgrade dart
 RUN dart pub get
 RUN dart compile exe bin/main.dart -o bin/main
 
