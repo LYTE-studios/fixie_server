@@ -41,7 +41,6 @@ void run(List<String> args) async {
     public: true,
     region: 'eu-central-1',
     bucket: 'arn:aws:s3:::fixie-public-storage-4138473',
-    publicHost: 'storage.fixie.lytestudios.be',
   ));
 
   auth.AuthConfig.set(
