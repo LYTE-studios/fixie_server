@@ -8,6 +8,13 @@ class GoalsEndpoint extends Endpoint {
   Future<Goal> addGoal(Session session, CreateGoalDto dto) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
+    if (dto.category == null) {
+      throw EndpointException(
+        errorType: ErrorType.invalidInput,
+        message: 'Please provide a goal category!',
+      );
+    }
+
     Goal goal = await Goal.db.insertRow(
       session,
       Goal(

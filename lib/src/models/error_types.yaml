@@ -4,3 +4,4 @@ values:
   - notFound
   - authenticationError
   - databaseError
+  - invalidInput

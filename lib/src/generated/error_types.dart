@@ -13,7 +13,8 @@ import 'package:serverpod/serverpod.dart' as _i1;
 enum ErrorType implements _i1.SerializableModel {
   notFound,
   authenticationError,
-  databaseError;
+  databaseError,
+  invalidInput;
 
   static ErrorType fromJson(String name) {
     switch (name) {
@@ -23,6 +24,8 @@ enum ErrorType implements _i1.SerializableModel {
         return authenticationError;
       case 'databaseError':
         return databaseError;
+      case 'invalidInput':
+        return invalidInput;
       default:
         throw ArgumentError('Value "$name" cannot be converted to "ErrorType"');
     }
