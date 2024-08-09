@@ -35,13 +35,16 @@ void run(List<String> args) async {
     RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
     '/*',
   );
-  pod.addCloudStorage(s3.S3CloudStorage(
-    serverpod: pod,
-    storageId: 'public',
-    public: true,
-    region: 'eu-central-1',
-    bucket: 'arn:aws:s3:::fixie-public-storage-4138473',
-  ));
+  pod.addCloudStorage(
+    s3.S3CloudStorage(
+      serverpod: pod,
+      storageId: 'public',
+      public: true,
+      region: 'eu-central-1',
+      bucket: 'arn:aws:s3:::fixie-public-storage-4138473',
+      publicHost: 'storage.fixie.lytestudios.be',
+    ),
+  );
 
   auth.AuthConfig.set(
     auth.AuthConfig(
