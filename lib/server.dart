@@ -3,6 +3,8 @@ import 'package:mailer/smtp_server/gmail.dart';
 import 'package:serverpod/serverpod.dart';
 
 import 'package:fixie_server/src/web/routes/root.dart';
+import 'package:serverpod_cloud_storage_s3/serverpod_cloud_storage_s3.dart'
+    as s3;
 
 import 'src/generated/protocol.dart';
 import 'src/generated/endpoints.dart';
@@ -33,6 +35,14 @@ void run(List<String> args) async {
     RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
     '/*',
   );
+  pod.addCloudStorage(s3.S3CloudStorage(
+    serverpod: pod,
+    storageId: 'public',
+    public: true,
+    region: 'eu-central-1',
+    bucket: 'arn:aws:s3:::fixie-public-storage-4138473',
+    publicHost: 'storage.fixie.lytestudios.be',
+  ));
 
   auth.AuthConfig.set(
     auth.AuthConfig(

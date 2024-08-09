@@ -13,23 +13,31 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: "5aaf60d96c4cd00fe7f21594b5ad6a1b699c80a27420f8a837f4d68473ef09e3"
+      sha256: "45cfa8471b89fb6643fe9bf51bd7931a76b8f5ec2d65de4fb176dba8d4f22c77"
       url: "https://pub.dev"
     source: hosted
-    version: "68.0.0"
+    version: "73.0.0"
   _macros:
     dependency: transitive
     description: dart
     source: sdk
-    version: "0.1.0"
+    version: "0.3.2"
+  amazon_cognito_identity_dart_2:
+    dependency: transitive
+    description:
+      name: amazon_cognito_identity_dart_2
+      sha256: "7dba58d7cba61a9d98861d5bfc777a69aa60127e78da3778095213a7e3b1539a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.5"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
-      sha256: "21f1d3720fd1c70316399d5e2bccaebb415c434592d778cce8acb967b8578808"
+      sha256: "4959fec185fe70cce007c57e9ab6983101dbe593d2bf8bbfb4453aaec0cf470a"
       url: "https://pub.dev"
     source: hosted
-    version: "6.5.0"
+    version: "6.8.0"
   archive:
     dependency: transitive
     description:
@@ -78,6 +86,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
+  built_collection:
+    dependency: transitive
+    description:
+      name: built_collection
+      sha256: "376e3dd27b51ea877c28d525560790aee2e6fbb5f20e2f85d5081027d94e2100"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.1"
+  built_value:
+    dependency: transitive
+    description:
+      name: built_value
+      sha256: c7913a9737ee4007efedaffc968c049fd0f3d0e49109e778edc10de9426005cb
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.9.2"
   charcode:
     dependency: transitive
     description:
@@ -282,10 +306,10 @@ packages:
     dependency: transitive
     description:
       name: macros
-      sha256: "12e8a9842b5a7390de7a781ec63d793527582398d16ea26c60fed58833c9ae79"
+      sha256: "0acaed5d6b7eab89f63350bccd82119e6c602df0f391260d0e32b5e23db79536"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0-main.0"
+    version: "0.1.2-main.4"
   mailer:
     dependency: "direct main"
     description:
@@ -459,6 +483,14 @@ packages:
     description:
       name: serverpod_auth_server
       sha256: "012b1728af35667859886d953625b58c9388403c4b8057ee2de8e05b99ebb6bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
+  serverpod_cloud_storage_s3:
+    dependency: "direct main"
+    description:
+      name: serverpod_cloud_storage_s3
+      sha256: "632b9284058a1be42b30cd0d859750b4f5bb8d1210967a9deca944c6538dc413"
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
@@ -710,6 +742,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.5.0"
+  xml2json:
+    dependency: transitive
+    description:
+      name: xml2json
+      sha256: "52b7c8d350fdce09545b058982c26689ee89f1eb188cc9910d585665bfe27bc0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.3"
   yaml:
     dependency: transitive
     description:
