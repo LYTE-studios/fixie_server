@@ -11,6 +11,7 @@ goals:
   - getGoals:
   - updateGoal:
   - deleteGoal:
+  - resetGoals:
 journal:
   - getImageUploadDescription:
   - verifyUpload:

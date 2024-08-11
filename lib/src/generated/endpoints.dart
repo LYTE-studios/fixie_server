@@ -242,6 +242,15 @@ class Endpoints extends _i1.EndpointDispatch {
             params['goalId'],
           ),
         ),
+        'resetGoals': _i1.MethodConnector(
+          name: 'resetGoals',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['goals'] as _i4.GoalsEndpoint).resetGoals(session),
+        ),
       },
     );
     connectors['journal'] = _i1.EndpointConnector(

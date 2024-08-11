@@ -140,4 +140,21 @@ class GoalsEndpoint extends Endpoint {
       errorType: ErrorType.databaseError,
     );
   }
+
+  Future<void> resetGoals(Session session) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
+
+    List<Goal> goals = await Goal.db.find(
+      session,
+      where: (t) => t.userId.equals(
+        user.id,
+      ),
+    );
+
+    for (Goal goal in goals) {
+      goal.archived = true;
+
+      Goal.db.updateRow(session, goal);
+    }
+  }
 }
