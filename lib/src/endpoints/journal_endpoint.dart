@@ -146,6 +146,11 @@ class JournalEndpoint extends Endpoint {
 
     var list = await JournalLog.db.find(
       session,
+      include: JournalLog.include(
+        goal: Goal.include(
+          category: Category.include(),
+        ),
+      ),
       where: (p0) =>
           p0.goalId.equals(goalId) &
           (p0.text.notEquals('') |
