@@ -60,6 +60,7 @@ class JournalEndpoint extends Endpoint {
         ),
       ),
       where: (t) =>
+          t.goal.archived.notEquals(true) &
           t.goalId.inSet(
             goals.map((e) => e.id!).toSet(),
           ) &

@@ -96,7 +96,7 @@ class GoalsEndpoint extends Endpoint {
       include: Goal.include(
         category: Category.include(),
       ),
-      where: (p0) => p0.userId.equals(user.id),
+      where: (p0) => p0.userId.equals(user.id) & p0.archived.notEquals(true),
     );
 
     return list;
