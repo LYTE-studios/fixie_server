@@ -80,6 +80,7 @@ void run(List<String> args) async {
                     "Email": email,
                   }
                 ],
+                "TemplateLanguage": true,
                 "Variables": {
                   "verification_code": validationCode,
                 },
@@ -124,6 +125,7 @@ void run(List<String> args) async {
                     "Email": userInfo.email,
                   }
                 ],
+                "TemplateLanguage": true,
                 "Variables": {
                   "verification_code": validationCode,
                 },
