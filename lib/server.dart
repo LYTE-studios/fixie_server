@@ -50,6 +50,7 @@ void run(List<String> args) async {
   auth.AuthConfig.set(
     auth.AuthConfig(
       userCanEditFullName: true,
+      userCanEditUserImage: true,
       sendValidationEmail: (session, email, validationCode) async {
         final apiKey = session.serverpod.getPassword('mailjetApiKey');
         final secretKey = session.serverpod.getPassword('mailjetSecretKey');
