@@ -48,6 +48,14 @@ void run(List<String> args) async {
 
   auth.AuthConfig.set(
     auth.AuthConfig(
+      onUserCreated: (session, userInfo) async {
+        User user = await User.db.insertRow(
+          session,
+          User(
+            userInfoId: userInfo.id!,
+          ),
+        );
+      },
       sendValidationEmail: (session, email, validationCode) async {
         // // Retrieve the credentials
         // final gmailEmail = session.serverpod.getPassword('gmailEmail')!;
