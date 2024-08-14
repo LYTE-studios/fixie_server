@@ -80,7 +80,7 @@ void run(List<String> args) async {
                     "Email": email,
                   }
                 ],
-                "Vars": {
+                "Variables": {
                   "verification_code": validationCode,
                 },
               },
@@ -95,33 +95,48 @@ void run(List<String> args) async {
         return false;
       },
       sendPasswordResetEmail: (session, userInfo, validationCode) async {
-        // Retrieve the credentials
-        final gmailEmail = session.serverpod.getPassword('gmailEmail');
-        final gmailPassword = session.serverpod.getPassword('gmailPassword');
+        final apiKey = session.serverpod.getPassword('mailjetApiKey');
+        final secretKey = session.serverpod.getPassword('mailjetSecretKey');
 
-        if (gmailEmail == null || gmailPassword == null) {
-          throw Exception('Email setup incomplete');
-        }
+        String myEmail = "hello@fixie.world";
 
-        // Create a SMTP client for Gmail.
-        final smtpServer = gmail(gmailEmail, gmailPassword);
-
-        // Create an email message with the password reset link.
-        final message = Message()
-          ..from = Address(gmailEmail)
-          ..recipients.add(userInfo.email ?? '')
-          ..subject = 'Password reset link for Serverpod'
-          ..html = 'Here is your password reset code: $validationCode>';
-
-        // Send the email message.
-        try {
-          await send(message, smtpServer);
-        } catch (_) {
-          // Return false if the email could not be sent.
+        if (apiKey == null || secretKey == null) {
           return false;
         }
 
-        return true;
+        String mailjetUrl =
+            "https://$apiKey:$secretKey@api.mailjet.com/v3.1/send";
+
+        Dio dio = Dio();
+
+        Response response = await dio.post(
+          mailjetUrl,
+          data: {
+            "Messages": [
+              {
+                "TemplateID": 6209328,
+                "From": {
+                  "Email": myEmail,
+                  "Name": "Fixie",
+                },
+                "To": [
+                  {
+                    "Email": userInfo.email,
+                  }
+                ],
+                "Variables": {
+                  "verification_code": validationCode,
+                },
+              },
+            ],
+          },
+        );
+
+        if (response.statusCode == 200) {
+          return true;
+        }
+
+        return false;
       },
     ),
   );
