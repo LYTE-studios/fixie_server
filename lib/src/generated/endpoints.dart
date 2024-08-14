@@ -408,6 +408,16 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'profile',
       endpoint: endpoints['profile']!,
       methodConnectors: {
+        'deleteAccount': _i1.MethodConnector(
+          name: 'deleteAccount',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i6.ProfileEndpoint)
+                  .deleteAccount(session),
+        ),
         'createUser': _i1.MethodConnector(
           name: 'createUser',
           params: {

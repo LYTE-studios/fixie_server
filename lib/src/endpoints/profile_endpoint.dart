@@ -6,6 +6,36 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
 
 class ProfileEndpoint extends Endpoint {
+  Future<bool> deleteAccount(Session session) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
+
+    String? email = user.userInfo?.email;
+
+    if (email == null) {
+      return false;
+    }
+
+    await UserInfo.db.deleteRow(
+      session,
+      user.userInfo!,
+    );
+
+    await EmailAuth.db
+        .deleteWhere(session, where: (t) => t.email.equals(email));
+    await EmailCreateAccountRequest.db
+        .deleteWhere(session, where: (t) => t.email.equals(email));
+    await EmailFailedSignIn.db
+        .deleteWhere(session, where: (t) => t.email.equals(email));
+    await EmailReset.db
+        .deleteWhere(session, where: (t) => t.userId.equals(user.userInfoId));
+    await AuthKey.db
+        .deleteWhere(session, where: (t) => t.userId.equals(user.userInfoId));
+    await EmailAuth.db
+        .deleteWhere(session, where: (t) => t.email.equals(email));
+
+    return true;
+  }
+
   Future<int> createUser(
     Session session,
     UserInfo? user,

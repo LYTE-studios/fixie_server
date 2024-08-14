@@ -21,6 +21,7 @@ journal:
   - getJournal:
   - updateLog:
 profile:
+  - deleteAccount:
   - createUser:
   - getProfileData:
   - updateBirthday:
