@@ -49,7 +49,7 @@ class JournalEndpoint extends Endpoint {
           where: (t) => t.day.equals(monthIndex) | t.day.equals(weekIndex),
         ),
       ),
-      where: (t) => (t.userId.equals(user.id)),
+      where: (t) => (t.userId.equals(user.id) & t.archived.notEquals(true)),
     );
 
     List<JournalLog> definedLogs = await JournalLog.db.find(
@@ -60,7 +60,6 @@ class JournalEndpoint extends Endpoint {
         ),
       ),
       where: (t) =>
-          t.goal.archived.notEquals(true) &
           t.goalId.inSet(
             goals.map((e) => e.id!).toSet(),
           ) &
