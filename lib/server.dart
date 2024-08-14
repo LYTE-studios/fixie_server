@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:serverpod/serverpod.dart';
@@ -48,38 +49,50 @@ void run(List<String> args) async {
 
   auth.AuthConfig.set(
     auth.AuthConfig(
-      onUserCreated: (session, userInfo) async {
-        User user = await User.db.insertRow(
-          session,
-          User(
-            userInfoId: userInfo.id!,
-          ),
-        );
-      },
+      userCanEditFullName: true,
       sendValidationEmail: (session, email, validationCode) async {
-        // // Retrieve the credentials
-        // final gmailEmail = session.serverpod.getPassword('gmailEmail')!;
-        // final gmailPassword = session.serverpod.getPassword('gmailPassword')!;
+        final apiKey = session.serverpod.getPassword('mailjetApiKey');
+        final secretKey = session.serverpod.getPassword('mailjetSecretKey');
 
-        // // Create a SMTP client for Gmail.
-        // final smtpServer = gmail(gmailEmail, gmailPassword);
+        String myEmail = "hello@fixie.world";
 
-        // // Create an email message with the validation code.
-        // final message = Message()
-        //   ..from = Address(gmailEmail)
-        //   ..recipients.add(email)
-        //   ..subject = 'Verification code for Serverpod'
-        //   ..html = 'Your verification code is: $validationCode';
+        if (apiKey == null || secretKey == null) {
+          return false;
+        }
 
-        // // Send the email message.
-        // try {
-        //   await send(message, smtpServer);
-        // } catch (_) {
-        //   // Return false if the email could not be sent.
-        //   return false;
-        // }
+        String mailjetUrl =
+            "https://$apiKey:$secretKey@api.mailjet.com/v3.1/send";
 
-        return true;
+        Dio dio = Dio();
+
+        Response response = await dio.post(
+          mailjetUrl,
+          data: {
+            "Messages": [
+              {
+                "TemplateID": 6209328,
+                "From": {
+                  "Email": myEmail,
+                  "Name": "Fixie",
+                },
+                "To": [
+                  {
+                    "Email": email,
+                  }
+                ],
+                "Vars": {
+                  "verification_code": validationCode,
+                },
+              },
+            ],
+          },
+        );
+
+        if (response.statusCode == 200) {
+          return true;
+        }
+
+        return false;
       },
       sendPasswordResetEmail: (session, userInfo, validationCode) async {
         // Retrieve the credentials
