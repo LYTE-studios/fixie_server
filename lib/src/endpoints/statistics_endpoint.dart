@@ -69,7 +69,7 @@ class StatisticsEndpoint extends Endpoint {
         where: (t) => t.goalId.equals(goal.id),
       );
 
-      for (int i = 0; i < daysCounted; i++) {
+      for (int i = 0; i <= daysCounted; i++) {
         DateTime date = DateTime.now().subtract(
           Duration(days: daysCounted - i),
         );
