@@ -36,8 +36,8 @@ class StatisticsEndpoint extends Endpoint {
       chartData: [],
     );
 
-    double successRate = 0;
-    double currentSuccessRate = 0;
+    double? successRate;
+    double? currentSuccessRate;
 
     List<int> totalChartData = [];
 
@@ -98,14 +98,23 @@ class StatisticsEndpoint extends Endpoint {
         continue;
       }
 
-      successRate = (successRate + (successUnits / totalUnits)) / 2;
+      if (successRate == null) {
+        successRate = (successUnits / totalUnits) / 2;
+      } else {
+        successRate = (successRate + (successUnits / totalUnits)) / 2;
+      }
 
       if (currentTotalUnits == 0) {
         continue;
       }
 
-      currentSuccessRate =
-          (currentSuccessRate + (currentSuccessUnits / currentTotalUnits)) / 2;
+      if (currentSuccessRate == null) {
+        currentSuccessRate = (currentSuccessUnits / currentTotalUnits) / 2;
+      } else {
+        currentSuccessRate =
+            (currentSuccessRate + (currentSuccessUnits / currentTotalUnits)) /
+                2;
+      }
 
       for (int i = 0; i < chartData.length; i++) {
         if (totalChartData.length > i) {
@@ -117,8 +126,8 @@ class StatisticsEndpoint extends Endpoint {
     }
 
     statistics.chartData = totalChartData;
-    statistics.successRate = successRate;
-    statistics.currentSuccessRate = currentSuccessRate;
+    statistics.successRate = successRate ?? 0;
+    statistics.currentSuccessRate = currentSuccessRate ?? 0;
 
     return statistics;
   }
