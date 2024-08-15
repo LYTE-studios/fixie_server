@@ -250,6 +250,16 @@ class Endpoints extends _i1.EndpointDispatch {
             params['goalId'],
           ),
         ),
+        'permanentlyDeleteAllGoals': _i1.MethodConnector(
+          name: 'permanentlyDeleteAllGoals',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['goals'] as _i4.GoalsEndpoint)
+                  .permanentlyDeleteAllGoals(session),
+        ),
         'resetGoals': _i1.MethodConnector(
           name: 'resetGoals',
           params: {},

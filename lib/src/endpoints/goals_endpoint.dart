@@ -142,6 +142,21 @@ class GoalsEndpoint extends Endpoint {
     );
   }
 
+  Future<void> permanentlyDeleteAllGoals(Session session) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
+
+    List<Goal> goals = await Goal.db.find(
+      session,
+      where: (t) => t.userId.equals(
+        user.id,
+      ),
+    );
+
+    for (Goal goal in goals) {
+      Goal.db.deleteRow(session, goal);
+    }
+  }
+
   Future<void> resetGoals(Session session) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
