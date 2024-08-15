@@ -121,4 +121,54 @@ class ProfileEndpoint extends Endpoint {
       return HttpStatus.internalServerError;
     }
   }
+
+  Future<Map<String, String?>> getImageUploadDescription(
+    Session session, {
+    required String fileName,
+  }) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
+
+    String path = 'users/${user.id}/images/$fileName';
+
+    String? description =
+        await session.storage.createDirectFileUploadDescription(
+      storageId: 'public',
+      path: path,
+    );
+
+    return {
+      'description': description,
+      'path': path,
+    };
+  }
+
+  Future<bool> verifyUpload(Session session, String path) async {
+    return await session.storage.verifyDirectFileUpload(
+      storageId: 'public',
+      path: path,
+    );
+  }
+
+  Future<int> updateProfilePicture(Session session, String url) async {
+    User? user = await AuthUtils.getAuthenticatedUser(session);
+
+    UserInfo? userInfo = user.userInfo;
+
+    if (userInfo == null) {
+      throw EndpointException(
+        message: "User info not found.",
+        errorType: ErrorType.notFound,
+      );
+    }
+
+    userInfo.imageUrl = url;
+    var updatedUser = await UserInfo.db.updateRow(session, userInfo);
+    var fullUrl = updatedUser.imageUrl;
+
+    if (fullUrl != null && fullUrl == name) {
+      return HttpStatus.ok;
+    } else {
+      return HttpStatus.internalServerError;
+    }
+  }
 }

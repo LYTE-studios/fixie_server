@@ -26,5 +26,8 @@ profile:
   - getProfileData:
   - updateBirthday:
   - updateName:
+  - getImageUploadDescription:
+  - verifyUpload:
+  - updateProfilePicture:
 statistics:
   - getStatisticsForCategory:

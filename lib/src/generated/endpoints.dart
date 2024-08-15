@@ -496,6 +496,62 @@ class Endpoints extends _i1.EndpointDispatch {
             params['name'],
           ),
         ),
+        'getImageUploadDescription': _i1.MethodConnector(
+          name: 'getImageUploadDescription',
+          params: {
+            'fileName': _i1.ParameterDescription(
+              name: 'fileName',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i6.ProfileEndpoint)
+                  .getImageUploadDescription(
+            session,
+            fileName: params['fileName'],
+          ),
+        ),
+        'verifyUpload': _i1.MethodConnector(
+          name: 'verifyUpload',
+          params: {
+            'path': _i1.ParameterDescription(
+              name: 'path',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i6.ProfileEndpoint).verifyUpload(
+            session,
+            params['path'],
+          ),
+        ),
+        'updateProfilePicture': _i1.MethodConnector(
+          name: 'updateProfilePicture',
+          params: {
+            'url': _i1.ParameterDescription(
+              name: 'url',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i6.ProfileEndpoint)
+                  .updateProfilePicture(
+            session,
+            params['url'],
+          ),
+        ),
       },
     );
     connectors['statistics'] = _i1.EndpointConnector(
