@@ -17,12 +17,13 @@ class StatisticsEndpoint extends Endpoint {
     if (category.id == null) {
       goals = await Goal.db.find(
         session,
-        where: (t) => t.userId.equals(user.id),
+        where: (t) => t.userId.equals(user.id) & t.archived.notEquals(true),
       );
     } else {
       goals = await Goal.db.find(
         session,
-        where: (t) => t.categoryId.equals(category.id),
+        where: (t) =>
+            t.categoryId.equals(category.id) & t.archived.notEquals(true),
       );
     }
 
