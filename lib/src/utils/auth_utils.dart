@@ -1,6 +1,7 @@
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:sentry/sentry.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
 class AuthUtils {
   static Future<User> createUserProfileForId(
@@ -24,6 +25,9 @@ class AuthUtils {
       try {
         User? fetchedUser = await User.db.findFirstRow(
           session,
+          include: User.include(
+            userInfo: UserInfo.include(),
+          ),
           where: (p0) => p0.userInfoId.equals(authenticatedUserId),
         );
 
