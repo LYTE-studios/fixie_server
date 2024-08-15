@@ -16,7 +16,16 @@ class ProfileEndpoint extends Endpoint {
       return false;
     }
 
-    await GoalsEndpoint().permanentlyDeleteAllGoals(session);
+    List<Goal> goals = await Goal.db.find(
+      session,
+      where: (t) => t.userId.equals(
+        user.id,
+      ),
+    );
+
+    for (Goal goal in goals) {
+      Goal.db.deleteRow(session, goal);
+    }
 
     await User.db.deleteRow(session, user);
 
