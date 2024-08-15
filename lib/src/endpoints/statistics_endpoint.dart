@@ -54,6 +54,10 @@ class StatisticsEndpoint extends Endpoint {
       double successUnits = 0;
       double currentSuccessUnits = 0;
 
+      if (goal.created == null) {
+        continue;
+      }
+
       int daysCounted = (goal.created ?? DateTime.now())
           .difference(
             DateTime.now(),
