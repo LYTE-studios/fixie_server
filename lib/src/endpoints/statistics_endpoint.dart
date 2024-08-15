@@ -10,12 +10,21 @@ class StatisticsEndpoint extends Endpoint {
     DateTime start,
     DateTime end,
   ) async {
-    await AuthUtils.getAuthenticatedUser(session);
+    User user = await AuthUtils.getAuthenticatedUser(session);
 
-    List<Goal> goals = await Goal.db.find(
-      session,
-      where: (t) => t.categoryId.equals(category.id),
-    );
+    List<Goal> goals = [];
+
+    if (category.id == null) {
+      goals = await Goal.db.find(
+        session,
+        where: (t) => t.userId.equals(user.id),
+      );
+    } else {
+      goals = await Goal.db.find(
+        session,
+        where: (t) => t.categoryId.equals(category.id),
+      );
+    }
 
     // Set the empty statistics first
     CategoryStatistics statistics = CategoryStatistics(
