@@ -18,6 +18,7 @@ abstract class UserProfileDto
     this.birthday,
     required this.daysSinceCreation,
     this.email,
+    this.picture,
   });
 
   factory UserProfileDto({
@@ -25,6 +26,7 @@ abstract class UserProfileDto
     DateTime? birthday,
     required int daysSinceCreation,
     String? email,
+    String? picture,
   }) = _UserProfileDtoImpl;
 
   factory UserProfileDto.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -35,6 +37,7 @@ abstract class UserProfileDto
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['birthday']),
       daysSinceCreation: jsonSerialization['daysSinceCreation'] as int,
       email: jsonSerialization['email'] as String?,
+      picture: jsonSerialization['picture'] as String?,
     );
   }
 
@@ -46,11 +49,14 @@ abstract class UserProfileDto
 
   String? email;
 
+  String? picture;
+
   UserProfileDto copyWith({
     String? name,
     DateTime? birthday,
     int? daysSinceCreation,
     String? email,
+    String? picture,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -59,6 +65,7 @@ abstract class UserProfileDto
       if (birthday != null) 'birthday': birthday?.toJson(),
       'daysSinceCreation': daysSinceCreation,
       if (email != null) 'email': email,
+      if (picture != null) 'picture': picture,
     };
   }
 
@@ -69,6 +76,7 @@ abstract class UserProfileDto
       if (birthday != null) 'birthday': birthday?.toJson(),
       'daysSinceCreation': daysSinceCreation,
       if (email != null) 'email': email,
+      if (picture != null) 'picture': picture,
     };
   }
 
@@ -86,11 +94,13 @@ class _UserProfileDtoImpl extends UserProfileDto {
     DateTime? birthday,
     required int daysSinceCreation,
     String? email,
+    String? picture,
   }) : super._(
           name: name,
           birthday: birthday,
           daysSinceCreation: daysSinceCreation,
           email: email,
+          picture: picture,
         );
 
   @override
@@ -99,12 +109,14 @@ class _UserProfileDtoImpl extends UserProfileDto {
     Object? birthday = _Undefined,
     int? daysSinceCreation,
     Object? email = _Undefined,
+    Object? picture = _Undefined,
   }) {
     return UserProfileDto(
       name: name ?? this.name,
       birthday: birthday is DateTime? ? birthday : this.birthday,
       daysSinceCreation: daysSinceCreation ?? this.daysSinceCreation,
       email: email is String? ? email : this.email,
+      picture: picture is String? ? picture : this.picture,
     );
   }
 }

@@ -80,6 +80,7 @@ class ProfileEndpoint extends Endpoint {
       name: userInfo.fullName ?? '',
       email: userInfo.email ?? '',
       daysSinceCreation: daysSinceCreation,
+      picture: userInfo.imageUrl,
     );
 
     return userProfileData;

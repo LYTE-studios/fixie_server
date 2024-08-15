@@ -4,3 +4,4 @@ fields:
   birthday: DateTime?
   daysSinceCreation: int
   email: String?
+  picture: String?
