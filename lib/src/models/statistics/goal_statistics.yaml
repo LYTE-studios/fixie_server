@@ -1,0 +1,5 @@
+class: GoalStatistics
+fields:
+  goal: Goal
+  total: double
+  loggedDays: Map<DateTime, double?>

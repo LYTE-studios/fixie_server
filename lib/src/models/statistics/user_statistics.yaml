@@ -1,0 +1,6 @@
+class: UserStatistics
+fields:
+  user: User
+  total: double
+  bestStreak: int?
+  loggedDays: Map<DateTime, double?>

@@ -19,3 +19,4 @@ fields:
   highestStreak: int? # The highest a streak has lasted for this goal
   active: bool
   archived: bool
+  created: DateTime?

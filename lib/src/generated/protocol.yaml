@@ -26,3 +26,5 @@ profile:
   - getProfileData:
   - updateBirthday:
   - updateName:
+statistics:
+  - getStatisticsForCategory:

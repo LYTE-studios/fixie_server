@@ -1,0 +1,7 @@
+class: CategoryStatistics
+fields:
+  category: Category
+  bestStreak: int?
+  successRate: double
+  currentSuccessRate: double
+  chartData: List<int>

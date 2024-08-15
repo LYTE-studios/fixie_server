@@ -35,6 +35,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.highestStreak,
     required this.active,
     required this.archived,
+    this.created,
   }) : super(id);
 
   factory Goal({
@@ -59,6 +60,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     int? highestStreak,
     required bool active,
     required bool archived,
+    DateTime? created,
   }) = _GoalImpl;
 
   factory Goal.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -96,6 +98,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       highestStreak: jsonSerialization['highestStreak'] as int?,
       active: jsonSerialization['active'] as bool,
       archived: jsonSerialization['archived'] as bool,
+      created: jsonSerialization['created'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['created']),
     );
   }
 
@@ -143,6 +148,8 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   bool archived;
 
+  DateTime? created;
+
   @override
   _i1.Table get table => t;
 
@@ -168,6 +175,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     int? highestStreak,
     bool? active,
     bool? archived,
+    DateTime? created,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -194,6 +202,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (highestStreak != null) 'highestStreak': highestStreak,
       'active': active,
       'archived': archived,
+      if (created != null) 'created': created?.toJson(),
     };
   }
 
@@ -223,6 +232,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (highestStreak != null) 'highestStreak': highestStreak,
       'active': active,
       'archived': archived,
+      if (created != null) 'created': created?.toJson(),
     };
   }
 
@@ -291,6 +301,7 @@ class _GoalImpl extends Goal {
     int? highestStreak,
     required bool active,
     required bool archived,
+    DateTime? created,
   }) : super._(
           id: id,
           title: title,
@@ -313,6 +324,7 @@ class _GoalImpl extends Goal {
           highestStreak: highestStreak,
           active: active,
           archived: archived,
+          created: created,
         );
 
   @override
@@ -338,6 +350,7 @@ class _GoalImpl extends Goal {
     Object? highestStreak = _Undefined,
     bool? active,
     bool? archived,
+    Object? created = _Undefined,
   }) {
     return Goal(
       id: id is int? ? id : this.id,
@@ -364,6 +377,7 @@ class _GoalImpl extends Goal {
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
       active: active ?? this.active,
       archived: archived ?? this.archived,
+      created: created is DateTime? ? created : this.created,
     );
   }
 }
@@ -434,6 +448,10 @@ class GoalTable extends _i1.Table {
       'archived',
       this,
     );
+    created = _i1.ColumnDateTime(
+      'created',
+      this,
+    );
   }
 
   late final _i1.ColumnString title;
@@ -479,6 +497,8 @@ class GoalTable extends _i1.Table {
   late final _i1.ColumnBool active;
 
   late final _i1.ColumnBool archived;
+
+  late final _i1.ColumnDateTime created;
 
   _i2.UserTable get user {
     if (_user != null) return _user!;
@@ -587,6 +607,7 @@ class GoalTable extends _i1.Table {
         highestStreak,
         active,
         archived,
+        created,
       ];
 
   @override
