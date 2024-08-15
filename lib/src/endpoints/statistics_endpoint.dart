@@ -59,10 +59,11 @@ class StatisticsEndpoint extends Endpoint {
       }
 
       int daysCounted = goal.created!
-          .difference(
-            DateTime.now(),
-          )
-          .inDays;
+              .difference(
+                DateTime.now(),
+              )
+              .inDays -
+          1;
 
       List<JournalLog> logs = await JournalLog.db.find(
         session,
