@@ -58,7 +58,7 @@ class StatisticsEndpoint extends Endpoint {
         continue;
       }
 
-      int daysCounted = (goal.created ?? DateTime.now())
+      int daysCounted = goal.created!
           .difference(
             DateTime.now(),
           )
@@ -94,7 +94,16 @@ class StatisticsEndpoint extends Endpoint {
         }
       }
 
+      if (totalUnits == 0) {
+        continue;
+      }
+
       successRate = (successRate + (successUnits / totalUnits)) / 2;
+
+      if (currentTotalUnits == 0) {
+        continue;
+      }
+
       currentSuccessRate =
           (currentSuccessRate + (currentSuccessUnits / currentTotalUnits)) / 2;
 
