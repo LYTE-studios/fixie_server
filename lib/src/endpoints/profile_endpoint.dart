@@ -15,6 +15,8 @@ class ProfileEndpoint extends Endpoint {
       return false;
     }
 
+    await User.db.deleteRow(session, user);
+
     await UserInfo.db.deleteRow(
       session,
       user.userInfo!,
