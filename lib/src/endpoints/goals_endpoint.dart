@@ -132,6 +132,8 @@ class GoalsEndpoint extends Endpoint {
     goal.end = newGoal.end;
     goal.setRemind = newGoal.setRemind;
     goal.picture = newGoal.picture;
+    goal.category = newGoal.category;
+    goal.categoryId = newGoal.category!.id!;
 
     return await Goal.db.updateRow(session, goal);
   }
