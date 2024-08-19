@@ -77,7 +77,13 @@ class GoalsEndpoint extends Endpoint {
   Future<Goal?> getGoal(Session session, int? goalId) async {
     await AuthUtils.getAuthenticatedUser(session);
 
-    var goal = await Goal.db.findById(session, goalId!);
+    var goal = await Goal.db.findById(
+      session,
+      goalId!,
+      include: Goal.include(
+        category: Category.include(),
+      ),
+    );
 
     if (goal == null) {
       throw EndpointException(
