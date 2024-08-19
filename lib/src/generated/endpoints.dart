@@ -19,10 +19,9 @@ import 'package:fixie_server/src/generated/category/create_category_dto.dart'
     as _i8;
 import 'package:fixie_server/src/generated/goals/create_goal_dto.dart' as _i9;
 import 'package:fixie_server/src/generated/shared/repeatable_days.dart' as _i10;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i11;
-import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i12;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i13;
-import 'package:fixie_server/src/generated/category/category.dart' as _i14;
+import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i11;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i12;
+import 'package:fixie_server/src/generated/category/category.dart' as _i13;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -217,11 +216,16 @@ class Endpoints extends _i1.EndpointDispatch {
         'updateGoal': _i1.MethodConnector(
           name: 'updateGoal',
           params: {
+            'goalId': _i1.ParameterDescription(
+              name: 'goalId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
             'newGoal': _i1.ParameterDescription(
               name: 'newGoal',
-              type: _i1.getType<_i11.Goal>(),
+              type: _i1.getType<_i9.CreateGoalDto>(),
               nullable: false,
-            )
+            ),
           },
           call: (
             _i1.Session session,
@@ -229,6 +233,7 @@ class Endpoints extends _i1.EndpointDispatch {
           ) async =>
               (endpoints['goals'] as _i4.GoalsEndpoint).updateGoal(
             session,
+            params['goalId'],
             params['newGoal'],
           ),
         ),
@@ -280,7 +285,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'log': _i1.ParameterDescription(
               name: 'log',
-              type: _i1.getType<_i12.JournalLog>(),
+              type: _i1.getType<_i11.JournalLog>(),
               nullable: false,
             ),
             'fileName': _i1.ParameterDescription(
@@ -352,7 +357,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'log': _i1.ParameterDescription(
               name: 'log',
-              type: _i1.getType<_i12.JournalLog>(),
+              type: _i1.getType<_i11.JournalLog>(),
               nullable: false,
             ),
           },
@@ -407,7 +412,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'editedLog': _i1.ParameterDescription(
               name: 'editedLog',
-              type: _i1.getType<_i12.JournalLog>(),
+              type: _i1.getType<_i11.JournalLog>(),
               nullable: false,
             )
           },
@@ -441,7 +446,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'user': _i1.ParameterDescription(
               name: 'user',
-              type: _i1.getType<_i13.UserInfo?>(),
+              type: _i1.getType<_i12.UserInfo?>(),
               nullable: true,
             ),
             'birthday': _i1.ParameterDescription(
@@ -573,7 +578,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i14.Category>(),
+              type: _i1.getType<_i13.Category>(),
               nullable: false,
             ),
             'start': _i1.ParameterDescription(
@@ -601,6 +606,6 @@ class Endpoints extends _i1.EndpointDispatch {
         )
       },
     );
-    modules['serverpod_auth'] = _i13.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i12.Endpoints()..initializeEndpoints(server);
   }
 }

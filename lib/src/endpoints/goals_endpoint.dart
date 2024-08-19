@@ -103,10 +103,14 @@ class GoalsEndpoint extends Endpoint {
     return list;
   }
 
-  Future<Goal> updateGoal(Session session, Goal newGoal) async {
+  Future<Goal> updateGoal(
+    Session session,
+    int goalId,
+    CreateGoalDto newGoal,
+  ) async {
     await AuthUtils.getAuthenticatedUser(session);
 
-    var goal = await Goal.db.findById(session, newGoal.id!);
+    var goal = await Goal.db.findById(session, goalId);
 
     if (goal == null) {
       throw EndpointException(
@@ -115,7 +119,15 @@ class GoalsEndpoint extends Endpoint {
       );
     }
 
-    return await Goal.db.updateRow(session, newGoal);
+    goal.title = newGoal.title;
+    goal.days = newGoal.days;
+    goal.target = newGoal.target;
+    goal.unit = newGoal.unit;
+    goal.end = newGoal.end;
+    goal.setRemind = newGoal.setRemind;
+    goal.picture = newGoal.picture;
+
+    return await Goal.db.updateRow(session, goal);
   }
 
   Future<int> deleteGoal(Session session, int goalId) async {
