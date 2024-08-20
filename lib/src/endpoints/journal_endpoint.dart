@@ -86,12 +86,12 @@ class JournalEndpoint extends Endpoint {
           goalId: goal.id!,
           goal: goal,
           text: '',
-          createdAt: DateTime.now(),
-          modifiedAt: DateTime.now(),
+          createdAt: start,
+          modifiedAt: start,
           date: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
+            start.year,
+            start.month,
+            start.day,
           ),
         ),
       );
