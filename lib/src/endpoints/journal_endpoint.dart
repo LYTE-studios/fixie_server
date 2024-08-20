@@ -77,7 +77,6 @@ class JournalEndpoint extends Endpoint {
         ),
       ),
       where: (t) =>
-          (t.loggedValue >= t.goal.target) &
           t.date.between(
               DateTime(start.year, start.month, start.day - 1, start.hour,
                   start.minute),
@@ -89,9 +88,11 @@ class JournalEndpoint extends Endpoint {
     List<JournalLog> logs = [];
 
     for (Goal goal in goals) {
-      bool hasStreak =
-          dayBeforeLogs.firstWhereOrNull((log) => log.goal?.id == goal.id) !=
-              null;
+      JournalLog? dayBeforeLog =
+          dayBeforeLogs.firstWhereOrNull((log) => log.goal?.id == goal.id);
+
+      bool hasStreak = (dayBeforeLog?.loggedValue ?? 0) >=
+          (dayBeforeLog?.goal?.target.toDouble() ?? 0);
 
       JournalLog? definedLog = definedLogs.firstWhereOrNull(
         (e) => e.goalId == goal.id,
