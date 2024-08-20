@@ -89,9 +89,9 @@ class JournalEndpoint extends Endpoint {
           createdAt: start,
           modifiedAt: start,
           date: DateTime(
-            start.year,
-            start.month,
-            start.day,
+            end.year,
+            end.month,
+            end.day,
           ),
         ),
       );
