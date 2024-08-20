@@ -69,14 +69,36 @@ class JournalEndpoint extends Endpoint {
           ),
     );
 
+    List<JournalLog> dayBeforeLogs = await JournalLog.db.find(
+      session,
+      include: JournalLog.include(
+        goal: Goal.include(
+          category: Category.include(),
+        ),
+      ),
+      where: (t) =>
+          (t.loggedValue >= t.goal.target) &
+          t.date.between(
+              DateTime(start.year, start.month, start.day - 1, start.hour,
+                  start.minute),
+              DateTime(
+                  end.year, end.month, end.day - 1, end.hour, end.minute)) &
+          t.goal.user.id.equals(user.id),
+    );
+
     List<JournalLog> logs = [];
 
     for (Goal goal in goals) {
+      bool hasStreak =
+          dayBeforeLogs.firstWhereOrNull((log) => log.goal?.id == goal.id) !=
+              null;
+
       JournalLog? definedLog = definedLogs.firstWhereOrNull(
         (e) => e.goalId == goal.id,
       );
 
       if (definedLog != null) {
+        definedLog.streak = hasStreak;
         logs.add(definedLog);
         continue;
       }
@@ -88,6 +110,7 @@ class JournalEndpoint extends Endpoint {
           text: '',
           createdAt: start,
           modifiedAt: start,
+          streak: hasStreak,
           date: DateTime(
             end.year,
             end.month,
