@@ -91,8 +91,10 @@ class JournalEndpoint extends Endpoint {
       JournalLog? dayBeforeLog =
           dayBeforeLogs.firstWhereOrNull((log) => log.goal?.id == goal.id);
 
-      bool hasStreak = (dayBeforeLog?.loggedValue ?? 0) >=
-          (dayBeforeLog?.goal?.target.toDouble() ?? 0);
+      bool hasStreak = dayBeforeLog == null
+          ? false
+          : (dayBeforeLog?.loggedValue ?? 0) >=
+              (dayBeforeLog?.goal?.target.toDouble() ?? 0);
 
       JournalLog? definedLog = definedLogs.firstWhereOrNull(
         (e) => e.goalId == goal.id,
