@@ -4,6 +4,57 @@ import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 
 class StatisticsEndpoint extends Endpoint {
+  Future<GoalStatistics?> getStatisticsForGoal(
+    Session session,
+    Goal goal,
+  ) async {
+    await AuthUtils.getAuthenticatedUser(session);
+
+    GoalStatistics statistics = GoalStatistics(
+      goal: goal,
+      total: 0,
+      loggedDays: {},
+    );
+
+    List<JournalLog> logs = await JournalLog.db.find(
+      session,
+      include: JournalLog.include(
+        goal: Goal.include(),
+      ),
+      where: (t) => t.goalId.equals(goal.id),
+    );
+
+    int daysCounted = goal.created!
+        .difference(
+          DateTime.now(),
+        )
+        .inDays;
+
+    for (int i = 0; i <= daysCounted; i++) {
+      DateTime date = DateTime.now().subtract(
+        Duration(days: daysCounted - i),
+      );
+
+      JournalLog? log = logs.firstWhereOrNull(
+        (e) =>
+            e.date.year == date.year &&
+            e.date.month == date.month &&
+            e.date.day == date.day,
+      );
+
+      if (log == null) {
+        statistics.loggedDays[date] = 0;
+      } else {
+        double value = log.loggedValue ?? 0;
+
+        statistics.loggedDays[date] = value / (log.goal?.target ?? 1);
+        statistics.total += value;
+      }
+    }
+
+    return statistics;
+  }
+
   Future<CategoryStatistics?> getStatisticsForCategory(
     Session session,
     Category category,

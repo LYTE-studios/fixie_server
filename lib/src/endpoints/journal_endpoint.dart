@@ -49,7 +49,9 @@ class JournalEndpoint extends Endpoint {
           where: (t) => t.day.equals(monthIndex) | t.day.equals(weekIndex),
         ),
       ),
-      where: (t) => (t.userId.equals(user.id) & t.archived.notEquals(true)),
+      where: (t) => (t.userId.equals(user.id) &
+          t.archived.notEquals(true) &
+          t.created.between(DateTime(1900), start)),
     );
 
     List<JournalLog> definedLogs = await JournalLog.db.find(

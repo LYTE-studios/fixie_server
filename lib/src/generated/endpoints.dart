@@ -22,6 +22,7 @@ import 'package:fixie_server/src/generated/goals/create_goal_dto.dart' as _i10;
 import 'package:fixie_server/src/generated/shared/repeatable_days.dart' as _i11;
 import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i12;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i13;
+import 'package:fixie_server/src/generated/goals/goal.dart' as _i14;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -591,6 +592,25 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'statistics',
       endpoint: endpoints['statistics']!,
       methodConnectors: {
+        'getStatisticsForGoal': _i1.MethodConnector(
+          name: 'getStatisticsForGoal',
+          params: {
+            'goal': _i1.ParameterDescription(
+              name: 'goal',
+              type: _i1.getType<_i14.Goal>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['statistics'] as _i7.StatisticsEndpoint)
+                  .getStatisticsForGoal(
+            session,
+            params['goal'],
+          ),
+        ),
         'getStatisticsForCategory': _i1.MethodConnector(
           name: 'getStatisticsForCategory',
           params: {
@@ -621,7 +641,7 @@ class Endpoints extends _i1.EndpointDispatch {
             params['start'],
             params['end'],
           ),
-        )
+        ),
       },
     );
     modules['serverpod_auth'] = _i13.Endpoints()..initializeEndpoints(server);

@@ -32,4 +32,5 @@ profile:
   - verifyUpload:
   - updateProfilePicture:
 statistics:
+  - getStatisticsForGoal:
   - getStatisticsForCategory:
