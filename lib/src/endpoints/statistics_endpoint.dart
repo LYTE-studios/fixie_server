@@ -110,10 +110,11 @@ class StatisticsEndpoint extends Endpoint {
       }
 
       int daysCounted = end
-          .difference(
-            start,
-          )
-          .inDays;
+              .difference(
+                start,
+              )
+              .inDays -
+          1;
 
       List<JournalLog> logs = await JournalLog.db.find(
         session,
