@@ -192,7 +192,15 @@ class JournalEndpoint extends Endpoint {
   Future<JournalLog> updateLog(Session session, JournalLog editedLog) async {
     await AuthUtils.getAuthenticatedUser(session);
 
-    var log = await JournalLog.db.findById(session, editedLog.id!);
+    var log = await JournalLog.db.findById(
+      session,
+      editedLog.id!,
+      include: JournalLog.include(
+        goal: Goal.include(
+          category: Category.include(),
+        ),
+      ),
+    );
 
     if (log == null) {
       throw EndpointException(
