@@ -139,7 +139,7 @@ class StatisticsEndpoint extends Endpoint {
         );
 
         currentTotalUnits += goal.target;
-        successUnits += (log?.loggedValue ?? 0).toInt();
+        currentSuccessUnits += (log?.loggedValue ?? 0).toInt();
 
         chartData.add(
           (((log?.loggedValue ?? 0).toInt() / goal.target) * 100).toInt(),
