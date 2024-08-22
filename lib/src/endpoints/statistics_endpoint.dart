@@ -109,9 +109,9 @@ class StatisticsEndpoint extends Endpoint {
         continue;
       }
 
-      int daysCounted = DateTime.now()
+      int daysCounted = end
           .difference(
-            goal.created!,
+            start,
           )
           .inDays;
 
@@ -121,7 +121,7 @@ class StatisticsEndpoint extends Endpoint {
       );
 
       for (int i = 0; i <= daysCounted; i++) {
-        DateTime date = DateTime.now().subtract(
+        DateTime date = end.subtract(
           Duration(days: daysCounted - i),
         );
 
