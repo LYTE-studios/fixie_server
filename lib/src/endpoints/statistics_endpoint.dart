@@ -24,9 +24,9 @@ class StatisticsEndpoint extends Endpoint {
       where: (t) => t.goalId.equals(goal.id),
     );
 
-    int daysCounted = goal.created!
+    int daysCounted = DateTime.now()
         .difference(
-          DateTime.now(),
+          goal.created!,
         )
         .inDays;
 
@@ -109,9 +109,9 @@ class StatisticsEndpoint extends Endpoint {
         continue;
       }
 
-      int daysCounted = goal.created!
+      int daysCounted = DateTime.now()
           .difference(
-            DateTime.now(),
+            goal.created!,
           )
           .inDays;
 
