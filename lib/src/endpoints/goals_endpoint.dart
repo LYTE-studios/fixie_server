@@ -150,7 +150,9 @@ class GoalsEndpoint extends Endpoint {
       );
     }
 
-    Goal deletedGoal = await Goal.db.deleteRow(session, goal);
+    goal.archived = true;
+
+    Goal deletedGoal = await Goal.db.updateRow(session, goal);
 
     if (deletedGoal.id == goalId) {
       return HttpStatus.ok;
