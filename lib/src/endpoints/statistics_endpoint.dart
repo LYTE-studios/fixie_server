@@ -109,21 +109,38 @@ class StatisticsEndpoint extends Endpoint {
         continue;
       }
 
-      int daysCounted = end
+      int daysCreated = end
               .difference(
                 start,
               )
               .inDays -
           1;
 
+      int daysCounted = end
+          .difference(
+            goal.created!,
+          )
+          .inDays;
+
       List<JournalLog> logs = await JournalLog.db.find(
         session,
         where: (t) => t.goalId.equals(goal.id),
       );
 
-      for (JournalLog log in logs) {
+      for (int i = 0; i <= daysCreated; i++) {
+        DateTime date = end.subtract(
+          Duration(days: daysCounted - i),
+        );
+
+        JournalLog? log = logs.firstWhereOrNull(
+          (e) =>
+              e.date.year == date.year &&
+              e.date.month == date.month &&
+              e.date.day == date.day,
+        );
+
         totalUnits += goal.target;
-        successUnits += (log.loggedValue ?? 0).toInt();
+        successUnits += (log?.loggedValue ?? 0).toInt();
       }
 
       for (int i = 0; i <= daysCounted; i++) {
