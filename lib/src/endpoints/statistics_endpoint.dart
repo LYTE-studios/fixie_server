@@ -120,6 +120,11 @@ class StatisticsEndpoint extends Endpoint {
         where: (t) => t.goalId.equals(goal.id),
       );
 
+      for (JournalLog log in logs) {
+        totalUnits += goal.target;
+        successUnits += (log.loggedValue ?? 0).toInt();
+      }
+
       for (int i = 0; i <= daysCounted; i++) {
         DateTime date = end.subtract(
           Duration(days: daysCounted - i),
@@ -132,17 +137,12 @@ class StatisticsEndpoint extends Endpoint {
               e.date.day == date.day,
         );
 
-        totalUnits += goal.target;
+        currentTotalUnits += goal.target;
         successUnits += (log?.loggedValue ?? 0).toInt();
 
-        if (date.isAfter(start) && date.isBefore(end)) {
-          currentTotalUnits += goal.target;
-          successUnits += (log?.loggedValue ?? 0).toInt();
-
-          chartData.add(
-            (((log?.loggedValue ?? 0).toInt() / goal.target) * 100).toInt(),
-          );
-        }
+        chartData.add(
+          (((log?.loggedValue ?? 0).toInt() / goal.target) * 100).toInt(),
+        );
       }
 
       if (totalUnits == 0) {
