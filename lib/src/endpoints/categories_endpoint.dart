@@ -19,6 +19,17 @@ class CategoriesEndpoint extends Endpoint {
     return created;
   }
 
+  Future<Category?> editCategory(Session session, Category category) async {
+    await AuthUtils.getAuthenticatedUser(session);
+
+    Category created = await Category.db.updateRow(
+      session,
+      category,
+    );
+
+    return created;
+  }
+
   Future<List<Category>> getActiveCategories(Session session) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
