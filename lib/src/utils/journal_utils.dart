@@ -3,7 +3,7 @@ import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
 class JournalUtils {
-  static Future<JournalLog> setStreakValues(
+  static Future<JournalLog?> setStreakValues(
     Session session,
     JournalLog log,
   ) async {
@@ -60,6 +60,14 @@ class JournalUtils {
 
     await Goal.db.updateRow(session, log.goal!);
 
-    return log;
+    return await JournalLog.db.findById(
+      session,
+      log.id!,
+      include: JournalLog.include(
+        goal: Goal.include(
+          category: Category.include(),
+        ),
+      ),
+    );
   }
 }

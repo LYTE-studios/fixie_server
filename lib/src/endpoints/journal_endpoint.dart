@@ -160,7 +160,8 @@ class JournalEndpoint extends Endpoint {
       );
     }
 
-    return await JournalUtils.setStreakValues(session, newJournal);
+    return await JournalUtils.setStreakValues(session, newJournal) ??
+        journalCheck;
   }
 
   Future<JournalLog?> getLog(Session session, int? logId) async {
@@ -220,6 +221,6 @@ class JournalEndpoint extends Endpoint {
 
     JournalLog newLog = await JournalLog.db.updateRow(session, editedLog);
 
-    return await JournalUtils.setStreakValues(session, newLog);
+    return await JournalUtils.setStreakValues(session, newLog) ?? log;
   }
 }
