@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
+import 'package:fixie_server/src/utils/journal_utils.dart';
 import 'package:serverpod/serverpod.dart';
 
 class JournalEndpoint extends Endpoint {
@@ -151,7 +152,7 @@ class JournalEndpoint extends Endpoint {
       );
     }
 
-    return journalCheck;
+    return await JournalUtils.setStreakValues(session, newJournal);
   }
 
   Future<JournalLog?> getLog(Session session, int? logId) async {
@@ -209,6 +210,8 @@ class JournalEndpoint extends Endpoint {
       );
     }
 
-    return await JournalLog.db.updateRow(session, editedLog);
+    JournalLog newLog = await JournalLog.db.updateRow(session, editedLog);
+
+    return await JournalUtils.setStreakValues(session, newLog);
   }
 }
