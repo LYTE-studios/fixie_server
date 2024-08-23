@@ -141,11 +141,11 @@ class JournalEndpoint extends Endpoint {
       );
     }
 
-    await JournalLog.db.insertRow(session, log);
+    JournalLog created = await JournalLog.db.insertRow(session, log);
 
     var newLog = await JournalLog.db.findById(
       session,
-      log.id!,
+      created.id!,
       include: JournalLog.include(
         goal: Goal.include(
           category: Category.include(),
