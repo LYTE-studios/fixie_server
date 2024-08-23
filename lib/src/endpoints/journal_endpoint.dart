@@ -141,11 +141,11 @@ class JournalEndpoint extends Endpoint {
       );
     }
 
-    var newJournal = await JournalLog.db.insertRow(session, log);
+    await JournalLog.db.insertRow(session, log);
 
-    var journalCheck = await JournalLog.db.findById(
+    var newLog = await JournalLog.db.findById(
       session,
-      newJournal.id!,
+      log.id!,
       include: JournalLog.include(
         goal: Goal.include(
           category: Category.include(),
@@ -153,15 +153,14 @@ class JournalEndpoint extends Endpoint {
       ),
     );
 
-    if (journalCheck == null) {
+    if (newLog == null) {
       throw EndpointException(
         message: 'Journal log could not be created.',
         errorType: ErrorType.databaseError,
       );
     }
 
-    return await JournalUtils.setStreakValues(session, newJournal) ??
-        journalCheck;
+    return await JournalUtils.setStreakValues(session, newLog) ?? newLog;
   }
 
   Future<JournalLog?> getLog(Session session, int? logId) async {
@@ -202,7 +201,9 @@ class JournalEndpoint extends Endpoint {
   Future<JournalLog> updateLog(Session session, JournalLog editedLog) async {
     await AuthUtils.getAuthenticatedUser(session);
 
-    var log = await JournalLog.db.findById(
+    await JournalLog.db.updateRow(session, editedLog);
+
+    JournalLog? log = await JournalLog.db.findById(
       session,
       editedLog.id!,
       include: JournalLog.include(
@@ -219,8 +220,6 @@ class JournalEndpoint extends Endpoint {
       );
     }
 
-    JournalLog newLog = await JournalLog.db.updateRow(session, editedLog);
-
-    return await JournalUtils.setStreakValues(session, newLog) ?? log;
+    return await JournalUtils.setStreakValues(session, log) ?? log;
   }
 }
