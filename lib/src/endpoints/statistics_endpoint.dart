@@ -122,7 +122,7 @@ class StatisticsEndpoint extends Endpoint {
         successUnits += (log?.loggedValue ?? 0).toInt();
       }
 
-      for (int i = 0; i <= daysCounted; i++) {
+      for (int i = 0; i < daysCounted; i++) {
         DateTime date = end.subtract(
           Duration(days: daysCounted - i),
         );
