@@ -38,17 +38,11 @@ class JournalEndpoint extends Endpoint {
   }) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
-    int monthIndex = start.day + 7;
-
-    int weekIndex = start.weekday;
-
     List<Goal> goals = await Goal.db.find(
       session,
       include: Goal.include(
         category: Category.include(),
-        days: RepeatableDays.includeList(
-          where: (t) => t.day.equals(monthIndex) | t.day.equals(weekIndex),
-        ),
+        days: RepeatableDays.includeList(),
       ),
       where: (t) => (t.userId.equals(user.id) &
           t.archived.notEquals(true) &
@@ -66,10 +60,13 @@ class JournalEndpoint extends Endpoint {
           t.goalId.inSet(
             goals.map((e) => e.id!).toSet(),
           ) &
-          t.date.between(
-            start,
-            end,
-          ),
+          (t.date.between(
+                start,
+                end,
+              ) |
+              t.date.equals(
+                start,
+              )),
     );
 
     List<JournalLog> dayBeforeLogs = await JournalLog.db.find(
@@ -80,12 +77,11 @@ class JournalEndpoint extends Endpoint {
         ),
       ),
       where: (t) =>
-          (t.date.between(
-                  DateTime(start.year, start.month, start.day - 1, start.hour,
-                      start.minute),
-                  DateTime(
-                      end.year, end.month, end.day - 1, end.hour, end.minute)) |
-              t.date.equals(start)) &
+          t.date.between(
+              DateTime(start.year, start.month, start.day - 1, start.hour,
+                  start.minute),
+              DateTime(
+                  end.year, end.month, end.day - 1, end.hour, end.minute)) &
           t.goal.user.id.equals(user.id),
     );
 
@@ -97,8 +93,8 @@ class JournalEndpoint extends Endpoint {
 
       bool hasStreak = dayBeforeLog == null
           ? false
-          : (dayBeforeLog?.loggedValue ?? 0) >=
-              (dayBeforeLog?.goal?.target.toDouble() ?? 0);
+          : (dayBeforeLog.loggedValue ?? 0) >=
+              (dayBeforeLog.goal?.target.toDouble() ?? 0);
 
       JournalLog? definedLog = definedLogs.firstWhereOrNull(
         (e) => e.goalId == goal.id,
