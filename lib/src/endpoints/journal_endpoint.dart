@@ -80,11 +80,12 @@ class JournalEndpoint extends Endpoint {
         ),
       ),
       where: (t) =>
-          t.date.between(
-              DateTime(start.year, start.month, start.day - 1, start.hour,
-                  start.minute),
-              DateTime(
-                  end.year, end.month, end.day - 1, end.hour, end.minute)) &
+          (t.date.between(
+                  DateTime(start.year, start.month, start.day - 1, start.hour,
+                      start.minute),
+                  DateTime(
+                      end.year, end.month, end.day - 1, end.hour, end.minute)) |
+              t.date.equals(start)) &
           t.goal.user.id.equals(user.id),
     );
 
