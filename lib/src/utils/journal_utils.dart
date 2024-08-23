@@ -4,7 +4,13 @@ import 'package:serverpod/serverpod.dart';
 
 class JournalUtils {
   static Future<JournalLog> setStreakValues(
-      Session session, JournalLog log) async {
+    Session session,
+    JournalLog log,
+  ) async {
+    if (log.goal == null) {
+      return log;
+    }
+
     List<JournalLog> logs = await JournalLog.db.find(
       session,
       include: JournalLog.include(

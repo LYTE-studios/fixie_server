@@ -143,7 +143,15 @@ class JournalEndpoint extends Endpoint {
 
     var newJournal = await JournalLog.db.insertRow(session, log);
 
-    var journalCheck = await JournalLog.db.findById(session, newJournal.id!);
+    var journalCheck = await JournalLog.db.findById(
+      session,
+      newJournal.id!,
+      include: JournalLog.include(
+        goal: Goal.include(
+          category: Category.include(),
+        ),
+      ),
+    );
 
     if (journalCheck == null) {
       throw EndpointException(
