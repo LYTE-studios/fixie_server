@@ -95,6 +95,7 @@ class ProfileEndpoint extends Endpoint {
       email: userInfo.email ?? '',
       daysSinceCreation: daysSinceCreation,
       picture: userInfo.imageUrl,
+      hasPassedOnboarding: user.hasPassedOnboarding ?? false,
     );
 
     return userProfileData;

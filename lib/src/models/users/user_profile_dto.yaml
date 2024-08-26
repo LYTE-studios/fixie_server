@@ -5,3 +5,4 @@ fields:
   daysSinceCreation: int
   email: String?
   picture: String?
+  hasPassedOnboarding: bool
