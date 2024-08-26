@@ -6,3 +6,4 @@ fields:
   goals: List<Goal>?, relation(name=user_goals) # The goals connected to the users' profile
   highestStreak: int? # The longest streak a user has been able to maintain
   picture: String? # Stored image for the registration stored via url
+  hasPassedOnboarding: bool?

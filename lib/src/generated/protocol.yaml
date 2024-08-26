@@ -28,6 +28,7 @@ profile:
   - getProfileData:
   - updateBirthday:
   - updateName:
+  - completeOnboarding:
   - getImageUploadDescription:
   - verifyUpload:
   - updateProfilePicture:

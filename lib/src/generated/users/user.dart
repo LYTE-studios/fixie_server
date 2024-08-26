@@ -22,6 +22,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.goals,
     this.highestStreak,
     this.picture,
+    this.hasPassedOnboarding,
   }) : super(id);
 
   factory User({
@@ -32,6 +33,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     List<_i3.Goal>? goals,
     int? highestStreak,
     String? picture,
+    bool? hasPassedOnboarding,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -50,6 +52,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
           .toList(),
       highestStreak: jsonSerialization['highestStreak'] as int?,
       picture: jsonSerialization['picture'] as String?,
+      hasPassedOnboarding: jsonSerialization['hasPassedOnboarding'] as bool?,
     );
   }
 
@@ -69,6 +72,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   String? picture;
 
+  bool? hasPassedOnboarding;
+
   @override
   _i1.Table get table => t;
 
@@ -80,6 +85,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     List<_i3.Goal>? goals,
     int? highestStreak,
     String? picture,
+    bool? hasPassedOnboarding,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -91,6 +97,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (goals != null) 'goals': goals?.toJson(valueToJson: (v) => v.toJson()),
       if (highestStreak != null) 'highestStreak': highestStreak,
       if (picture != null) 'picture': picture,
+      if (hasPassedOnboarding != null)
+        'hasPassedOnboarding': hasPassedOnboarding,
     };
   }
 
@@ -105,6 +113,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
         'goals': goals?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
       if (highestStreak != null) 'highestStreak': highestStreak,
       if (picture != null) 'picture': picture,
+      if (hasPassedOnboarding != null)
+        'hasPassedOnboarding': hasPassedOnboarding,
     };
   }
 
@@ -155,6 +165,7 @@ class _UserImpl extends User {
     List<_i3.Goal>? goals,
     int? highestStreak,
     String? picture,
+    bool? hasPassedOnboarding,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
@@ -163,6 +174,7 @@ class _UserImpl extends User {
           goals: goals,
           highestStreak: highestStreak,
           picture: picture,
+          hasPassedOnboarding: hasPassedOnboarding,
         );
 
   @override
@@ -174,6 +186,7 @@ class _UserImpl extends User {
     Object? goals = _Undefined,
     Object? highestStreak = _Undefined,
     Object? picture = _Undefined,
+    Object? hasPassedOnboarding = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -184,6 +197,9 @@ class _UserImpl extends User {
       goals: goals is List<_i3.Goal>? ? goals : this.goals?.clone(),
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
       picture: picture is String? ? picture : this.picture,
+      hasPassedOnboarding: hasPassedOnboarding is bool?
+          ? hasPassedOnboarding
+          : this.hasPassedOnboarding,
     );
   }
 }
@@ -206,6 +222,10 @@ class UserTable extends _i1.Table {
       'picture',
       this,
     );
+    hasPassedOnboarding = _i1.ColumnBool(
+      'hasPassedOnboarding',
+      this,
+    );
   }
 
   late final _i1.ColumnInt userInfoId;
@@ -221,6 +241,8 @@ class UserTable extends _i1.Table {
   late final _i1.ColumnInt highestStreak;
 
   late final _i1.ColumnString picture;
+
+  late final _i1.ColumnBool hasPassedOnboarding;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -273,6 +295,7 @@ class UserTable extends _i1.Table {
         birthday,
         highestStreak,
         picture,
+        hasPassedOnboarding,
       ];
 
   @override
