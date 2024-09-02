@@ -46,7 +46,12 @@ class JournalEndpoint extends Endpoint {
       ),
       where: (t) => (t.userId.equals(user.id) &
           t.archived.notEquals(true) &
-          t.created.between(DateTime(1900), start)),
+          t.created.between(
+            DateTime(1900),
+            start.add(
+              Duration(days: 1),
+            ),
+          )),
     );
 
     List<JournalLog> definedLogs = await JournalLog.db.find(

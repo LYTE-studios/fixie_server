@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
 import 'package:serverpod/serverpod.dart';
 
 import 'package:fixie_server/src/web/routes/root.dart';

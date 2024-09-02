@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:fixie_server/src/endpoints/goals_endpoint.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
