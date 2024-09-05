@@ -2,8 +2,9 @@ class: User
 table: fixie_user
 fields:
   userInfo: module:auth:UserInfo?, relation # Base user info model
-  birthday: DateTime?
+  birthday: DateTime? # Nullable birthday field
   goals: List<Goal>?, relation(name=user_goals) # The goals connected to the users' profile
   highestStreak: int? # The longest streak a user has been able to maintain
   picture: String? # Stored image for the registration stored via url
   hasPassedOnboarding: bool?
+  fcmToken: String? # FCM Token for user notifications

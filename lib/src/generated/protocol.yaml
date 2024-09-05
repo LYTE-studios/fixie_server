@@ -22,6 +22,8 @@ journal:
   - getLog:
   - getJournal:
   - updateLog:
+notification:
+  - setFcmToken:
 profile:
   - deleteAccount:
   - createUser:

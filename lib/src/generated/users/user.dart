@@ -23,6 +23,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.highestStreak,
     this.picture,
     this.hasPassedOnboarding,
+    this.fcmToken,
   }) : super(id);
 
   factory User({
@@ -34,6 +35,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     int? highestStreak,
     String? picture,
     bool? hasPassedOnboarding,
+    String? fcmToken,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -53,6 +55,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       highestStreak: jsonSerialization['highestStreak'] as int?,
       picture: jsonSerialization['picture'] as String?,
       hasPassedOnboarding: jsonSerialization['hasPassedOnboarding'] as bool?,
+      fcmToken: jsonSerialization['fcmToken'] as String?,
     );
   }
 
@@ -74,6 +77,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   bool? hasPassedOnboarding;
 
+  String? fcmToken;
+
   @override
   _i1.Table get table => t;
 
@@ -86,6 +91,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     int? highestStreak,
     String? picture,
     bool? hasPassedOnboarding,
+    String? fcmToken,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -99,6 +105,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (picture != null) 'picture': picture,
       if (hasPassedOnboarding != null)
         'hasPassedOnboarding': hasPassedOnboarding,
+      if (fcmToken != null) 'fcmToken': fcmToken,
     };
   }
 
@@ -115,6 +122,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (picture != null) 'picture': picture,
       if (hasPassedOnboarding != null)
         'hasPassedOnboarding': hasPassedOnboarding,
+      if (fcmToken != null) 'fcmToken': fcmToken,
     };
   }
 
@@ -166,6 +174,7 @@ class _UserImpl extends User {
     int? highestStreak,
     String? picture,
     bool? hasPassedOnboarding,
+    String? fcmToken,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
@@ -175,6 +184,7 @@ class _UserImpl extends User {
           highestStreak: highestStreak,
           picture: picture,
           hasPassedOnboarding: hasPassedOnboarding,
+          fcmToken: fcmToken,
         );
 
   @override
@@ -187,6 +197,7 @@ class _UserImpl extends User {
     Object? highestStreak = _Undefined,
     Object? picture = _Undefined,
     Object? hasPassedOnboarding = _Undefined,
+    Object? fcmToken = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -200,6 +211,7 @@ class _UserImpl extends User {
       hasPassedOnboarding: hasPassedOnboarding is bool?
           ? hasPassedOnboarding
           : this.hasPassedOnboarding,
+      fcmToken: fcmToken is String? ? fcmToken : this.fcmToken,
     );
   }
 }
@@ -226,6 +238,10 @@ class UserTable extends _i1.Table {
       'hasPassedOnboarding',
       this,
     );
+    fcmToken = _i1.ColumnString(
+      'fcmToken',
+      this,
+    );
   }
 
   late final _i1.ColumnInt userInfoId;
@@ -243,6 +259,8 @@ class UserTable extends _i1.Table {
   late final _i1.ColumnString picture;
 
   late final _i1.ColumnBool hasPassedOnboarding;
+
+  late final _i1.ColumnString fcmToken;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -296,6 +314,7 @@ class UserTable extends _i1.Table {
         highestStreak,
         picture,
         hasPassedOnboarding,
+        fcmToken,
       ];
 
   @override

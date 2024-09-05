@@ -1,0 +1,6 @@
+class: Notification
+fields:
+  title: String
+  description: String
+  routeRedirect: String?
+  tokens: List<String>

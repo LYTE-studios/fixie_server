@@ -1,21 +1,28 @@
 name: fixie_server
-description: Starting point for a Serverpod server.
-# version: 1.0.0
-# homepage: https://www.example.com
+description: Fixie - Your pal in daily progress
+version: 1.0.0
+homepage: https://fixie.world
 
 environment:
   sdk: ^3.2.5
 
 dependencies:
-  mailer: 6.1.0
-  serverpod: ^2.0.2
-  serverpod_auth_server: ^2.0.2
+  # Serverpod
+  serverpod: 2.0.2
+  serverpod_auth_server: 2.0.2
+  serverpod_cloud_storage_s3: 2.0.2
+  serverpod_serialization: 2.0.2
+  serverpod_test_client: any
+
+  # Testing
   test: any
+
+  # Monitoring
   sentry: ^8.3.0
+
+  # Core
   collection: ^1.19.0
-  serverpod_cloud_storage_s3: ^2.0.2
   dio: ^5.6.0
-  serverpod_serialization: any
-  
+
 dev_dependencies:
   lints: ^3.0.0
