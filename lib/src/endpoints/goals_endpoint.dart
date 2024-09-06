@@ -32,7 +32,6 @@ class GoalsEndpoint extends Endpoint {
         remindMinutes: dto.remindMinutes,
         remindHour: dto.remindHour,
         remindHalf: dto.remindHalf,
-        remindTimezone: dto.remindTimezone,
         created: DateTime.now(),
       ),
     );

@@ -1,0 +1,43 @@
+{
+  "actions": [
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "goal",
+        "schema": "public",
+        "addColumns": [],
+        "deleteColumns": [
+          "remindTimezone"
+        ],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [],
+        "deleteForeignKeys": [],
+        "warnings": [
+          {
+            "type": "columnDropped",
+            "message": "Column \"remindTimezone\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "remindTimezone"
+            ],
+            "destrucive": true
+          }
+        ]
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"remindTimezone\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "remindTimezone"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

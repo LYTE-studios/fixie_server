@@ -29,7 +29,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.remindHour,
     this.remindMinutes,
     this.remindHalf,
-    this.remindTimezone,
     this.journal,
     this.currentStreak,
     this.highestStreak,
@@ -54,7 +53,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     int? remindHour,
     int? remindMinutes,
     bool? remindHalf,
-    String? remindTimezone,
     List<_i2.JournalLog>? journal,
     int? currentStreak,
     int? highestStreak,
@@ -90,7 +88,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       remindHour: jsonSerialization['remindHour'] as int?,
       remindMinutes: jsonSerialization['remindMinutes'] as int?,
       remindHalf: jsonSerialization['remindHalf'] as bool?,
-      remindTimezone: jsonSerialization['remindTimezone'] as String?,
       journal: (jsonSerialization['journal'] as List?)
           ?.map((e) => _i2.JournalLog.fromJson((e as Map<String, dynamic>)))
           .toList(),
@@ -136,8 +133,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   bool? remindHalf;
 
-  String? remindTimezone;
-
   List<_i2.JournalLog>? journal;
 
   int? currentStreak;
@@ -169,7 +164,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     int? remindHour,
     int? remindMinutes,
     bool? remindHalf,
-    String? remindTimezone,
     List<_i2.JournalLog>? journal,
     int? currentStreak,
     int? highestStreak,
@@ -195,7 +189,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (remindHour != null) 'remindHour': remindHour,
       if (remindMinutes != null) 'remindMinutes': remindMinutes,
       if (remindHalf != null) 'remindHalf': remindHalf,
-      if (remindTimezone != null) 'remindTimezone': remindTimezone,
       if (journal != null)
         'journal': journal?.toJson(valueToJson: (v) => v.toJson()),
       if (currentStreak != null) 'currentStreak': currentStreak,
@@ -225,7 +218,6 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (remindHour != null) 'remindHour': remindHour,
       if (remindMinutes != null) 'remindMinutes': remindMinutes,
       if (remindHalf != null) 'remindHalf': remindHalf,
-      if (remindTimezone != null) 'remindTimezone': remindTimezone,
       if (journal != null)
         'journal': journal?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
       if (currentStreak != null) 'currentStreak': currentStreak,
@@ -295,7 +287,6 @@ class _GoalImpl extends Goal {
     int? remindHour,
     int? remindMinutes,
     bool? remindHalf,
-    String? remindTimezone,
     List<_i2.JournalLog>? journal,
     int? currentStreak,
     int? highestStreak,
@@ -318,7 +309,6 @@ class _GoalImpl extends Goal {
           remindHour: remindHour,
           remindMinutes: remindMinutes,
           remindHalf: remindHalf,
-          remindTimezone: remindTimezone,
           journal: journal,
           currentStreak: currentStreak,
           highestStreak: highestStreak,
@@ -344,7 +334,6 @@ class _GoalImpl extends Goal {
     Object? remindHour = _Undefined,
     Object? remindMinutes = _Undefined,
     Object? remindHalf = _Undefined,
-    Object? remindTimezone = _Undefined,
     Object? journal = _Undefined,
     Object? currentStreak = _Undefined,
     Object? highestStreak = _Undefined,
@@ -369,8 +358,6 @@ class _GoalImpl extends Goal {
       remindHour: remindHour is int? ? remindHour : this.remindHour,
       remindMinutes: remindMinutes is int? ? remindMinutes : this.remindMinutes,
       remindHalf: remindHalf is bool? ? remindHalf : this.remindHalf,
-      remindTimezone:
-          remindTimezone is String? ? remindTimezone : this.remindTimezone,
       journal:
           journal is List<_i2.JournalLog>? ? journal : this.journal?.clone(),
       currentStreak: currentStreak is int? ? currentStreak : this.currentStreak,
@@ -428,10 +415,6 @@ class GoalTable extends _i1.Table {
       'remindHalf',
       this,
     );
-    remindTimezone = _i1.ColumnString(
-      'remindTimezone',
-      this,
-    );
     currentStreak = _i1.ColumnInt(
       'currentStreak',
       this,
@@ -483,8 +466,6 @@ class GoalTable extends _i1.Table {
   late final _i1.ColumnInt remindMinutes;
 
   late final _i1.ColumnBool remindHalf;
-
-  late final _i1.ColumnString remindTimezone;
 
   _i2.JournalLogTable? ___journal;
 
@@ -602,7 +583,6 @@ class GoalTable extends _i1.Table {
         remindHour,
         remindMinutes,
         remindHalf,
-        remindTimezone,
         currentStreak,
         highestStreak,
         active,

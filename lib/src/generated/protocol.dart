@@ -271,12 +271,6 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'bool?',
         ),
         _i2.ColumnDefinition(
-          name: 'remindTimezone',
-          columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
-        ),
-        _i2.ColumnDefinition(
           name: 'currentStreak',
           columnType: _i2.ColumnType.bigint,
           isNullable: true,

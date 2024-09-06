@@ -11,4 +11,3 @@ fields:
   remindHour: int? # 0-12h
   remindMinutes: int? # 0-60m
   remindHalf: bool? # 1 -> PM, 0 -> AM
-  remindTimezone: String?
