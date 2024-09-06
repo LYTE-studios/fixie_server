@@ -13,6 +13,9 @@ dependencies:
   serverpod_cloud_storage_s3: 2.0.2
   serverpod_serialization: 2.0.2
 
+  # Firebase
+  firebase_cloud_messaging_flutter: ^1.0.6
+
   # Testing
   test: any
 

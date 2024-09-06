@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fixie_server/src/generated/protocol.dart';
+import 'package:fixie_server/src/managers/goal_manager.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -43,6 +44,13 @@ class GoalsEndpoint extends Endpoint {
         days: dto.days!,
       );
     }
+
+    goal.user = user;
+
+    GoalManager.scheduleCurrentNotification(
+      session,
+      goal,
+    );
 
     return goal;
   }
