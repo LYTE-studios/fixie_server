@@ -1,0 +1,140 @@
+{
+  "actions": [
+    {
+      "type": "deleteTable",
+      "deleteTable": "journal_log"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "journal_log",
+        "dartName": "JournalLog",
+        "module": "fixie",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('journal_log_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "goalId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "picture",
+            "columnType": 8,
+            "isNullable": true,
+            "dartType": "List<String>?"
+          },
+          {
+            "name": "note",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "loggedValue",
+            "columnType": 3,
+            "isNullable": true,
+            "dartType": "double?"
+          },
+          {
+            "name": "registrationLog",
+            "columnType": 8,
+            "isNullable": true,
+            "dartType": "List<protocol:RegistrationLog>?"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "modifiedAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "date",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "streak",
+            "columnType": 1,
+            "isNullable": true,
+            "dartType": "bool?"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "journal_log_fk_0",
+            "columns": [
+              "goalId"
+            ],
+            "referenceTable": "goal",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "journal_log_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"text\" of table \"journal_log\" will be dropped.",
+      "table": "journal_log",
+      "columns": [
+        "text"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column picture of table journal_log is modified in a way that it must be deleted and recreated.",
+      "table": "journal_log",
+      "columns": [
+        "picture"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"journal_log\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "journal_log",
+      "columns": [
+        "note"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

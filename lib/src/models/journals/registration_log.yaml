@@ -1,0 +1,6 @@
+class: RegistrationLog
+fields:
+  loggedValue: double? # The amount registered by the user
+  setTime: DateTime # The Time for which the registration counts
+  createdAt: DateTime # Creation time
+  modifiedAt: DateTime # Last modification time

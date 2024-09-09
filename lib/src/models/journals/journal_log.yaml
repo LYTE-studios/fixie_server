@@ -2,9 +2,10 @@ class: JournalLog
 table: journal_log
 fields:
   goal: Goal?, relation(name=goal_journal)
-  text: String # A note the user can leave
-  picture: String? # Stored image for the registration stored via url
-  loggedValue: double? # The amount registered by the user
+  picture: List<String>? # Stored images for the registration stored via url
+  note: String # A note the user can leave
+  loggedValue: double? # The total value logged
+  registrationLog: List<RegistrationLog>? # The saved logs
   createdAt: DateTime # Creation time
   modifiedAt: DateTime # Last modification time
   date: DateTime # The date of journal log

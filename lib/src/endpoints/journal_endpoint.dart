@@ -112,7 +112,7 @@ class JournalEndpoint extends Endpoint {
       definedLog ??= JournalLog(
         goalId: goal.id!,
         goal: goal,
-        text: '',
+        note: '',
         createdAt: start,
         modifiedAt: start,
         streak: hasStreak,
@@ -190,9 +190,7 @@ class JournalEndpoint extends Endpoint {
       ),
       where: (p0) =>
           p0.goalId.equals(goalId) &
-          (p0.text.notEquals('') |
-              p0.text.notEquals(null) |
-              p0.picture.notEquals(null)),
+          (p0.note.notEquals('') | p0.note.notEquals(null)),
     );
 
     return list;
