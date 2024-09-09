@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:fixie_server/src/utils/journal_utils.dart';
+import 'package:intl/intl.dart';
 import 'package:serverpod/serverpod.dart';
 
 class JournalEndpoint extends Endpoint {
@@ -60,17 +61,9 @@ class JournalEndpoint extends Endpoint {
           category: Category.include(),
         ),
       ),
-      where: (t) =>
-          t.goalId.inSet(
-            goals.map((e) => e.id!).toSet(),
-          ) &
-          (t.date.between(
-                start.subtract(Duration(days: 1)),
-                end,
-              ) |
-              t.date.equals(
-                start,
-              )),
+      where: (t) => t.goalId.inSet(
+        goals.map((e) => e.id!).toSet(),
+      ),
     );
 
     JournalListDto dto = JournalListDto(
@@ -80,50 +73,155 @@ class JournalEndpoint extends Endpoint {
       yearly: [],
     );
 
-    for (Goal goal in goals) {
-      JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull(
-          (log) => (log.goal?.id == goal.id) & (log.date.day == start.day));
+    /// Calculates number of weeks for a given year as per https://en.wikipedia.org/wiki/ISO_week_date#Weeks_per_year
+    int numOfWeeks(int year) {
+      DateTime dec28 = DateTime(year, 12, 28);
+      int dayOfDec28 = int.parse(DateFormat("D").format(dec28));
+      return ((dayOfDec28 - dec28.weekday + 10) / 7).floor();
+    }
 
-      bool hasStreak = dayBeforeLog == null
-          ? false
-          : (dayBeforeLog.loggedValue ?? 0) >=
-              (dayBeforeLog.goal?.target.toDouble() ?? 0);
-
-      JournalLog? definedLog = definedLogs.firstWhereOrNull(
-        (e) => e.goalId == goal.id,
-      );
-
-      void addLogToRepetition(JournalLog journalLog) {
-        switch (journalLog.goal?.repetition) {
-          case Repetition.Daily:
-            dto.daily.add(journalLog);
-          case Repetition.Weekly:
-            dto.weekly.add(journalLog);
-          case Repetition.Monthly:
-            dto.monthly.add(journalLog);
-          case Repetition.Yearly:
-            dto.yearly.add(journalLog);
-          default:
-        }
+    /// Calculates week number from a date as per https://en.wikipedia.org/wiki/ISO_week_date#Calculation
+    int weekNumber(DateTime date) {
+      int dayOfYear = int.parse(DateFormat("D").format(date));
+      int woy = ((dayOfYear - date.weekday + 10) / 7).floor();
+      if (woy < 1) {
+        woy = numOfWeeks(date.year - 1);
+      } else if (woy > numOfWeeks(date.year)) {
+        woy = 1;
       }
+      return woy;
+    }
 
-      definedLog?.streak = hasStreak;
+    for (Goal goal in goals) {
+      switch (goal.repetition) {
+        case Repetition.Daily:
+          {
+            JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
+                (log.goal?.id == goal.id) & (log.date.day == start.day - 1));
 
-      definedLog ??= JournalLog(
-        goalId: goal.id!,
-        goal: goal,
-        note: '',
-        createdAt: start,
-        modifiedAt: start,
-        streak: hasStreak,
-        date: DateTime(
-          end.year,
-          end.month,
-          end.day,
-        ),
-      );
+            JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
+                (log.goal?.id == goal.id) & (log.date.day == start.day));
 
-      addLogToRepetition(definedLog);
+            bool hasStreak = dayBeforeLog == null
+                ? false
+                : (dayBeforeLog.loggedValue ?? 0) >=
+                    (dayBeforeLog.goal?.target.toDouble() ?? 0);
+
+            todayLog?.streak = hasStreak;
+
+            todayLog ??= JournalLog(
+              goalId: goal.id!,
+              goal: goal,
+              note: '',
+              createdAt: start,
+              modifiedAt: start,
+              streak: hasStreak,
+              date: DateTime(
+                end.year,
+                end.month,
+                end.day,
+              ),
+            );
+
+            dto.daily.add(todayLog);
+          }
+        case Repetition.Weekly:
+          {
+            JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
+                (log.goal?.id == goal.id) &
+                (weekNumber(log.date) == weekNumber(start) - 1));
+
+            JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
+                (log.goal?.id == goal.id) &
+                (weekNumber(log.date) == weekNumber(start)));
+
+            bool hasStreak = dayBeforeLog == null
+                ? false
+                : (dayBeforeLog.loggedValue ?? 0) >=
+                    (dayBeforeLog.goal?.target.toDouble() ?? 0);
+
+            todayLog?.streak = hasStreak;
+
+            todayLog ??= JournalLog(
+              goalId: goal.id!,
+              goal: goal,
+              note: '',
+              createdAt: start,
+              modifiedAt: start,
+              streak: hasStreak,
+              date: DateTime(
+                end.year,
+                end.month,
+                end.day,
+              ),
+            );
+
+            dto.weekly.add(todayLog);
+          }
+        case Repetition.Monthly:
+          {
+            JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
+                (log.goal?.id == goal.id) & (log.date.month == log.date.month));
+
+            JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
+                (log.goal?.id == goal.id) & (log.date.month == start.month));
+
+            bool hasStreak = dayBeforeLog == null
+                ? false
+                : (dayBeforeLog.loggedValue ?? 0) >=
+                    (dayBeforeLog.goal?.target.toDouble() ?? 0);
+
+            todayLog?.streak = hasStreak;
+
+            todayLog ??= JournalLog(
+              goalId: goal.id!,
+              goal: goal,
+              note: '',
+              createdAt: start,
+              modifiedAt: start,
+              streak: hasStreak,
+              date: DateTime(
+                end.year,
+                end.month,
+                end.day,
+              ),
+            );
+
+            dto.monthly.add(todayLog);
+          }
+        case Repetition.Yearly:
+          {
+            JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
+                (log.goal?.id == goal.id) & (log.date.year == log.date.year));
+
+            JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
+                (log.goal?.id == goal.id) & (log.date.year == start.year));
+
+            bool hasStreak = dayBeforeLog == null
+                ? false
+                : (dayBeforeLog.loggedValue ?? 0) >=
+                    (dayBeforeLog.goal?.target.toDouble() ?? 0);
+
+            todayLog?.streak = hasStreak;
+
+            todayLog ??= JournalLog(
+              goalId: goal.id!,
+              goal: goal,
+              note: '',
+              createdAt: start,
+              modifiedAt: start,
+              streak: hasStreak,
+              date: DateTime(
+                end.year,
+                end.month,
+                end.day,
+              ),
+            );
+
+            dto.monthly.add(todayLog);
+          }
+        default:
+      }
     }
 
     return dto;
