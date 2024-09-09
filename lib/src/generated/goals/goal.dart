@@ -23,14 +23,12 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.unit,
     required this.categoryId,
     this.category,
-    this.days,
+    this.repetition,
+    this.repeatEvery,
+    this.weekdays,
     this.end,
-    required this.setRemind,
-    this.remindHour,
-    this.remindMinutes,
-    this.remindHalf,
+    this.reminders,
     this.journal,
-    this.currentStreak,
     this.highestStreak,
     required this.active,
     required this.archived,
@@ -47,14 +45,12 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     String? unit,
     required int categoryId,
     _i2.Category? category,
-    List<_i2.RepeatableDays>? days,
+    _i2.Repetition? repetition,
+    int? repeatEvery,
+    List<int>? weekdays,
     DateTime? end,
-    required bool setRemind,
-    int? remindHour,
-    int? remindMinutes,
-    bool? remindHalf,
+    List<DateTime>? reminders,
     List<_i2.JournalLog>? journal,
-    int? currentStreak,
     int? highestStreak,
     required bool active,
     required bool archived,
@@ -78,20 +74,22 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
           ? null
           : _i2.Category.fromJson(
               (jsonSerialization['category'] as Map<String, dynamic>)),
-      days: (jsonSerialization['days'] as List?)
-          ?.map((e) => _i2.RepeatableDays.fromJson((e as Map<String, dynamic>)))
+      repetition: jsonSerialization['repetition'] == null
+          ? null
+          : _i2.Repetition.fromJson((jsonSerialization['repetition'] as int)),
+      repeatEvery: jsonSerialization['repeatEvery'] as int?,
+      weekdays: (jsonSerialization['weekdays'] as List?)
+          ?.map((e) => e as int)
           .toList(),
       end: jsonSerialization['end'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['end']),
-      setRemind: jsonSerialization['setRemind'] as bool,
-      remindHour: jsonSerialization['remindHour'] as int?,
-      remindMinutes: jsonSerialization['remindMinutes'] as int?,
-      remindHalf: jsonSerialization['remindHalf'] as bool?,
+      reminders: (jsonSerialization['reminders'] as List?)
+          ?.map((e) => _i1.DateTimeJsonExtension.fromJson(e))
+          .toList(),
       journal: (jsonSerialization['journal'] as List?)
           ?.map((e) => _i2.JournalLog.fromJson((e as Map<String, dynamic>)))
           .toList(),
-      currentStreak: jsonSerialization['currentStreak'] as int?,
       highestStreak: jsonSerialization['highestStreak'] as int?,
       active: jsonSerialization['active'] as bool,
       archived: jsonSerialization['archived'] as bool,
@@ -121,21 +119,17 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   _i2.Category? category;
 
-  List<_i2.RepeatableDays>? days;
+  _i2.Repetition? repetition;
+
+  int? repeatEvery;
+
+  List<int>? weekdays;
 
   DateTime? end;
 
-  bool setRemind;
-
-  int? remindHour;
-
-  int? remindMinutes;
-
-  bool? remindHalf;
+  List<DateTime>? reminders;
 
   List<_i2.JournalLog>? journal;
-
-  int? currentStreak;
 
   int? highestStreak;
 
@@ -158,14 +152,12 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     String? unit,
     int? categoryId,
     _i2.Category? category,
-    List<_i2.RepeatableDays>? days,
+    _i2.Repetition? repetition,
+    int? repeatEvery,
+    List<int>? weekdays,
     DateTime? end,
-    bool? setRemind,
-    int? remindHour,
-    int? remindMinutes,
-    bool? remindHalf,
+    List<DateTime>? reminders,
     List<_i2.JournalLog>? journal,
-    int? currentStreak,
     int? highestStreak,
     bool? active,
     bool? archived,
@@ -183,15 +175,14 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (unit != null) 'unit': unit,
       'categoryId': categoryId,
       if (category != null) 'category': category?.toJson(),
-      if (days != null) 'days': days?.toJson(valueToJson: (v) => v.toJson()),
+      if (repetition != null) 'repetition': repetition?.toJson(),
+      if (repeatEvery != null) 'repeatEvery': repeatEvery,
+      if (weekdays != null) 'weekdays': weekdays?.toJson(),
       if (end != null) 'end': end?.toJson(),
-      'setRemind': setRemind,
-      if (remindHour != null) 'remindHour': remindHour,
-      if (remindMinutes != null) 'remindMinutes': remindMinutes,
-      if (remindHalf != null) 'remindHalf': remindHalf,
+      if (reminders != null)
+        'reminders': reminders?.toJson(valueToJson: (v) => v.toJson()),
       if (journal != null)
         'journal': journal?.toJson(valueToJson: (v) => v.toJson()),
-      if (currentStreak != null) 'currentStreak': currentStreak,
       if (highestStreak != null) 'highestStreak': highestStreak,
       'active': active,
       'archived': archived,
@@ -211,16 +202,14 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (unit != null) 'unit': unit,
       'categoryId': categoryId,
       if (category != null) 'category': category?.toJsonForProtocol(),
-      if (days != null)
-        'days': days?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+      if (repetition != null) 'repetition': repetition?.toJson(),
+      if (repeatEvery != null) 'repeatEvery': repeatEvery,
+      if (weekdays != null) 'weekdays': weekdays?.toJson(),
       if (end != null) 'end': end?.toJson(),
-      'setRemind': setRemind,
-      if (remindHour != null) 'remindHour': remindHour,
-      if (remindMinutes != null) 'remindMinutes': remindMinutes,
-      if (remindHalf != null) 'remindHalf': remindHalf,
+      if (reminders != null)
+        'reminders': reminders?.toJson(valueToJson: (v) => v.toJson()),
       if (journal != null)
         'journal': journal?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
-      if (currentStreak != null) 'currentStreak': currentStreak,
       if (highestStreak != null) 'highestStreak': highestStreak,
       'active': active,
       'archived': archived,
@@ -231,13 +220,11 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
   static GoalInclude include({
     _i2.UserInclude? user,
     _i2.CategoryInclude? category,
-    _i2.RepeatableDaysIncludeList? days,
     _i2.JournalLogIncludeList? journal,
   }) {
     return GoalInclude._(
       user: user,
       category: category,
-      days: days,
       journal: journal,
     );
   }
@@ -281,14 +268,12 @@ class _GoalImpl extends Goal {
     String? unit,
     required int categoryId,
     _i2.Category? category,
-    List<_i2.RepeatableDays>? days,
+    _i2.Repetition? repetition,
+    int? repeatEvery,
+    List<int>? weekdays,
     DateTime? end,
-    required bool setRemind,
-    int? remindHour,
-    int? remindMinutes,
-    bool? remindHalf,
+    List<DateTime>? reminders,
     List<_i2.JournalLog>? journal,
-    int? currentStreak,
     int? highestStreak,
     required bool active,
     required bool archived,
@@ -303,14 +288,12 @@ class _GoalImpl extends Goal {
           unit: unit,
           categoryId: categoryId,
           category: category,
-          days: days,
+          repetition: repetition,
+          repeatEvery: repeatEvery,
+          weekdays: weekdays,
           end: end,
-          setRemind: setRemind,
-          remindHour: remindHour,
-          remindMinutes: remindMinutes,
-          remindHalf: remindHalf,
+          reminders: reminders,
           journal: journal,
-          currentStreak: currentStreak,
           highestStreak: highestStreak,
           active: active,
           archived: archived,
@@ -328,14 +311,12 @@ class _GoalImpl extends Goal {
     Object? unit = _Undefined,
     int? categoryId,
     Object? category = _Undefined,
-    Object? days = _Undefined,
+    Object? repetition = _Undefined,
+    Object? repeatEvery = _Undefined,
+    Object? weekdays = _Undefined,
     Object? end = _Undefined,
-    bool? setRemind,
-    Object? remindHour = _Undefined,
-    Object? remindMinutes = _Undefined,
-    Object? remindHalf = _Undefined,
+    Object? reminders = _Undefined,
     Object? journal = _Undefined,
-    Object? currentStreak = _Undefined,
     Object? highestStreak = _Undefined,
     bool? active,
     bool? archived,
@@ -352,15 +333,14 @@ class _GoalImpl extends Goal {
       categoryId: categoryId ?? this.categoryId,
       category:
           category is _i2.Category? ? category : this.category?.copyWith(),
-      days: days is List<_i2.RepeatableDays>? ? days : this.days?.clone(),
+      repetition: repetition is _i2.Repetition? ? repetition : this.repetition,
+      repeatEvery: repeatEvery is int? ? repeatEvery : this.repeatEvery,
+      weekdays: weekdays is List<int>? ? weekdays : this.weekdays?.clone(),
       end: end is DateTime? ? end : this.end,
-      setRemind: setRemind ?? this.setRemind,
-      remindHour: remindHour is int? ? remindHour : this.remindHour,
-      remindMinutes: remindMinutes is int? ? remindMinutes : this.remindMinutes,
-      remindHalf: remindHalf is bool? ? remindHalf : this.remindHalf,
+      reminders:
+          reminders is List<DateTime>? ? reminders : this.reminders?.clone(),
       journal:
           journal is List<_i2.JournalLog>? ? journal : this.journal?.clone(),
-      currentStreak: currentStreak is int? ? currentStreak : this.currentStreak,
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
       active: active ?? this.active,
       archived: archived ?? this.archived,
@@ -395,28 +375,25 @@ class GoalTable extends _i1.Table {
       'categoryId',
       this,
     );
+    repetition = _i1.ColumnEnum(
+      'repetition',
+      this,
+      _i1.EnumSerialization.byIndex,
+    );
+    repeatEvery = _i1.ColumnInt(
+      'repeatEvery',
+      this,
+    );
+    weekdays = _i1.ColumnSerializable(
+      'weekdays',
+      this,
+    );
     end = _i1.ColumnDateTime(
       'end',
       this,
     );
-    setRemind = _i1.ColumnBool(
-      'setRemind',
-      this,
-    );
-    remindHour = _i1.ColumnInt(
-      'remindHour',
-      this,
-    );
-    remindMinutes = _i1.ColumnInt(
-      'remindMinutes',
-      this,
-    );
-    remindHalf = _i1.ColumnBool(
-      'remindHalf',
-      this,
-    );
-    currentStreak = _i1.ColumnInt(
-      'currentStreak',
+    reminders = _i1.ColumnSerializable(
+      'reminders',
       this,
     );
     highestStreak = _i1.ColumnInt(
@@ -453,25 +430,19 @@ class GoalTable extends _i1.Table {
 
   _i2.CategoryTable? _category;
 
-  _i2.RepeatableDaysTable? ___days;
+  late final _i1.ColumnEnum<_i2.Repetition> repetition;
 
-  _i1.ManyRelation<_i2.RepeatableDaysTable>? _days;
+  late final _i1.ColumnInt repeatEvery;
+
+  late final _i1.ColumnSerializable weekdays;
 
   late final _i1.ColumnDateTime end;
 
-  late final _i1.ColumnBool setRemind;
-
-  late final _i1.ColumnInt remindHour;
-
-  late final _i1.ColumnInt remindMinutes;
-
-  late final _i1.ColumnBool remindHalf;
+  late final _i1.ColumnSerializable reminders;
 
   _i2.JournalLogTable? ___journal;
 
   _i1.ManyRelation<_i2.JournalLogTable>? _journal;
-
-  late final _i1.ColumnInt currentStreak;
 
   late final _i1.ColumnInt highestStreak;
 
@@ -507,19 +478,6 @@ class GoalTable extends _i1.Table {
     return _category!;
   }
 
-  _i2.RepeatableDaysTable get __days {
-    if (___days != null) return ___days!;
-    ___days = _i1.createRelationTable(
-      relationFieldName: '__days',
-      field: Goal.t.id,
-      foreignField: _i2.RepeatableDays.t.goalId,
-      tableRelation: tableRelation,
-      createTable: (foreignTableRelation) =>
-          _i2.RepeatableDaysTable(tableRelation: foreignTableRelation),
-    );
-    return ___days!;
-  }
-
   _i2.JournalLogTable get __journal {
     if (___journal != null) return ___journal!;
     ___journal = _i1.createRelationTable(
@@ -531,24 +489,6 @@ class GoalTable extends _i1.Table {
           _i2.JournalLogTable(tableRelation: foreignTableRelation),
     );
     return ___journal!;
-  }
-
-  _i1.ManyRelation<_i2.RepeatableDaysTable> get days {
-    if (_days != null) return _days!;
-    var relationTable = _i1.createRelationTable(
-      relationFieldName: 'days',
-      field: Goal.t.id,
-      foreignField: _i2.RepeatableDays.t.goalId,
-      tableRelation: tableRelation,
-      createTable: (foreignTableRelation) =>
-          _i2.RepeatableDaysTable(tableRelation: foreignTableRelation),
-    );
-    _days = _i1.ManyRelation<_i2.RepeatableDaysTable>(
-      tableWithRelations: relationTable,
-      table: _i2.RepeatableDaysTable(
-          tableRelation: relationTable.tableRelation!.lastRelation),
-    );
-    return _days!;
   }
 
   _i1.ManyRelation<_i2.JournalLogTable> get journal {
@@ -578,12 +518,11 @@ class GoalTable extends _i1.Table {
         target,
         unit,
         categoryId,
+        repetition,
+        repeatEvery,
+        weekdays,
         end,
-        setRemind,
-        remindHour,
-        remindMinutes,
-        remindHalf,
-        currentStreak,
+        reminders,
         highestStreak,
         active,
         archived,
@@ -598,9 +537,6 @@ class GoalTable extends _i1.Table {
     if (relationField == 'category') {
       return category;
     }
-    if (relationField == 'days') {
-      return __days;
-    }
     if (relationField == 'journal') {
       return __journal;
     }
@@ -612,12 +548,10 @@ class GoalInclude extends _i1.IncludeObject {
   GoalInclude._({
     _i2.UserInclude? user,
     _i2.CategoryInclude? category,
-    _i2.RepeatableDaysIncludeList? days,
     _i2.JournalLogIncludeList? journal,
   }) {
     _user = user;
     _category = category;
-    _days = days;
     _journal = journal;
   }
 
@@ -625,15 +559,12 @@ class GoalInclude extends _i1.IncludeObject {
 
   _i2.CategoryInclude? _category;
 
-  _i2.RepeatableDaysIncludeList? _days;
-
   _i2.JournalLogIncludeList? _journal;
 
   @override
   Map<String, _i1.Include?> get includes => {
         'user': _user,
         'category': _category,
-        'days': _days,
         'journal': _journal,
       };
 
@@ -827,26 +758,6 @@ class GoalRepository {
 class GoalAttachRepository {
   const GoalAttachRepository._();
 
-  Future<void> days(
-    _i1.Session session,
-    Goal goal,
-    List<_i2.RepeatableDays> repeatableDays,
-  ) async {
-    if (repeatableDays.any((e) => e.id == null)) {
-      throw ArgumentError.notNull('repeatableDays.id');
-    }
-    if (goal.id == null) {
-      throw ArgumentError.notNull('goal.id');
-    }
-
-    var $repeatableDays =
-        repeatableDays.map((e) => e.copyWith(goalId: goal.id)).toList();
-    await session.db.update<_i2.RepeatableDays>(
-      $repeatableDays,
-      columns: [_i2.RepeatableDays.t.goalId],
-    );
-  }
-
   Future<void> journal(
     _i1.Session session,
     Goal goal,
@@ -909,25 +820,6 @@ class GoalAttachRowRepository {
     );
   }
 
-  Future<void> days(
-    _i1.Session session,
-    Goal goal,
-    _i2.RepeatableDays repeatableDays,
-  ) async {
-    if (repeatableDays.id == null) {
-      throw ArgumentError.notNull('repeatableDays.id');
-    }
-    if (goal.id == null) {
-      throw ArgumentError.notNull('goal.id');
-    }
-
-    var $repeatableDays = repeatableDays.copyWith(goalId: goal.id);
-    await session.db.updateRow<_i2.RepeatableDays>(
-      $repeatableDays,
-      columns: [_i2.RepeatableDays.t.goalId],
-    );
-  }
-
   Future<void> journal(
     _i1.Session session,
     Goal goal,
@@ -951,22 +843,6 @@ class GoalAttachRowRepository {
 class GoalDetachRepository {
   const GoalDetachRepository._();
 
-  Future<void> days(
-    _i1.Session session,
-    List<_i2.RepeatableDays> repeatableDays,
-  ) async {
-    if (repeatableDays.any((e) => e.id == null)) {
-      throw ArgumentError.notNull('repeatableDays.id');
-    }
-
-    var $repeatableDays =
-        repeatableDays.map((e) => e.copyWith(goalId: null)).toList();
-    await session.db.update<_i2.RepeatableDays>(
-      $repeatableDays,
-      columns: [_i2.RepeatableDays.t.goalId],
-    );
-  }
-
   Future<void> journal(
     _i1.Session session,
     List<_i2.JournalLog> journalLog,
@@ -985,21 +861,6 @@ class GoalDetachRepository {
 
 class GoalDetachRowRepository {
   const GoalDetachRowRepository._();
-
-  Future<void> days(
-    _i1.Session session,
-    _i2.RepeatableDays repeatableDays,
-  ) async {
-    if (repeatableDays.id == null) {
-      throw ArgumentError.notNull('repeatableDays.id');
-    }
-
-    var $repeatableDays = repeatableDays.copyWith(goalId: null);
-    await session.db.updateRow<_i2.RepeatableDays>(
-      $repeatableDays,
-      columns: [_i2.RepeatableDays.t.goalId],
-    );
-  }
 
   Future<void> journal(
     _i1.Session session,

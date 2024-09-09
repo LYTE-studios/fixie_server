@@ -23,26 +23,17 @@ class GoalsEndpoint extends Endpoint {
         userId: user.id!,
         target: dto.target,
         categoryId: dto.category!.id!,
-        setRemind: dto.setRemind,
+        repetition: dto.repetition,
+        reminders: dto.reminders,
+        weekdays: dto.weekdays,
         active: true,
         archived: false,
         picture: dto.picture,
         unit: dto.unit,
         end: dto.end,
-        remindMinutes: dto.remindMinutes,
-        remindHour: dto.remindHour,
-        remindHalf: dto.remindHalf,
         created: DateTime.now(),
       ),
     );
-
-    if (dto.days != null) {
-      addRepeatsForGoal(
-        session,
-        goalId: goal.id!,
-        days: dto.days!,
-      );
-    }
 
     goal.user = user;
 
@@ -52,33 +43,6 @@ class GoalsEndpoint extends Endpoint {
     );
 
     return goal;
-  }
-
-  Future<int> addRepeatsForGoal(
-    Session session, {
-    required int goalId,
-    required List<RepeatableDays> days,
-  }) async {
-    await AuthUtils.getAuthenticatedUser(session);
-
-    List<RepeatableDays> newDays = [];
-
-    for (RepeatableDays day in days) {
-      newDays.add(
-        RepeatableDays(
-          day: day.day,
-          extraInfo: day.extraInfo,
-          goalId: goalId,
-        ),
-      );
-    }
-
-    await RepeatableDays.db.insert(
-      session,
-      newDays,
-    );
-
-    return HttpStatus.ok;
   }
 
   Future<Goal?> getGoal(Session session, int? goalId) async {
@@ -133,11 +97,12 @@ class GoalsEndpoint extends Endpoint {
     }
 
     goal.title = newGoal.title;
-    goal.days = newGoal.days;
     goal.target = newGoal.target;
     goal.unit = newGoal.unit;
     goal.end = newGoal.end;
-    goal.setRemind = newGoal.setRemind;
+    goal.reminders = newGoal.reminders;
+    goal.weekdays = newGoal.weekdays;
+    goal.repetition = newGoal.repetition;
     goal.picture = newGoal.picture;
     goal.category = newGoal.category;
     goal.categoryId = newGoal.category!.id!;

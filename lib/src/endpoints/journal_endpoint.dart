@@ -31,7 +31,7 @@ class JournalEndpoint extends Endpoint {
     );
   }
 
-  Future<List<JournalLog>> getLogsForRange(
+  Future<JournalListDto> getLogsForRange(
     Session session, {
     required DateTime start,
     required DateTime end,
@@ -42,7 +42,6 @@ class JournalEndpoint extends Endpoint {
       session,
       include: Goal.include(
         category: Category.include(),
-        days: RepeatableDays.includeList(),
       ),
       where: (t) => (t.userId.equals(user.id) &
           t.archived.notEquals(true) &
@@ -66,7 +65,7 @@ class JournalEndpoint extends Endpoint {
             goals.map((e) => e.id!).toSet(),
           ) &
           (t.date.between(
-                start,
+                start.subtract(Duration(days: 1)),
                 end,
               ) |
               t.date.equals(
@@ -74,27 +73,16 @@ class JournalEndpoint extends Endpoint {
               )),
     );
 
-    List<JournalLog> dayBeforeLogs = await JournalLog.db.find(
-      session,
-      include: JournalLog.include(
-        goal: Goal.include(
-          category: Category.include(),
-        ),
-      ),
-      where: (t) =>
-          t.date.between(
-              DateTime(start.year, start.month, start.day - 1, start.hour,
-                  start.minute),
-              DateTime(
-                  end.year, end.month, end.day - 1, end.hour, end.minute)) &
-          t.goal.user.id.equals(user.id),
+    JournalListDto dto = JournalListDto(
+      daily: [],
+      weekly: [],
+      monthly: [],
+      yearly: [],
     );
 
-    List<JournalLog> logs = [];
-
     for (Goal goal in goals) {
-      JournalLog? dayBeforeLog =
-          dayBeforeLogs.firstWhereOrNull((log) => log.goal?.id == goal.id);
+      JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull(
+          (log) => (log.goal?.id == goal.id) & (log.date.day == start.day));
 
       bool hasStreak = dayBeforeLog == null
           ? false
@@ -105,30 +93,40 @@ class JournalEndpoint extends Endpoint {
         (e) => e.goalId == goal.id,
       );
 
-      if (definedLog != null) {
-        definedLog.streak = hasStreak;
-        logs.add(definedLog);
-        continue;
+      void addLogToRepetition(JournalLog journalLog) {
+        switch (journalLog.goal?.repetition) {
+          case Repetition.Daily:
+            dto.daily.add(journalLog);
+          case Repetition.Weekly:
+            dto.weekly.add(journalLog);
+          case Repetition.Monthly:
+            dto.monthly.add(journalLog);
+          case Repetition.Yearly:
+            dto.yearly.add(journalLog);
+          default:
+        }
       }
 
-      logs.add(
-        JournalLog(
-          goalId: goal.id!,
-          goal: goal,
-          text: '',
-          createdAt: start,
-          modifiedAt: start,
-          streak: hasStreak,
-          date: DateTime(
-            end.year,
-            end.month,
-            end.day,
-          ),
+      definedLog?.streak = hasStreak;
+
+      definedLog ??= JournalLog(
+        goalId: goal.id!,
+        goal: goal,
+        text: '',
+        createdAt: start,
+        modifiedAt: start,
+        streak: hasStreak,
+        date: DateTime(
+          end.year,
+          end.month,
+          end.day,
         ),
       );
+
+      addLogToRepetition(definedLog);
     }
 
-    return logs;
+    return dto;
   }
 
   Future<JournalLog> addLog(Session session, int goalId, JournalLog log) async {

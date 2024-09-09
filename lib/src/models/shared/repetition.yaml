@@ -1,5 +1,6 @@
 enum: Repetition
 values:
- - Daily
- - Weekly
- - Monthly
+  - Daily
+  - Weekly
+  - Monthly
+  - Yearly

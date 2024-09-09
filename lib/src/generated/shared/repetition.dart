@@ -13,7 +13,8 @@ import 'package:serverpod/serverpod.dart' as _i1;
 enum Repetition implements _i1.SerializableModel {
   Daily,
   Weekly,
-  Monthly;
+  Monthly,
+  Yearly;
 
   static Repetition fromJson(int index) {
     switch (index) {
@@ -23,6 +24,8 @@ enum Repetition implements _i1.SerializableModel {
         return Weekly;
       case 2:
         return Monthly;
+      case 3:
+        return Yearly;
       default:
         throw ArgumentError(
             'Value "$index" cannot be converted to "Repetition"');

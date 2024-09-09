@@ -1,0 +1,6 @@
+class: JournalListDto
+fields:
+  daily: List<JournalLog>
+  weekly: List<JournalLog>
+  monthly: List<JournalLog>
+  yearly: List<JournalLog>

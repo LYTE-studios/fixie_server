@@ -7,7 +7,6 @@ file:
   - verifyUpload:
 goals:
   - addGoal:
-  - addRepeatsForGoal:
   - getGoal:
   - getGoals:
   - updateGoal:

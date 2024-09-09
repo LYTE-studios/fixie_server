@@ -9,15 +9,15 @@ class GoalManager {
       return;
     }
 
-    if (goal.setRemind) {
+    for (DateTime reminder in goal.reminders ?? []) {
       DateTime now = DateTime.now();
 
       DateTime time = DateTime(
         now.year,
         now.month,
         now.day,
-        (goal.remindHour ?? 0) + ((goal.remindHalf ?? false) ? 12 : 0),
-        goal.remindMinutes ?? 0,
+        reminder.hour,
+        reminder.minute,
       );
 
       if (time.isBefore(now)) {

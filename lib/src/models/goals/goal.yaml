@@ -7,14 +7,12 @@ fields:
   target: int
   unit: String? # The unit of measurement. For example Liters
   category: Category?, relation
-  days: List<RepeatableDays>?, relation(name=goal_repeatable_days)
+  repetition: Repetition?
+  repeatEvery: int?
+  weekdays: List<int>?
   end: DateTime?
-  setRemind: bool
-  remindHour: int? # 0-12h
-  remindMinutes: int? # 0-60m
-  remindHalf: bool? # 1 -> PM, 0 -> AM
+  reminders: List<DateTime>?
   journal: List<JournalLog>?, relation(name=goal_journal)
-  currentStreak: int? # The streak the goal currently holds
   highestStreak: int? # The highest a streak has lasted for this goal
   active: bool
   archived: bool

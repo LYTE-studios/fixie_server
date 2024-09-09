@@ -18,9 +18,9 @@ import 'core/endpoint_exception.dart' as _i6;
 import 'core/error_types.dart' as _i7;
 import 'goals/create_goal_dto.dart' as _i8;
 import 'goals/goal.dart' as _i9;
-import 'journals/journal_log.dart' as _i10;
-import 'notifications/notification.dart' as _i11;
-import 'shared/repeatable_days.dart' as _i12;
+import 'journals/journal_list_dto.dart' as _i10;
+import 'journals/journal_log.dart' as _i11;
+import 'notifications/notification.dart' as _i12;
 import 'shared/repetition.dart' as _i13;
 import 'statistics/category_statistics.dart' as _i14;
 import 'statistics/goal_statistics.dart' as _i15;
@@ -29,18 +29,17 @@ import 'users/user.dart' as _i17;
 import 'users/user_profile_dto.dart' as _i18;
 import 'protocol.dart' as _i19;
 import 'package:fixie_server/src/generated/category/category.dart' as _i20;
-import 'package:fixie_server/src/generated/shared/repeatable_days.dart' as _i21;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i22;
-import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i23;
+import 'package:fixie_server/src/generated/goals/goal.dart' as _i21;
+import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i22;
 export 'category/category.dart';
 export 'category/create_category_dto.dart';
 export 'core/endpoint_exception.dart';
 export 'core/error_types.dart';
 export 'goals/create_goal_dto.dart';
 export 'goals/goal.dart';
+export 'journals/journal_list_dto.dart';
 export 'journals/journal_log.dart';
 export 'notifications/notification.dart';
-export 'shared/repeatable_days.dart';
 export 'shared/repetition.dart';
 export 'statistics/category_statistics.dart';
 export 'statistics/goal_statistics.dart';
@@ -241,40 +240,34 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'int',
         ),
         _i2.ColumnDefinition(
+          name: 'repetition',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'protocol:Repetition?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'repeatEvery',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'weekdays',
+          columnType: _i2.ColumnType.json,
+          isNullable: true,
+          dartType: 'List<int>?',
+        ),
+        _i2.ColumnDefinition(
           name: 'end',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: true,
           dartType: 'DateTime?',
         ),
         _i2.ColumnDefinition(
-          name: 'setRemind',
-          columnType: _i2.ColumnType.boolean,
-          isNullable: false,
-          dartType: 'bool',
-        ),
-        _i2.ColumnDefinition(
-          name: 'remindHour',
-          columnType: _i2.ColumnType.bigint,
+          name: 'reminders',
+          columnType: _i2.ColumnType.json,
           isNullable: true,
-          dartType: 'int?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'remindMinutes',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: true,
-          dartType: 'int?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'remindHalf',
-          columnType: _i2.ColumnType.boolean,
-          isNullable: true,
-          dartType: 'bool?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'currentStreak',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: true,
-          dartType: 'int?',
+          dartType: 'List<DateTime>?',
         ),
         _i2.ColumnDefinition(
           name: 'highestStreak',
@@ -431,67 +424,6 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       managed: true,
     ),
-    _i2.TableDefinition(
-      name: 'repeatable_days',
-      dartName: 'RepeatableDays',
-      schema: 'public',
-      module: 'fixie',
-      columns: [
-        _i2.ColumnDefinition(
-          name: 'id',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int?',
-          columnDefault: 'nextval(\'repeatable_days_id_seq\'::regclass)',
-        ),
-        _i2.ColumnDefinition(
-          name: 'day',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
-          name: 'extraInfo',
-          columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'goalId',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
-        ),
-      ],
-      foreignKeys: [
-        _i2.ForeignKeyDefinition(
-          constraintName: 'repeatable_days_fk_0',
-          columns: ['goalId'],
-          referenceTable: 'goal',
-          referenceTableSchema: 'public',
-          referenceColumns: ['id'],
-          onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.noAction,
-          matchType: null,
-        )
-      ],
-      indexes: [
-        _i2.IndexDefinition(
-          indexName: 'repeatable_days_pkey',
-          tableSpace: null,
-          elements: [
-            _i2.IndexElementDefinition(
-              type: _i2.IndexElementDefinitionType.column,
-              definition: 'id',
-            )
-          ],
-          type: 'btree',
-          isUnique: true,
-          isPrimary: true,
-        )
-      ],
-      managed: true,
-    ),
     ..._i3.Protocol.targetTableDefinitions,
     ..._i2.Protocol.targetTableDefinitions,
   ];
@@ -520,14 +452,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i9.Goal) {
       return _i9.Goal.fromJson(data) as T;
     }
-    if (t == _i10.JournalLog) {
-      return _i10.JournalLog.fromJson(data) as T;
+    if (t == _i10.JournalListDto) {
+      return _i10.JournalListDto.fromJson(data) as T;
     }
-    if (t == _i11.Notification) {
-      return _i11.Notification.fromJson(data) as T;
+    if (t == _i11.JournalLog) {
+      return _i11.JournalLog.fromJson(data) as T;
     }
-    if (t == _i12.RepeatableDays) {
-      return _i12.RepeatableDays.fromJson(data) as T;
+    if (t == _i12.Notification) {
+      return _i12.Notification.fromJson(data) as T;
     }
     if (t == _i13.Repetition) {
       return _i13.Repetition.fromJson(data) as T;
@@ -565,14 +497,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i9.Goal?>()) {
       return (data != null ? _i9.Goal.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i10.JournalLog?>()) {
-      return (data != null ? _i10.JournalLog.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i10.JournalListDto?>()) {
+      return (data != null ? _i10.JournalListDto.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i11.Notification?>()) {
-      return (data != null ? _i11.Notification.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i11.JournalLog?>()) {
+      return (data != null ? _i11.JournalLog.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i12.RepeatableDays?>()) {
-      return (data != null ? _i12.RepeatableDays.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i12.Notification?>()) {
+      return (data != null ? _i12.Notification.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i13.Repetition?>()) {
       return (data != null ? _i13.Repetition.fromJson(data) : null) as T;
@@ -593,24 +525,34 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i18.UserProfileDto?>()) {
       return (data != null ? _i18.UserProfileDto.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<List<_i19.RepeatableDays>?>()) {
+    if (t == _i1.getType<List<int>?>()) {
       return (data != null
-          ? (data as List)
-              .map((e) => deserialize<_i19.RepeatableDays>(e))
-              .toList()
+          ? (data as List).map((e) => deserialize<int>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i19.RepeatableDays>?>()) {
+    if (t == _i1.getType<List<DateTime>?>()) {
       return (data != null
-          ? (data as List)
-              .map((e) => deserialize<_i19.RepeatableDays>(e))
-              .toList()
+          ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<int>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<int>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<DateTime>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
           : null) as dynamic;
     }
     if (t == _i1.getType<List<_i19.JournalLog>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i19.JournalLog>(e)).toList()
           : null) as dynamic;
+    }
+    if (t == List<_i19.JournalLog>) {
+      return (data as List).map((e) => deserialize<_i19.JournalLog>(e)).toList()
+          as dynamic;
     }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList()
@@ -633,27 +575,18 @@ class Protocol extends _i1.SerializationManagerServer {
       return (data as List).map((e) => deserialize<_i20.Category>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i21.RepeatableDays>) {
-      return (data as List)
-          .map((e) => deserialize<_i21.RepeatableDays>(e))
-          .toList() as dynamic;
-    }
-    if (t == _i1.getType<List<_i22.Goal>?>()) {
+    if (t == _i1.getType<List<_i21.Goal>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i22.Goal>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i21.Goal>(e)).toList()
           : null) as dynamic;
     }
     if (t == Map<String, String?>) {
       return (data as Map).map((k, v) =>
           MapEntry(deserialize<String>(k), deserialize<String?>(v))) as dynamic;
     }
-    if (t == List<_i23.JournalLog>) {
-      return (data as List).map((e) => deserialize<_i23.JournalLog>(e)).toList()
-          as dynamic;
-    }
-    if (t == _i1.getType<List<_i23.JournalLog>?>()) {
+    if (t == _i1.getType<List<_i22.JournalLog>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i23.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i22.JournalLog>(e)).toList()
           : null) as dynamic;
     }
     try {
@@ -690,14 +623,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i9.Goal) {
       return 'Goal';
     }
-    if (data is _i10.JournalLog) {
+    if (data is _i10.JournalListDto) {
+      return 'JournalListDto';
+    }
+    if (data is _i11.JournalLog) {
       return 'JournalLog';
     }
-    if (data is _i11.Notification) {
+    if (data is _i12.Notification) {
       return 'Notification';
-    }
-    if (data is _i12.RepeatableDays) {
-      return 'RepeatableDays';
     }
     if (data is _i13.Repetition) {
       return 'Repetition';
@@ -744,14 +677,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'Goal') {
       return deserialize<_i9.Goal>(data['data']);
     }
+    if (data['className'] == 'JournalListDto') {
+      return deserialize<_i10.JournalListDto>(data['data']);
+    }
     if (data['className'] == 'JournalLog') {
-      return deserialize<_i10.JournalLog>(data['data']);
+      return deserialize<_i11.JournalLog>(data['data']);
     }
     if (data['className'] == 'Notification') {
-      return deserialize<_i11.Notification>(data['data']);
-    }
-    if (data['className'] == 'RepeatableDays') {
-      return deserialize<_i12.RepeatableDays>(data['data']);
+      return deserialize<_i12.Notification>(data['data']);
     }
     if (data['className'] == 'Repetition') {
       return deserialize<_i13.Repetition>(data['data']);
@@ -793,10 +726,8 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i4.Category.t;
       case _i9.Goal:
         return _i9.Goal.t;
-      case _i10.JournalLog:
-        return _i10.JournalLog.t;
-      case _i12.RepeatableDays:
-        return _i12.RepeatableDays.t;
+      case _i11.JournalLog:
+        return _i11.JournalLog.t;
       case _i17.User:
         return _i17.User.t;
     }

@@ -1,0 +1,162 @@
+{
+  "actions": [
+    {
+      "type": "deleteTable",
+      "deleteTable": "repeatable_days"
+    },
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "goal",
+        "schema": "public",
+        "addColumns": [
+          {
+            "name": "repetition",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "protocol:Repetition?"
+          },
+          {
+            "name": "repeatEvery",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          },
+          {
+            "name": "weekdays",
+            "columnType": 8,
+            "isNullable": true,
+            "dartType": "List<int>?"
+          },
+          {
+            "name": "reminders",
+            "columnType": 8,
+            "isNullable": true,
+            "dartType": "List<DateTime>?"
+          }
+        ],
+        "deleteColumns": [
+          "setRemind",
+          "remindHour",
+          "remindMinutes",
+          "remindHalf",
+          "currentStreak"
+        ],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [],
+        "deleteForeignKeys": [],
+        "warnings": [
+          {
+            "type": "tableDropped",
+            "message": "Table \"repeatable_days\" will be dropped.",
+            "table": "repeatable_days",
+            "columns": [],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"setRemind\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "setRemind"
+            ],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"remindHour\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "remindHour"
+            ],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"remindMinutes\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "remindMinutes"
+            ],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"remindHalf\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "remindHalf"
+            ],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"currentStreak\" of table \"goal\" will be dropped.",
+            "table": "goal",
+            "columns": [
+              "currentStreak"
+            ],
+            "destrucive": true
+          }
+        ]
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "tableDropped",
+      "message": "Table \"repeatable_days\" will be dropped.",
+      "table": "repeatable_days",
+      "columns": [],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"setRemind\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "setRemind"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"remindHour\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "remindHour"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"remindMinutes\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "remindMinutes"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"remindHalf\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "remindHalf"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"currentStreak\" of table \"goal\" will be dropped.",
+      "table": "goal",
+      "columns": [
+        "currentStreak"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

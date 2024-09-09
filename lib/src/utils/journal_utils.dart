@@ -55,7 +55,6 @@ class JournalUtils {
       }
     }
 
-    log.goal!.currentStreak = currentStreak;
     log.goal!.highestStreak = topStreak;
 
     await Goal.db.updateRow(session, log.goal!);
