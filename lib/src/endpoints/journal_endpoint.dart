@@ -218,7 +218,7 @@ class JournalEndpoint extends Endpoint {
               ),
             );
 
-            dto.monthly.add(todayLog);
+            dto.yearly.add(todayLog);
           }
         default:
       }
