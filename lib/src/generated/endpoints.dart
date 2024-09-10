@@ -547,6 +547,16 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['profile'] as _i7.ProfileEndpoint)
                   .completeOnboarding(session),
         ),
+        'completeGoalTutorial': _i1.MethodConnector(
+          name: 'completeGoalTutorial',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i7.ProfileEndpoint)
+                  .completeGoalTutorial(session),
+        ),
         'getImageUploadDescription': _i1.MethodConnector(
           name: 'getImageUploadDescription',
           params: {

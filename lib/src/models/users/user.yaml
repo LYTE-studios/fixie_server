@@ -8,3 +8,4 @@ fields:
   picture: String? # Stored image for the registration stored via url
   hasPassedOnboarding: bool?
   fcmToken: String? # FCM Token for user notifications
+  hasPassedGoalTutorial: bool?

@@ -145,6 +145,14 @@ class ProfileEndpoint extends Endpoint {
     await User.db.updateRow(session, user);
   }
 
+  Future<void> completeGoalTutorial(Session session) async {
+    User? user = await AuthUtils.getAuthenticatedUser(session);
+
+    user.hasPassedGoalTutorial = true;
+
+    await User.db.updateRow(session, user);
+  }
+
   Future<Map<String, String?>> getImageUploadDescription(
     Session session, {
     required String fileName,

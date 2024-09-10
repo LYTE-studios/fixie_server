@@ -162,6 +162,12 @@ class Protocol extends _i1.SerializationManagerServer {
           isNullable: true,
           dartType: 'String?',
         ),
+        _i2.ColumnDefinition(
+          name: 'hasPassedGoalTutorial',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: true,
+          dartType: 'bool?',
+        ),
       ],
       foreignKeys: [
         _i2.ForeignKeyDefinition(

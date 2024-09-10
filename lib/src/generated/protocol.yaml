@@ -30,6 +30,7 @@ profile:
   - updateBirthday:
   - updateName:
   - completeOnboarding:
+  - completeGoalTutorial:
   - getImageUploadDescription:
   - verifyUpload:
   - updateProfilePicture:

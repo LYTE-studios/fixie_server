@@ -24,6 +24,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.picture,
     this.hasPassedOnboarding,
     this.fcmToken,
+    this.hasPassedGoalTutorial,
   }) : super(id);
 
   factory User({
@@ -36,6 +37,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     String? picture,
     bool? hasPassedOnboarding,
     String? fcmToken,
+    bool? hasPassedGoalTutorial,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -56,6 +58,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       picture: jsonSerialization['picture'] as String?,
       hasPassedOnboarding: jsonSerialization['hasPassedOnboarding'] as bool?,
       fcmToken: jsonSerialization['fcmToken'] as String?,
+      hasPassedGoalTutorial:
+          jsonSerialization['hasPassedGoalTutorial'] as bool?,
     );
   }
 
@@ -79,6 +83,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   String? fcmToken;
 
+  bool? hasPassedGoalTutorial;
+
   @override
   _i1.Table get table => t;
 
@@ -92,6 +98,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     String? picture,
     bool? hasPassedOnboarding,
     String? fcmToken,
+    bool? hasPassedGoalTutorial,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -106,6 +113,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (hasPassedOnboarding != null)
         'hasPassedOnboarding': hasPassedOnboarding,
       if (fcmToken != null) 'fcmToken': fcmToken,
+      if (hasPassedGoalTutorial != null)
+        'hasPassedGoalTutorial': hasPassedGoalTutorial,
     };
   }
 
@@ -123,6 +132,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (hasPassedOnboarding != null)
         'hasPassedOnboarding': hasPassedOnboarding,
       if (fcmToken != null) 'fcmToken': fcmToken,
+      if (hasPassedGoalTutorial != null)
+        'hasPassedGoalTutorial': hasPassedGoalTutorial,
     };
   }
 
@@ -175,6 +186,7 @@ class _UserImpl extends User {
     String? picture,
     bool? hasPassedOnboarding,
     String? fcmToken,
+    bool? hasPassedGoalTutorial,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
@@ -185,6 +197,7 @@ class _UserImpl extends User {
           picture: picture,
           hasPassedOnboarding: hasPassedOnboarding,
           fcmToken: fcmToken,
+          hasPassedGoalTutorial: hasPassedGoalTutorial,
         );
 
   @override
@@ -198,6 +211,7 @@ class _UserImpl extends User {
     Object? picture = _Undefined,
     Object? hasPassedOnboarding = _Undefined,
     Object? fcmToken = _Undefined,
+    Object? hasPassedGoalTutorial = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -212,6 +226,9 @@ class _UserImpl extends User {
           ? hasPassedOnboarding
           : this.hasPassedOnboarding,
       fcmToken: fcmToken is String? ? fcmToken : this.fcmToken,
+      hasPassedGoalTutorial: hasPassedGoalTutorial is bool?
+          ? hasPassedGoalTutorial
+          : this.hasPassedGoalTutorial,
     );
   }
 }
@@ -242,6 +259,10 @@ class UserTable extends _i1.Table {
       'fcmToken',
       this,
     );
+    hasPassedGoalTutorial = _i1.ColumnBool(
+      'hasPassedGoalTutorial',
+      this,
+    );
   }
 
   late final _i1.ColumnInt userInfoId;
@@ -261,6 +282,8 @@ class UserTable extends _i1.Table {
   late final _i1.ColumnBool hasPassedOnboarding;
 
   late final _i1.ColumnString fcmToken;
+
+  late final _i1.ColumnBool hasPassedGoalTutorial;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -315,6 +338,7 @@ class UserTable extends _i1.Table {
         picture,
         hasPassedOnboarding,
         fcmToken,
+        hasPassedGoalTutorial,
       ];
 
   @override
