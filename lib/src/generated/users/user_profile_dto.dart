@@ -20,6 +20,7 @@ abstract class UserProfileDto
     this.email,
     this.picture,
     required this.hasPassedOnboarding,
+    required this.hasPassedGoalTutorial,
   });
 
   factory UserProfileDto({
@@ -29,6 +30,7 @@ abstract class UserProfileDto
     String? email,
     String? picture,
     required bool hasPassedOnboarding,
+    required bool hasPassedGoalTutorial,
   }) = _UserProfileDtoImpl;
 
   factory UserProfileDto.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -41,6 +43,7 @@ abstract class UserProfileDto
       email: jsonSerialization['email'] as String?,
       picture: jsonSerialization['picture'] as String?,
       hasPassedOnboarding: jsonSerialization['hasPassedOnboarding'] as bool,
+      hasPassedGoalTutorial: jsonSerialization['hasPassedGoalTutorial'] as bool,
     );
   }
 
@@ -56,6 +59,8 @@ abstract class UserProfileDto
 
   bool hasPassedOnboarding;
 
+  bool hasPassedGoalTutorial;
+
   UserProfileDto copyWith({
     String? name,
     DateTime? birthday,
@@ -63,6 +68,7 @@ abstract class UserProfileDto
     String? email,
     String? picture,
     bool? hasPassedOnboarding,
+    bool? hasPassedGoalTutorial,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -73,6 +79,7 @@ abstract class UserProfileDto
       if (email != null) 'email': email,
       if (picture != null) 'picture': picture,
       'hasPassedOnboarding': hasPassedOnboarding,
+      'hasPassedGoalTutorial': hasPassedGoalTutorial,
     };
   }
 
@@ -85,6 +92,7 @@ abstract class UserProfileDto
       if (email != null) 'email': email,
       if (picture != null) 'picture': picture,
       'hasPassedOnboarding': hasPassedOnboarding,
+      'hasPassedGoalTutorial': hasPassedGoalTutorial,
     };
   }
 
@@ -104,6 +112,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
     String? email,
     String? picture,
     required bool hasPassedOnboarding,
+    required bool hasPassedGoalTutorial,
   }) : super._(
           name: name,
           birthday: birthday,
@@ -111,6 +120,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
           email: email,
           picture: picture,
           hasPassedOnboarding: hasPassedOnboarding,
+          hasPassedGoalTutorial: hasPassedGoalTutorial,
         );
 
   @override
@@ -121,6 +131,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
     Object? email = _Undefined,
     Object? picture = _Undefined,
     bool? hasPassedOnboarding,
+    bool? hasPassedGoalTutorial,
   }) {
     return UserProfileDto(
       name: name ?? this.name,
@@ -129,6 +140,8 @@ class _UserProfileDtoImpl extends UserProfileDto {
       email: email is String? ? email : this.email,
       picture: picture is String? ? picture : this.picture,
       hasPassedOnboarding: hasPassedOnboarding ?? this.hasPassedOnboarding,
+      hasPassedGoalTutorial:
+          hasPassedGoalTutorial ?? this.hasPassedGoalTutorial,
     );
   }
 }

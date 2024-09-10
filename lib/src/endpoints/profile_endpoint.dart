@@ -95,6 +95,7 @@ class ProfileEndpoint extends Endpoint {
       daysSinceCreation: daysSinceCreation,
       picture: userInfo.imageUrl,
       hasPassedOnboarding: user.hasPassedOnboarding ?? false,
+      hasPassedGoalTutorial: user.hasPassedGoalTutorial ?? false,
     );
 
     return userProfileData;

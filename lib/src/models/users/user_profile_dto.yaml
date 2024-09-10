@@ -6,3 +6,4 @@ fields:
   email: String?
   picture: String?
   hasPassedOnboarding: bool
+  hasPassedGoalTutorial: bool
