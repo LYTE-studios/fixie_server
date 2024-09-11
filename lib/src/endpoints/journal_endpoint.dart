@@ -96,6 +96,10 @@ class JournalEndpoint extends Endpoint {
       switch (goal.repetition) {
         case Repetition.Daily:
           {
+            if (!(goal.weekdays?.contains(DateTime.now().weekday) ?? false)) {
+              continue;
+            }
+
             JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
                 (log.goal?.id == goal.id) & (log.date.day == start.day - 1));
 
