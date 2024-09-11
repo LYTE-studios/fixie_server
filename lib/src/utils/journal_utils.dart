@@ -40,8 +40,19 @@ class JournalUtils {
             e.date.day == date.day,
       );
 
+      if (nowLog == null) {
+        currentStreak = 0;
+      }
+
       if ((nowLog?.loggedValue ?? 0) >= log.goal!.target) {
         currentStreak += 1;
+
+        if (currentStreak != nowLog!.currentStreak) {
+          nowLog.currentStreak = currentStreak;
+
+          JournalLog.db.updateRow(session, nowLog);
+        }
+
         if (currentStreak > topStreak) {
           topStreak = currentStreak;
         }

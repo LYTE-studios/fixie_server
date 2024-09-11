@@ -10,3 +10,4 @@ fields:
   modifiedAt: DateTime # Last modification time
   date: DateTime # The date of journal log
   streak: bool?
+  currentStreak: int?

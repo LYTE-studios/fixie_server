@@ -420,6 +420,12 @@ class Protocol extends _i1.SerializationManagerServer {
           isNullable: true,
           dartType: 'bool?',
         ),
+        _i2.ColumnDefinition(
+          name: 'currentStreak',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
       ],
       foreignKeys: [
         _i2.ForeignKeyDefinition(
