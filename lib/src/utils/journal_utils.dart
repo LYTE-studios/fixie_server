@@ -19,9 +19,9 @@ class JournalUtils {
       where: (t) => t.goalId.equals(log.goal!.id),
     );
 
-    int daysCounted = DateTime.now()
+    int daysCounted = log.goal!.created!
         .difference(
-          log.goal!.created!,
+          DateTime.now(),
         )
         .inDays;
 
