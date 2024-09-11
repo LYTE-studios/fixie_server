@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:serverpod/serverpod.dart';
-
+import 'package:fixie_server/src/futures/daily_cron_future.dart';
+import 'package:fixie_server/src/managers/notification_manager.dart';
 import 'package:fixie_server/src/web/routes/root.dart';
+import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as auth;
 import 'package:serverpod_cloud_storage_s3/serverpod_cloud_storage_s3.dart'
     as s3;
 
-import 'src/generated/protocol.dart';
 import 'src/generated/endpoints.dart';
+import 'src/generated/protocol.dart';
 
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as auth;
 // This is the starting point of your Serverpod server. In most cases, you will
 // only need to make additions to this file if you add future calls,  are
 // configuring Relic (Serverpod's web-server), or need custom setup work.
@@ -22,9 +23,27 @@ void run(List<String> args) async {
     authenticationHandler: auth.authenticationHandler,
   );
 
+  pod.registerFutureCall(
+    NotificationFutureCall(),
+    'SendNotification',
+  );
+
+  pod.registerFutureCall(
+    DailyCronFuture(),
+    'DailyCron',
+  );
+
+  DateTime now = DateTime.now();
+  DateTime next = DateTime(now.year, now.month, now.day + 1, 0, 0);
+  await pod.futureCallAtTime(
+    'DailyCron',
+    null,
+    next,
+    identifier: next.toString(),
+  );
+
   // If you are using any future calls, they need to be registered here.
   // pod.registerFutureCall(ExampleFutureCall(), 'exampleFutureCall');
-
   // Setup a default page at the web root.
   pod.webServer.addRoute(RouteRoot(), '/');
   pod.webServer.addRoute(RouteRoot(), '/index.html');

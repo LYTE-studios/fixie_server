@@ -1,6 +1,5 @@
 import 'package:fixie_server/src/generated/goals/goal.dart';
 import 'package:fixie_server/src/generated/notifications/notification.dart';
-import 'package:fixie_server/src/managers/notification_manager.dart';
 import 'package:serverpod/serverpod.dart';
 
 class GoalManager {
@@ -24,15 +23,8 @@ class GoalManager {
         return;
       }
 
-      String name = Uuid().v4();
-
-      session.serverpod.registerFutureCall(
-        NotificationFutureCall(),
-        name,
-      );
-
       session.serverpod.futureCallAtTime(
-        name,
+        'SendNotification',
         Notification(
           title: goal.title,
           description: 'Got to do!',

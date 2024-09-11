@@ -66,13 +66,13 @@ class NotificationManager {
     );
   }
 
-  /// Sends a notification to the tokens given
+  /// Immediately sends a notification to the tokens given
   static void sendUserNotification(
     Session session, {
     required Notification notification,
   }) async {
     session.serverpod.futureCallWithDelay(
-      'NotificationFutureCall',
+      'SendNotification',
       notification,
       Duration(
         seconds: 1,
