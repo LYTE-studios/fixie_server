@@ -19,16 +19,14 @@ class JournalUtils {
       where: (t) => t.goalId.equals(log.goal!.id),
     );
 
-    int daysCounted = log.goal!.created!
+    int daysCounted = DateTime.now()
         .difference(
-          DateTime.now(),
+          log.goal!.created!,
         )
         .inDays;
 
     int currentStreak = 0;
     int topStreak = 0;
-
-    bool loggedBeforeStreak = false;
 
     for (int i = 0; i <= daysCounted; i++) {
       DateTime date = DateTime.now().subtract(
@@ -43,14 +41,11 @@ class JournalUtils {
       );
 
       if ((nowLog?.loggedValue ?? 0) >= log.goal!.target) {
-        if (loggedBeforeStreak) {
-          currentStreak += 1;
-          if (currentStreak > topStreak) {
-            topStreak = currentStreak;
-          }
+        currentStreak += 1;
+        if (currentStreak > topStreak) {
+          topStreak = currentStreak;
         }
       } else {
-        loggedBeforeStreak = false;
         currentStreak = 0;
       }
     }
