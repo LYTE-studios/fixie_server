@@ -7,3 +7,5 @@ fields:
   picture: String?
   hasPassedOnboarding: bool
   hasPassedGoalTutorial: bool
+  informationCollectionSetting: bool?
+  automaticRemindersSetting: bool?

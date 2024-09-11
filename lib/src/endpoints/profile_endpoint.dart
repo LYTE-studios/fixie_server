@@ -6,6 +6,19 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
 
 class ProfileEndpoint extends Endpoint {
+  Future<void> updatePrivacySettings(
+    Session session, {
+    bool? informationCollection,
+    bool? automaticReminders,
+  }) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
+
+    user.informationCollectionSetting = informationCollection;
+    user.automaticRemindersSetting = automaticReminders;
+
+    await User.db.updateRow(session, user);
+  }
+
   Future<bool> deleteAccount(Session session) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
@@ -96,6 +109,8 @@ class ProfileEndpoint extends Endpoint {
       picture: userInfo.imageUrl,
       hasPassedOnboarding: user.hasPassedOnboarding ?? false,
       hasPassedGoalTutorial: user.hasPassedGoalTutorial ?? false,
+      informationCollectionSetting: user.informationCollectionSetting,
+      automaticRemindersSetting: user.automaticRemindersSetting,
     );
 
     return userProfileData;

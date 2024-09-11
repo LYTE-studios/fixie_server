@@ -457,6 +457,31 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'profile',
       endpoint: endpoints['profile']!,
       methodConnectors: {
+        'updatePrivacySettings': _i1.MethodConnector(
+          name: 'updatePrivacySettings',
+          params: {
+            'informationCollection': _i1.ParameterDescription(
+              name: 'informationCollection',
+              type: _i1.getType<bool?>(),
+              nullable: true,
+            ),
+            'automaticReminders': _i1.ParameterDescription(
+              name: 'automaticReminders',
+              type: _i1.getType<bool?>(),
+              nullable: true,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i7.ProfileEndpoint)
+                  .updatePrivacySettings(
+            session,
+            informationCollection: params['informationCollection'],
+            automaticReminders: params['automaticReminders'],
+          ),
+        ),
         'deleteAccount': _i1.MethodConnector(
           name: 'deleteAccount',
           params: {},

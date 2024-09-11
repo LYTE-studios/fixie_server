@@ -25,6 +25,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.hasPassedOnboarding,
     this.fcmToken,
     this.hasPassedGoalTutorial,
+    this.informationCollectionSetting,
+    this.automaticRemindersSetting,
   }) : super(id);
 
   factory User({
@@ -38,6 +40,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     bool? hasPassedOnboarding,
     String? fcmToken,
     bool? hasPassedGoalTutorial,
+    bool? informationCollectionSetting,
+    bool? automaticRemindersSetting,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -60,6 +64,10 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       fcmToken: jsonSerialization['fcmToken'] as String?,
       hasPassedGoalTutorial:
           jsonSerialization['hasPassedGoalTutorial'] as bool?,
+      informationCollectionSetting:
+          jsonSerialization['informationCollectionSetting'] as bool?,
+      automaticRemindersSetting:
+          jsonSerialization['automaticRemindersSetting'] as bool?,
     );
   }
 
@@ -85,6 +93,10 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   bool? hasPassedGoalTutorial;
 
+  bool? informationCollectionSetting;
+
+  bool? automaticRemindersSetting;
+
   @override
   _i1.Table get table => t;
 
@@ -99,6 +111,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     bool? hasPassedOnboarding,
     String? fcmToken,
     bool? hasPassedGoalTutorial,
+    bool? informationCollectionSetting,
+    bool? automaticRemindersSetting,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -115,6 +129,10 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (fcmToken != null) 'fcmToken': fcmToken,
       if (hasPassedGoalTutorial != null)
         'hasPassedGoalTutorial': hasPassedGoalTutorial,
+      if (informationCollectionSetting != null)
+        'informationCollectionSetting': informationCollectionSetting,
+      if (automaticRemindersSetting != null)
+        'automaticRemindersSetting': automaticRemindersSetting,
     };
   }
 
@@ -134,6 +152,10 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (fcmToken != null) 'fcmToken': fcmToken,
       if (hasPassedGoalTutorial != null)
         'hasPassedGoalTutorial': hasPassedGoalTutorial,
+      if (informationCollectionSetting != null)
+        'informationCollectionSetting': informationCollectionSetting,
+      if (automaticRemindersSetting != null)
+        'automaticRemindersSetting': automaticRemindersSetting,
     };
   }
 
@@ -187,6 +209,8 @@ class _UserImpl extends User {
     bool? hasPassedOnboarding,
     String? fcmToken,
     bool? hasPassedGoalTutorial,
+    bool? informationCollectionSetting,
+    bool? automaticRemindersSetting,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
@@ -198,6 +222,8 @@ class _UserImpl extends User {
           hasPassedOnboarding: hasPassedOnboarding,
           fcmToken: fcmToken,
           hasPassedGoalTutorial: hasPassedGoalTutorial,
+          informationCollectionSetting: informationCollectionSetting,
+          automaticRemindersSetting: automaticRemindersSetting,
         );
 
   @override
@@ -212,6 +238,8 @@ class _UserImpl extends User {
     Object? hasPassedOnboarding = _Undefined,
     Object? fcmToken = _Undefined,
     Object? hasPassedGoalTutorial = _Undefined,
+    Object? informationCollectionSetting = _Undefined,
+    Object? automaticRemindersSetting = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -229,6 +257,12 @@ class _UserImpl extends User {
       hasPassedGoalTutorial: hasPassedGoalTutorial is bool?
           ? hasPassedGoalTutorial
           : this.hasPassedGoalTutorial,
+      informationCollectionSetting: informationCollectionSetting is bool?
+          ? informationCollectionSetting
+          : this.informationCollectionSetting,
+      automaticRemindersSetting: automaticRemindersSetting is bool?
+          ? automaticRemindersSetting
+          : this.automaticRemindersSetting,
     );
   }
 }
@@ -263,6 +297,14 @@ class UserTable extends _i1.Table {
       'hasPassedGoalTutorial',
       this,
     );
+    informationCollectionSetting = _i1.ColumnBool(
+      'informationCollectionSetting',
+      this,
+    );
+    automaticRemindersSetting = _i1.ColumnBool(
+      'automaticRemindersSetting',
+      this,
+    );
   }
 
   late final _i1.ColumnInt userInfoId;
@@ -284,6 +326,10 @@ class UserTable extends _i1.Table {
   late final _i1.ColumnString fcmToken;
 
   late final _i1.ColumnBool hasPassedGoalTutorial;
+
+  late final _i1.ColumnBool informationCollectionSetting;
+
+  late final _i1.ColumnBool automaticRemindersSetting;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -339,6 +385,8 @@ class UserTable extends _i1.Table {
         hasPassedOnboarding,
         fcmToken,
         hasPassedGoalTutorial,
+        informationCollectionSetting,
+        automaticRemindersSetting,
       ];
 
   @override

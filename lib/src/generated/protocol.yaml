@@ -24,6 +24,7 @@ journal:
 notification:
   - setFcmToken:
 profile:
+  - updatePrivacySettings:
   - deleteAccount:
   - createUser:
   - getProfileData:

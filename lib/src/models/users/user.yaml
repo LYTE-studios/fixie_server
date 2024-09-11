@@ -9,3 +9,5 @@ fields:
   hasPassedOnboarding: bool?
   fcmToken: String? # FCM Token for user notifications
   hasPassedGoalTutorial: bool?
+  informationCollectionSetting: bool?
+  automaticRemindersSetting: bool?
