@@ -398,6 +398,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<int?>(),
               nullable: true,
             ),
+            'categoryId': _i1.ParameterDescription(
+              name: 'categoryId',
+              type: _i1.getType<int?>(),
+              nullable: true,
+            ),
             'pageSize': _i1.ParameterDescription(
               name: 'pageSize',
               type: _i1.getType<int?>(),
@@ -416,6 +421,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['journal'] as _i5.JournalEndpoint).getJournal(
             session,
             params['goalId'],
+            categoryId: params['categoryId'],
             pageSize: params['pageSize'],
             offset: params['offset'],
           ),

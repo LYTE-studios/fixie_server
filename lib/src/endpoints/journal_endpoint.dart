@@ -274,6 +274,7 @@ class JournalEndpoint extends Endpoint {
   Future<List<JournalLog>?> getJournal(
     Session session,
     int? goalId, {
+    int? categoryId,
     int? pageSize,
     int? offset,
   }) async {
@@ -290,6 +291,16 @@ class JournalEndpoint extends Endpoint {
           ),
         ),
         where: (p0) => p0.goal.userId.equals(user.id),
+      );
+    } else if (categoryId != null) {
+      logs = await JournalLog.db.find(
+        session,
+        include: JournalLog.include(
+          goal: Goal.include(
+            category: Category.include(),
+          ),
+        ),
+        where: (p0) => p0.goal.categoryId.equals(categoryId),
       );
     } else {
       logs = await JournalLog.db.find(
