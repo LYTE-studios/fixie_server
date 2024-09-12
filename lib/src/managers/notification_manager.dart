@@ -5,10 +5,14 @@ import 'package:fixie_server/src/generated/notifications/notification.dart';
 import 'package:serverpod/serverpod.dart';
 
 class NotificationFutureCall extends FutureCall<Notification> {
-  Future<List<ServerResult>> send(
-    Session session,
-    Notification notification,
-  ) async {
+  @override
+  Future<void> invoke(Session session, Notification? object) async {
+    if (object == null) {
+      return;
+    }
+
+    Notification notification = object;
+
     FirebaseCloudMessagingServer server =
         await NotificationManager.getMessagingServer(
       session,
@@ -38,17 +42,6 @@ class NotificationFutureCall extends FutureCall<Notification> {
 
       results.add(result);
     }
-
-    return results;
-  }
-
-  @override
-  Future<void> invoke(Session session, Notification? object) async {
-    if (object == null) {
-      return;
-    }
-
-    send(session, object);
   }
 }
 

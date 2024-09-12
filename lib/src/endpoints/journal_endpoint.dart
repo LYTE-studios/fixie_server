@@ -281,21 +281,41 @@ class JournalEndpoint extends Endpoint {
   }
 
   Future<List<JournalLog>?> getJournal(Session session, int? goalId) async {
-    await AuthUtils.getAuthenticatedUser(session);
+    User user = await AuthUtils.getAuthenticatedUser(session);
 
-    var list = await JournalLog.db.find(
-      session,
-      include: JournalLog.include(
-        goal: Goal.include(
-          category: Category.include(),
+    List<JournalLog> logs = [];
+
+    if (goalId == null) {
+      logs = await JournalLog.db.find(
+        session,
+        include: JournalLog.include(
+          goal: Goal.include(
+            category: Category.include(),
+          ),
         ),
-      ),
-      where: (p0) =>
-          p0.goalId.equals(goalId) &
-          (p0.note.notEquals('') | p0.note.notEquals(null)),
-    );
+        where: (p0) => p0.goal.userId.equals(user.id),
+      );
+    } else {
+      logs = await JournalLog.db.find(
+        session,
+        include: JournalLog.include(
+          goal: Goal.include(
+            category: Category.include(),
+          ),
+        ),
+        where: (p0) => p0.goalId.equals(goalId),
+      );
+    }
 
-    return list;
+    for (JournalLog log in logs) {
+      if (log.picture?.isEmpty ?? true) {
+        logs.remove(log);
+      }
+    }
+
+    logs.sort((a, b) => b.date.compareTo(a.date));
+
+    return logs;
   }
 
   Future<JournalLog> updateLog(Session session, JournalLog editedLog) async {
