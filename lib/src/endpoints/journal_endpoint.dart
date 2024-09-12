@@ -282,7 +282,7 @@ class JournalEndpoint extends Endpoint {
 
     List<JournalLog> logs = [];
 
-    if (goalId == null) {
+    if (goalId != null) {
       logs = await JournalLog.db.find(
         session,
         include: JournalLog.include(
@@ -290,7 +290,7 @@ class JournalEndpoint extends Endpoint {
             category: Category.include(),
           ),
         ),
-        where: (p0) => p0.goal.userId.equals(user.id),
+        where: (p0) => p0.goalId.equals(goalId),
       );
     } else if (categoryId != null) {
       logs = await JournalLog.db.find(
@@ -310,7 +310,7 @@ class JournalEndpoint extends Endpoint {
             category: Category.include(),
           ),
         ),
-        where: (p0) => p0.goalId.equals(goalId),
+        where: (p0) => p0.goal.userId.equals(user.id),
       );
     }
 
