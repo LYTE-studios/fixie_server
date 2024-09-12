@@ -165,7 +165,8 @@ class JournalEndpoint extends Endpoint {
         case Repetition.Monthly:
           {
             JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
-                (log.goal?.id == goal.id) & (log.date.month == log.date.month));
+                (log.goal?.id == goal.id) &
+                (log.date.month == log.date.month - 1));
 
             JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
                 (log.goal?.id == goal.id) & (log.date.month == start.month));
@@ -195,18 +196,8 @@ class JournalEndpoint extends Endpoint {
           }
         case Repetition.Yearly:
           {
-            JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
-                (log.goal?.id == goal.id) & (log.date.year == log.date.year));
-
             JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
                 (log.goal?.id == goal.id) & (log.date.year == start.year));
-
-            bool hasStreak = dayBeforeLog == null
-                ? false
-                : (dayBeforeLog.loggedValue ?? 0) >=
-                    (dayBeforeLog.goal?.target.toDouble() ?? 0);
-
-            todayLog?.streak = hasStreak;
 
             todayLog ??= JournalLog(
               goalId: goal.id!,
@@ -214,7 +205,7 @@ class JournalEndpoint extends Endpoint {
               note: '',
               createdAt: start,
               modifiedAt: start,
-              streak: hasStreak,
+              streak: false,
               date: DateTime(
                 end.year,
                 end.month,
@@ -280,7 +271,12 @@ class JournalEndpoint extends Endpoint {
     return log;
   }
 
-  Future<List<JournalLog>?> getJournal(Session session, int? goalId) async {
+  Future<List<JournalLog>?> getJournal(
+    Session session,
+    int? goalId, {
+    int? pageSize,
+    int? offset,
+  }) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
     List<JournalLog> logs = [];
@@ -318,6 +314,14 @@ class JournalEndpoint extends Endpoint {
     logs = list;
 
     logs.sort((a, b) => b.date.compareTo(a.date));
+
+    if (pageSize != null) {
+      try {
+        logs = logs.getRange(offset ?? 0, pageSize + (offset ?? 0)).toList();
+      } catch (error) {
+        logs = [];
+      }
+    }
 
     return logs;
   }
