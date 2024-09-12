@@ -316,11 +316,7 @@ class JournalEndpoint extends Endpoint {
     logs.sort((a, b) => b.date.compareTo(a.date));
 
     if (pageSize != null) {
-      try {
-        logs = logs.getRange(offset ?? 0, pageSize + (offset ?? 0)).toList();
-      } catch (error) {
-        logs = [];
-      }
+      logs = logs.getRange(offset ?? 0, pageSize + (offset ?? 0)).toList();
     }
 
     return logs;
