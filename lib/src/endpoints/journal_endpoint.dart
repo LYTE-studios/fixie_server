@@ -333,6 +333,14 @@ class JournalEndpoint extends Endpoint {
   Future<JournalLog> updateLog(Session session, JournalLog editedLog) async {
     await AuthUtils.getAuthenticatedUser(session);
 
+    if (editedLog.id == null) {
+      return addLog(
+        session,
+        editedLog.goalId,
+        editedLog,
+      );
+    }
+
     await JournalLog.db.updateRow(session, editedLog);
 
     JournalLog? log = await JournalLog.db.findById(
