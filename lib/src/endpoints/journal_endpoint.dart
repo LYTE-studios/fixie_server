@@ -307,11 +307,15 @@ class JournalEndpoint extends Endpoint {
       );
     }
 
+    List<JournalLog> list = [...logs];
+
     for (JournalLog log in logs) {
-      if (log.picture?.isEmpty ?? true) {
-        logs.remove(log);
+      if (log.picture?.isNotEmpty ?? false) {
+        list.remove(log);
       }
     }
+
+    logs = list;
 
     logs.sort((a, b) => b.date.compareTo(a.date));
 
