@@ -397,7 +397,17 @@ class Endpoints extends _i1.EndpointDispatch {
               name: 'goalId',
               type: _i1.getType<int?>(),
               nullable: true,
-            )
+            ),
+            'pageSize': _i1.ParameterDescription(
+              name: 'pageSize',
+              type: _i1.getType<int?>(),
+              nullable: true,
+            ),
+            'offset': _i1.ParameterDescription(
+              name: 'offset',
+              type: _i1.getType<int?>(),
+              nullable: true,
+            ),
           },
           call: (
             _i1.Session session,
@@ -406,6 +416,8 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['journal'] as _i5.JournalEndpoint).getJournal(
             session,
             params['goalId'],
+            pageSize: params['pageSize'],
+            offset: params['offset'],
           ),
         ),
         'updateLog': _i1.MethodConnector(
