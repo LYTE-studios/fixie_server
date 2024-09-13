@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
+import 'package:fixie_server/src/utils/date_time_utils.dart';
 import 'package:serverpod/serverpod.dart';
 
 class StatisticsEndpoint extends Endpoint {
@@ -34,148 +35,249 @@ class StatisticsEndpoint extends Endpoint {
     return statistics;
   }
 
-  Future<CategoryStatistics?> getStatisticsForCategory(
+  Future<Statistics?> getMonthlyJournalStatistics(
     Session session,
-    Category category,
-    DateTime start,
-    DateTime end,
+    Category? category,
+    Goal? goal,
+    DateTime month,
   ) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
     List<Goal> goals = [];
 
-    if (category.id == null) {
+    if (goal?.id != null) {
       goals = await Goal.db.find(
         session,
-        where: (t) => t.userId.equals(user.id) & t.archived.notEquals(true),
+        where: (t) => t.id.equals(goal?.id) & t.archived.notEquals(true),
+      );
+    } else if (category?.id != null) {
+      goals = await Goal.db.find(
+        session,
+        where: (t) =>
+            t.categoryId.equals(category?.id) & t.archived.notEquals(true),
       );
     } else {
       goals = await Goal.db.find(
         session,
-        where: (t) =>
-            t.categoryId.equals(category.id) & t.archived.notEquals(true),
+        where: (t) => t.userId.equals(user.id) & t.archived.notEquals(true),
       );
     }
 
     // Set the empty statistics first
-    CategoryStatistics statistics = CategoryStatistics(
-      category: category,
-      successRate: 0,
-      currentSuccessRate: 0,
+    Statistics statistics = Statistics(
+      monthlySuccessRate: 0,
+      monthlySuccessRateTrend: 0,
+      yearlySuccessRate: 0,
+      yearlySuccessRateTrend: 0,
+      yearlyGoalsCompleted: 0,
+      monthlyGoalsCompleted: 0,
+      monthlyGoalsCompletedTrend: 0,
       bestStreak: 0,
-      chartData: [],
+      bestCurrentStreak: 0,
+      monthChartData: {},
     );
 
-    double? successRate;
-    double? currentSuccessRate;
+    DateTime now = month;
 
-    List<int> totalChartData = [];
+    DateTime startOfYear = DateTime(
+      now.year,
+    );
+
+    DateTime startOfMonth = DateTime(
+      now.year,
+      now.month,
+    );
+
+    DateTime thisYear = (goal?.created?.isAfter(startOfYear) ?? false)
+        ? goal!.created!
+        : startOfYear;
+
+    DateTime lastYear = DateTime(now.year - 1);
+    DateTime lastMonth = DateTime(now.year, now.month - 1);
+
+    DateTime thisMonth = (goal?.created?.isAfter(startOfMonth) ?? false)
+        ? goal!.created!
+        : startOfMonth;
+
+    int daysThisYear = now.difference(thisYear).inDays;
+
+    int daysThisMonth = now.difference(thisMonth).inDays;
+
+    List<JournalLog> logs = await JournalLog.db.find(
+      session,
+      where: (t) =>
+          t.goalId.inSet(
+            goals.map((e) => e.id ?? 0).toSet(),
+          ) &
+          t.date.between(
+            DateTime(
+              now.year - 1,
+            ),
+            now,
+          ),
+    );
+
+    List<double> yearlyRates = [];
+    List<double> monthlyRates = [];
+    List<double> yearlyRatesTrend = [];
+    List<double> monthlyRatesTrend = [];
+    Map<int, List<double>> monthlyChartRates = {};
+
+    int yearlyGoalsCompleted = 0;
+
+    int monthlyGoalsCompleted = 0;
+    int monthlyGoalsCompletedTrend = 0;
+
+    int bestStreak = 0;
+    int bestCurrentStreak = 0;
 
     for (Goal goal in goals) {
-      if ((goal.highestStreak ?? 0) > (statistics.bestStreak ?? 0)) {
-        statistics.bestStreak = goal.highestStreak;
+      double yearlyTotal = 1;
+      double yearly = 0;
+
+      double yearlyTrend = 0;
+
+      double monthlyTotal = 1;
+      double monthly = 0;
+
+      double monthlyTrend = 0;
+
+      switch (goal.repetition) {
+        case Repetition.Daily:
+          {
+            yearlyTotal =
+                ((goal.weekdays?.length ?? 0) / 7) * goal.target * daysThisYear;
+            monthlyTotal = ((goal.weekdays?.length ?? 0) / 7) *
+                goal.target *
+                daysThisMonth;
+
+            JournalLog? log = logs.firstWhereOrNull(
+              (e) =>
+                  e.date.year == now.year &&
+                  e.date.month == now.month &&
+                  e.date.day == now.day,
+            );
+            if ((log?.currentStreak ?? 0) > bestCurrentStreak) {
+              bestCurrentStreak = log?.currentStreak ?? 0;
+            }
+          }
+        case Repetition.Weekly:
+          {
+            yearlyTotal = (goal.target * daysThisYear) / 7;
+            monthlyTotal = (goal.target * daysThisMonth) / 7;
+
+            JournalLog? log = logs.firstWhereOrNull(
+              (e) =>
+                  e.date.year == now.year &&
+                  DateTimeUtils.weekNumber(e.date) ==
+                      DateTimeUtils.weekNumber(now),
+            );
+            if ((log?.currentStreak ?? 0) > bestCurrentStreak) {
+              bestCurrentStreak = log?.currentStreak ?? 0;
+            }
+          }
+        case Repetition.Monthly:
+          {
+            yearlyTotal = (goal.target * now.month).toDouble();
+            monthlyTotal = goal.target.toDouble();
+
+            JournalLog? log = logs.firstWhereOrNull(
+              (e) => e.date.year == now.year && e.date.month == now.month,
+            );
+            if ((log?.currentStreak ?? 0) > bestCurrentStreak) {
+              bestCurrentStreak = log?.currentStreak ?? 0;
+            }
+          }
+        case Repetition.Yearly:
+          {
+            yearlyTotal = goal.target.toDouble();
+            monthlyTotal = (goal.target / 12).toDouble();
+
+            JournalLog? log = logs.firstWhereOrNull(
+              (e) => e.date.year == now.year,
+            );
+            if ((log?.currentStreak ?? 0) > bestCurrentStreak) {
+              bestCurrentStreak = log?.currentStreak ?? 0;
+            }
+          }
+        case null:
       }
 
-      List<int> chartData = [];
-
-      double totalUnits = 0;
-      double currentTotalUnits = 0;
-
-      double successUnits = 0;
-      double currentSuccessUnits = 0;
-
-      if (goal.created == null) {
-        continue;
-      }
-
-      int daysCreated = end
-              .difference(
-                start,
-              )
-              .inDays -
-          1;
-
-      int daysCounted = end
-          .difference(
-            goal.created!,
-          )
-          .inDays;
-
-      List<JournalLog> logs = await JournalLog.db.find(
-        session,
-        where: (t) => t.goalId.equals(goal.id),
+      Iterable<JournalLog> goalLogs = logs.where(
+        (log) => log.goalId == goal.id,
       );
 
-      for (int i = 0; i <= daysCreated; i++) {
-        DateTime date = end.subtract(
-          Duration(days: daysCounted - i),
-        );
+      for (JournalLog log in goalLogs) {
+        if ((log.currentStreak ?? 0) > bestStreak) {
+          bestStreak = log.currentStreak ?? 0;
+        }
+        if (log.date.isAfter(lastYear) && log.date.isBefore(month)) {
+          yearlyTrend += log.loggedValue ?? 0;
+        }
+        if (log.date.isAfter(lastMonth) && log.date.isBefore(month)) {
+          if ((log.loggedValue ?? 0) >= (log.goal?.target.toDouble() ?? 0)) {
+            monthlyGoalsCompletedTrend += 1;
+          }
 
-        JournalLog? log = logs.firstWhereOrNull(
-          (e) =>
-              e.date.year == date.year &&
-              e.date.month == date.month &&
-              e.date.day == date.day,
-        );
+          monthlyTrend += log.loggedValue ?? 0;
+        }
+        if (log.date.isAfter(startOfYear) && log.date.isBefore(month)) {
+          if ((log.loggedValue ?? 0) >= (log.goal?.target.toDouble() ?? 0)) {
+            yearlyGoalsCompleted += 1;
+          }
 
-        totalUnits += goal.target;
-        successUnits += (log?.loggedValue ?? 0).toInt();
-      }
+          yearly += log.loggedValue ?? 0;
+        }
+        if (log.date.isAfter(startOfMonth) && log.date.isBefore(month)) {
+          if ((log.loggedValue ?? 0) >= (log.goal?.target.toDouble() ?? 0)) {
+            monthlyGoalsCompleted += 1;
+          }
 
-      for (int i = 0; i <= daysCounted; i++) {
-        DateTime date = end.subtract(
-          Duration(days: daysCounted - i),
-        );
+          monthlyChartRates[log.date.day] ??= [];
+          monthlyChartRates[log.date.day]!.add(log.loggedValue ?? 0);
 
-        JournalLog? log = logs.firstWhereOrNull(
-          (e) =>
-              e.date.year == date.year &&
-              e.date.month == date.month &&
-              e.date.day == date.day,
-        );
-
-        currentTotalUnits += goal.target;
-        currentSuccessUnits += (log?.loggedValue ?? 0).toInt();
-
-        chartData.add(
-          (((log?.loggedValue ?? 0).toInt() / goal.target) * 100).toInt(),
-        );
-      }
-
-      if (totalUnits == 0) {
-        continue;
-      }
-
-      if (successRate == null) {
-        successRate = (successUnits / totalUnits) / 2;
-      } else {
-        successRate = (successRate + (successUnits / totalUnits)) / 2;
-      }
-
-      if (currentTotalUnits == 0) {
-        continue;
-      }
-
-      if (currentSuccessRate == null) {
-        currentSuccessRate = (currentSuccessUnits / currentTotalUnits) / 2;
-      } else {
-        currentSuccessRate =
-            (currentSuccessRate + (currentSuccessUnits / currentTotalUnits)) /
-                2;
-      }
-
-      for (int i = 0; i < chartData.length; i++) {
-        if (totalChartData.length > i) {
-          totalChartData[i] = (totalChartData[i] + chartData[i]) ~/ 2;
-        } else {
-          totalChartData.add(chartData[i]);
+          monthly += log.loggedValue ?? 0;
         }
       }
+
+      yearlyRates.add(yearly / yearlyTotal);
+      monthlyRates.add(monthly / monthlyTotal);
+
+      yearlyRatesTrend.add(yearlyTrend / yearlyTotal);
+      monthlyRatesTrend.add(monthlyTrend / monthlyTotal);
     }
 
-    statistics.chartData = totalChartData;
-    statistics.successRate = successRate ?? 0;
-    statistics.currentSuccessRate = currentSuccessRate ?? 0;
+    double getMean(List<double> doubles) {
+      if (doubles.isEmpty) {
+        return 0;
+      }
+
+      double total = 0;
+      for (double value in doubles) {
+        total += value;
+      }
+
+      return total / doubles.length;
+    }
+
+    for (int i = 1; i <= DateTime(month.year, month.month + 1, 0).day; i++) {
+      statistics.monthChartData[i] = getMean(monthlyChartRates[i] ?? []);
+    }
+
+    statistics.yearlySuccessRate = getMean(yearlyRates);
+    statistics.monthlySuccessRate = getMean(monthlyRates);
+
+    statistics.yearlySuccessRateTrend =
+        statistics.yearlySuccessRate - getMean(yearlyRatesTrend);
+    statistics.monthlySuccessRateTrend =
+        statistics.monthlySuccessRate - getMean(monthlyRatesTrend);
+
+    statistics.monthlyGoalsCompleted = monthlyGoalsCompleted;
+    statistics.monthlyGoalsCompletedTrend = monthlyGoalsCompletedTrend;
+    statistics.yearlyGoalsCompleted = yearlyGoalsCompleted;
+
+    statistics.bestStreak = bestStreak;
+    statistics.bestCurrentStreak = bestCurrentStreak;
 
     return statistics;
   }

@@ -1,0 +1,14 @@
+class: Statistics
+fields:
+  monthlySuccessRate: double
+  monthlySuccessRateTrend: double
+  yearlySuccessRate: double
+  yearlySuccessRateTrend: double
+  yearlyGoalsCompleted: int
+  monthlyGoalsCompleted: int
+  monthlyGoalsCompletedTrend: int
+  bestStreak: int
+  bestCurrentStreak: int
+  monthlyUnitValue: double?
+  yearlyUnitValue: double?
+  monthChartData: Map<int, double>

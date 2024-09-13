@@ -681,21 +681,21 @@ class Endpoints extends _i1.EndpointDispatch {
             params['goal'],
           ),
         ),
-        'getStatisticsForCategory': _i1.MethodConnector(
-          name: 'getStatisticsForCategory',
+        'getMonthlyJournalStatistics': _i1.MethodConnector(
+          name: 'getMonthlyJournalStatistics',
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i10.Category>(),
-              nullable: false,
+              type: _i1.getType<_i10.Category?>(),
+              nullable: true,
             ),
-            'start': _i1.ParameterDescription(
-              name: 'start',
-              type: _i1.getType<DateTime>(),
-              nullable: false,
+            'goal': _i1.ParameterDescription(
+              name: 'goal',
+              type: _i1.getType<_i14.Goal?>(),
+              nullable: true,
             ),
-            'end': _i1.ParameterDescription(
-              name: 'end',
+            'month': _i1.ParameterDescription(
+              name: 'month',
               type: _i1.getType<DateTime>(),
               nullable: false,
             ),
@@ -705,11 +705,11 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
           ) async =>
               (endpoints['statistics'] as _i8.StatisticsEndpoint)
-                  .getStatisticsForCategory(
+                  .getMonthlyJournalStatistics(
             session,
             params['category'],
-            params['start'],
-            params['end'],
+            params['goal'],
+            params['month'],
           ),
         ),
       },

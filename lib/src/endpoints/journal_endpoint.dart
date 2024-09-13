@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:fixie_server/src/utils/auth_utils.dart';
+import 'package:fixie_server/src/utils/date_time_utils.dart';
 import 'package:fixie_server/src/utils/journal_utils.dart';
-import 'package:intl/intl.dart';
 import 'package:serverpod/serverpod.dart';
 
 class JournalEndpoint extends Endpoint {
@@ -73,25 +73,6 @@ class JournalEndpoint extends Endpoint {
       yearly: [],
     );
 
-    /// Calculates number of weeks for a given year as per https://en.wikipedia.org/wiki/ISO_week_date#Weeks_per_year
-    int numOfWeeks(int year) {
-      DateTime dec28 = DateTime(year, 12, 28);
-      int dayOfDec28 = int.parse(DateFormat("D").format(dec28));
-      return ((dayOfDec28 - dec28.weekday + 10) / 7).floor();
-    }
-
-    /// Calculates week number from a date as per https://en.wikipedia.org/wiki/ISO_week_date#Calculation
-    int weekNumber(DateTime date) {
-      int dayOfYear = int.parse(DateFormat("D").format(date));
-      int woy = ((dayOfYear - date.weekday + 10) / 7).floor();
-      if (woy < 1) {
-        woy = numOfWeeks(date.year - 1);
-      } else if (woy > numOfWeeks(date.year)) {
-        woy = 1;
-      }
-      return woy;
-    }
-
     for (Goal goal in goals) {
       switch (goal.repetition) {
         case Repetition.Daily:
@@ -132,12 +113,16 @@ class JournalEndpoint extends Endpoint {
         case Repetition.Weekly:
           {
             JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
-                (log.goal?.id == goal.id) &
-                (weekNumber(log.date) == weekNumber(start) - 1));
+                (log.goal?.id == goal.id) &&
+                log.date.year == start.year &&
+                (DateTimeUtils.weekNumber(log.date) ==
+                    DateTimeUtils.weekNumber(start) - 1));
 
             JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
-                (log.goal?.id == goal.id) &
-                (weekNumber(log.date) == weekNumber(start)));
+                (log.goal?.id == goal.id) &&
+                log.date.year == start.year &&
+                (DateTimeUtils.weekNumber(log.date) ==
+                    DateTimeUtils.weekNumber(start)));
 
             bool hasStreak = dayBeforeLog == null
                 ? false

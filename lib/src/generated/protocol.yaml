@@ -37,4 +37,4 @@ profile:
   - updateProfilePicture:
 statistics:
   - getStatisticsForGoal:
-  - getStatisticsForCategory:
+  - getMonthlyJournalStatistics:
