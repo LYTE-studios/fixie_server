@@ -211,10 +211,10 @@ class StatisticsEndpoint extends Endpoint {
         if ((log.currentStreak ?? 0) > bestStreak) {
           bestStreak = log.currentStreak ?? 0;
         }
-        if (log.date.isAfter(lastYear) && log.date.isBefore(month)) {
+        if (log.date.isAfter(lastYear) && log.date.isBefore(startOfYear)) {
           yearlyTrend += log.loggedValue ?? 0;
         }
-        if (log.date.isAfter(lastMonth) && log.date.isBefore(month)) {
+        if (log.date.isAfter(lastMonth) && log.date.isBefore(startOfMonth)) {
           if ((log.loggedValue ?? 0) >= (log.goal?.target.toDouble() ?? 0)) {
             monthlyGoalsCompletedTrend += 1;
           }
