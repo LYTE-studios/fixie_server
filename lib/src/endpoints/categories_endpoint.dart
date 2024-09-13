@@ -30,6 +30,21 @@ class CategoriesEndpoint extends Endpoint {
     return created;
   }
 
+  Future<List<Goal>> getGoalsForCategory(
+      Session session, int categoryId) async {
+    await AuthUtils.getAuthenticatedUser(session);
+
+    List<Goal> goals = await Goal.db.find(
+      session,
+      include: Goal.include(
+        category: Category.include(),
+      ),
+      where: (t) => t.categoryId.equals(categoryId),
+    );
+
+    return goals;
+  }
+
   Future<List<Category>> getActiveCategories(Session session) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 

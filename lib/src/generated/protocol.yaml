@@ -1,6 +1,7 @@
 categories:
   - addCategory:
   - editCategory:
+  - getGoalsForCategory:
   - getActiveCategories:
 file:
   - getUploadDescription:
