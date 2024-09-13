@@ -273,7 +273,8 @@ class StatisticsEndpoint extends Endpoint {
         statistics.monthlySuccessRate - getMean(monthlyRatesTrend);
 
     statistics.monthlyGoalsCompleted = monthlyGoalsCompleted;
-    statistics.monthlyGoalsCompletedTrend = monthlyGoalsCompletedTrend;
+    statistics.monthlyGoalsCompletedTrend =
+        monthlyGoalsCompleted - monthlyGoalsCompletedTrend;
     statistics.yearlyGoalsCompleted = yearlyGoalsCompleted;
 
     statistics.bestStreak = bestStreak;
