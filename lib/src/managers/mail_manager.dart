@@ -18,9 +18,7 @@ class MailManager {
 
     int templateId = templates['en']!;
 
-    if (templates.keys.contains(locale) == false) {
-      templateId = templates[locale] ?? templateId;
-    }
+    templateId = templates[locale] ?? templateId;
 
     final apiKey = session.serverpod.getPassword('mailjetApiKey');
     final secretKey = session.serverpod.getPassword('mailjetSecretKey');
