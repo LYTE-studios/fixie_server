@@ -563,6 +563,48 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['profile'] as _i7.ProfileEndpoint)
                   .getProfileData(session),
         ),
+        'setEmptyLocale': _i1.MethodConnector(
+          name: 'setEmptyLocale',
+          params: {
+            'email': _i1.ParameterDescription(
+              name: 'email',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'locale': _i1.ParameterDescription(
+              name: 'locale',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i7.ProfileEndpoint).setEmptyLocale(
+            session,
+            params['email'],
+            params['locale'],
+          ),
+        ),
+        'updateLocale': _i1.MethodConnector(
+          name: 'updateLocale',
+          params: {
+            'locale': _i1.ParameterDescription(
+              name: 'locale',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i7.ProfileEndpoint).updateLocale(
+            session,
+            params['locale'],
+          ),
+        ),
         'updateBirthday': _i1.MethodConnector(
           name: 'updateBirthday',
           params: {

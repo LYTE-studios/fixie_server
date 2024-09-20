@@ -29,6 +29,8 @@ profile:
   - deleteAccount:
   - createUser:
   - getProfileData:
+  - setEmptyLocale:
+  - updateLocale:
   - updateBirthday:
   - updateName:
   - completeOnboarding:

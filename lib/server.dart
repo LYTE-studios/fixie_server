@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fixie_server/src/futures/daily_cron_future.dart';
+import 'package:fixie_server/src/managers/mail_manager.dart';
 import 'package:fixie_server/src/managers/notification_manager.dart';
 import 'package:fixie_server/src/web/routes/root.dart';
 import 'package:serverpod/serverpod.dart';
@@ -69,49 +70,19 @@ void run(List<String> args) async {
       userCanEditFullName: true,
       userCanEditUserImage: true,
       sendValidationEmail: (session, email, validationCode) async {
-        final apiKey = session.serverpod.getPassword('mailjetApiKey');
-        final secretKey = session.serverpod.getPassword('mailjetSecretKey');
+        UserLocales? locales = (await UserLocales.db
+                .find(session, where: (t) => t.email.equals(email)))
+            .firstOrNull;
 
-        String myEmail = "hello@fixie.world";
-
-        if (apiKey == null || secretKey == null) {
-          return false;
-        }
-
-        String mailjetUrl =
-            "https://$apiKey:$secretKey@api.mailjet.com/v3.1/send";
-
-        Dio dio = Dio();
-
-        Response response = await dio.post(
-          mailjetUrl,
+        return await MailManager.sendMail(
+          session,
+          email: email,
+          templates: MailManager.verificationTemplates,
+          locale: locales?.locale ?? 'en',
           data: {
-            "Messages": [
-              {
-                "TemplateID": 6209328,
-                "From": {
-                  "Email": myEmail,
-                  "Name": "Fixie",
-                },
-                "To": [
-                  {
-                    "Email": email,
-                  }
-                ],
-                "TemplateLanguage": true,
-                "Variables": {
-                  "verification_code": validationCode,
-                },
-              },
-            ],
+            "verification_code": validationCode,
           },
         );
-
-        if (response.statusCode == 200) {
-          return true;
-        }
-
-        return false;
       },
       sendPasswordResetEmail: (session, userInfo, validationCode) async {
         final apiKey = session.serverpod.getPassword('mailjetApiKey');

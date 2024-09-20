@@ -1,0 +1,5 @@
+class: UserLocales
+table: user_locales
+fields:
+  email: String
+  locale: String?

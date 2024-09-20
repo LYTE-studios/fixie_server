@@ -102,6 +102,11 @@ class ProfileEndpoint extends Endpoint {
 
     int daysSinceCreation = DateTime.now().difference(userInfo.created).inDays;
 
+    String? locale = (await UserLocales.db
+            .find(session, where: (t) => t.email.equals(userInfo.email)))
+        .first
+        .locale;
+
     UserProfileDto userProfileData = UserProfileDto(
       name: userInfo.fullName ?? '',
       email: userInfo.email ?? '',
@@ -111,9 +116,57 @@ class ProfileEndpoint extends Endpoint {
       hasPassedGoalTutorial: user.hasPassedGoalTutorial ?? false,
       informationCollectionSetting: user.informationCollectionSetting,
       automaticRemindersSetting: user.automaticRemindersSetting,
+      locale: locale,
     );
 
     return userProfileData;
+  }
+
+  Future<int> setEmptyLocale(
+    Session session,
+    String email,
+    String locale,
+  ) async {
+    UserLocales? locales = (await UserLocales.db.find(
+      session,
+      where: (t) => t.email.equals(email),
+    ))
+        .firstOrNull;
+
+    if (locales != null) {
+      locales.locale = locale;
+
+      await UserLocales.db.updateRow(session, locales);
+
+      return HttpStatus.ok;
+    }
+
+    await UserLocales.db.insertRow(
+      session,
+      UserLocales(email: email, locale: locale),
+    );
+
+    return HttpStatus.ok;
+  }
+
+  Future<int> updateLocale(Session session, String locale) async {
+    var user = await AuthUtils.getAuthenticatedUser(session);
+
+    UserLocales? locales = (await UserLocales.db.find(
+      session,
+      where: (t) => t.email.equals(user.userInfo?.email),
+    ))
+        .firstOrNull;
+
+    if (locales == null) {
+      return await setEmptyLocale(session, user.userInfo!.email!, locale);
+    }
+
+    locales.locale = locale;
+
+    await UserLocales.db.updateRow(session, locales);
+
+    return HttpStatus.ok;
   }
 
   Future<int> updateBirthday(Session session, DateTime birthday) async {

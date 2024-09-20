@@ -9,3 +9,4 @@ fields:
   hasPassedGoalTutorial: bool
   informationCollectionSetting: bool?
   automaticRemindersSetting: bool?
+  locale: String?
