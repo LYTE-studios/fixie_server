@@ -4,7 +4,7 @@ import 'package:serverpod/server.dart';
 class MailManager {
   static Map<String, int> verificationTemplates = {
     'en': 6209328,
-    'nl': 6209328,
+    'nl': 6310271,
   };
 
   static Future<bool> sendMail(
