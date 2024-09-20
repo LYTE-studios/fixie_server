@@ -104,8 +104,8 @@ class ProfileEndpoint extends Endpoint {
 
     String? locale = (await UserLocales.db
             .find(session, where: (t) => t.email.equals(userInfo.email)))
-        .first
-        .locale;
+        .firstOrNull
+        ?.locale;
 
     UserProfileDto userProfileData = UserProfileDto(
       name: userInfo.fullName ?? '',
