@@ -151,14 +151,22 @@ class StatisticsEndpoint extends Endpoint {
       );
 
       DateTime thisYear = (goal.created?.isAfter(startOfYear) ?? false)
-          ? goal.created!
+          ? DateTime(
+              goal.created!.year,
+              goal.created!.month,
+              goal.created!.day,
+            )
           : startOfYear;
 
       DateTime lastYear = DateTime(now.year - 1);
       DateTime lastMonth = DateTime(now.year, now.month - 1);
 
       DateTime thisMonth = (goal.created?.isAfter(startOfMonth) ?? false)
-          ? goal.created!
+          ? DateTime(
+              goal.created!.year,
+              goal.created!.month,
+              goal.created!.day,
+            )
           : startOfMonth;
 
       int daysThisYear = now.difference(thisYear).inDays;
