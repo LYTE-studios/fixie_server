@@ -63,75 +63,120 @@ class StatisticsEndpoint extends Endpoint {
       );
     }
 
-    // Set the empty statistics first
-    Statistics statistics = Statistics(
-      monthlySuccessRate: 0,
-      monthlySuccessRateTrend: 0,
-      yearlySuccessRate: 0,
-      yearlySuccessRateTrend: 0,
-      yearlyGoalsCompleted: 0,
-      monthlyGoalsCompleted: 0,
-      monthlyGoalsCompletedTrend: 0,
-      bestStreak: 0,
-      bestCurrentStreak: 0,
-      monthChartData: {},
-    );
+    List<Statistics> statisticsList = [];
 
-    DateTime now = month;
+    double getMean(List<double> doubles) {
+      if (doubles.isEmpty) {
+        return 0;
+      }
 
-    DateTime startOfYear = DateTime(
-      now.year,
-    );
+      double total = 0;
+      for (double value in doubles) {
+        total += value;
+      }
 
-    DateTime startOfMonth = DateTime(
-      now.year,
-      now.month,
-    );
+      return total / doubles.length;
+    }
 
-    DateTime thisYear = (goal?.created?.isAfter(startOfYear) ?? false)
-        ? goal!.created!
-        : startOfYear;
+    int getAddition(List<int> doubles) {
+      if (doubles.isEmpty) {
+        return 0;
+      }
 
-    DateTime lastYear = DateTime(now.year - 1);
-    DateTime lastMonth = DateTime(now.year, now.month - 1);
+      int total = 0;
 
-    DateTime thisMonth = (goal?.created?.isAfter(startOfMonth) ?? false)
-        ? goal!.created!
-        : startOfMonth;
+      for (int value in doubles) {
+        total += value;
+      }
 
-    int daysThisYear = now.difference(thisYear).inDays;
+      return total;
+    }
 
-    int daysThisMonth = now.difference(thisMonth).inDays;
+    int getHighest(List<int> doubles) {
+      if (doubles.isEmpty) {
+        return 0;
+      }
 
-    List<JournalLog> logs = await JournalLog.db.find(
-      session,
-      where: (t) =>
-          t.goalId.inSet(
-            goals.map((e) => e.id ?? 0).toSet(),
-          ) &
-          t.date.between(
-            DateTime(
-              now.year - 1,
-            ),
-            now,
-          ),
-    );
+      int highest = 0;
 
-    List<double> yearlyRates = [];
-    List<double> monthlyRates = [];
-    List<double> yearlyRatesTrend = [];
-    List<double> monthlyRatesTrend = [];
-    Map<int, List<double>> monthlyChartRates = {};
+      for (int value in doubles) {
+        if (value > highest) {
+          highest = value;
+        }
+      }
 
-    int yearlyGoalsCompleted = 0;
-
-    int monthlyGoalsCompleted = 0;
-    int monthlyGoalsCompletedTrend = 0;
-
-    int bestStreak = 0;
-    int bestCurrentStreak = 0;
+      return highest;
+    }
 
     for (Goal goal in goals) {
+      // Set the empty statistics first
+      Statistics statistics = Statistics(
+        monthlySuccessRate: 0,
+        monthlySuccessRateTrend: 0,
+        yearlySuccessRate: 0,
+        yearlySuccessRateTrend: 0,
+        yearlyGoalsCompleted: 0,
+        monthlyGoalsCompleted: 0,
+        monthlyGoalsCompletedTrend: 0,
+        bestStreak: 0,
+        bestCurrentStreak: 0,
+        monthChartData: {},
+      );
+
+      DateTime now = month;
+
+      DateTime startOfYear = DateTime(
+        now.year,
+      );
+
+      DateTime startOfMonth = DateTime(
+        now.year,
+        now.month,
+      );
+
+      DateTime thisYear = (goal.created?.isAfter(startOfYear) ?? false)
+          ? goal.created!
+          : startOfYear;
+
+      DateTime lastYear = DateTime(now.year - 1);
+      DateTime lastMonth = DateTime(now.year, now.month - 1);
+
+      DateTime thisMonth = (goal.created?.isAfter(startOfMonth) ?? false)
+          ? goal.created!
+          : startOfMonth;
+
+      int daysThisYear = now.difference(thisYear).inDays;
+
+      int daysThisMonth = now.difference(thisMonth).inDays; // 3
+
+      List<JournalLog> logs = await JournalLog.db.find(
+        session,
+        where: (t) =>
+            t.goalId.inSet(
+              goals.map((e) => e.id ?? 0).toSet(),
+            ) &
+            t.date.between(
+              DateTime(
+                now.year - 1,
+              ),
+              now,
+            ),
+      );
+
+      List<double> yearlyRates = [];
+      List<double> monthlyRates = [];
+      List<double> yearlyRatesTrend = [];
+      List<double> monthlyRatesTrend = [];
+      Map<int, List<double>> monthlyChartRates = {};
+
+      int yearlyGoalsCompleted = 0;
+
+      int monthlyGoalsCompleted = 0;
+      int monthlyGoalsCompletedTrend = 0;
+
+      int bestStreak = 0;
+      int bestCurrentStreak = 0;
+
       double yearlyTotal = 1;
       double yearly = 0;
 
@@ -149,7 +194,7 @@ class StatisticsEndpoint extends Endpoint {
                 ((goal.weekdays?.length ?? 0) / 7) * goal.target * daysThisYear;
             monthlyTotal = ((goal.weekdays?.length ?? 0) / 7) *
                 goal.target *
-                daysThisMonth;
+                daysThisMonth; // 3
 
             JournalLog? log = logs.firstWhereOrNull(
               (e) =>
@@ -245,41 +290,71 @@ class StatisticsEndpoint extends Endpoint {
 
       yearlyRatesTrend.add(yearlyTrend / yearlyTotal);
       monthlyRatesTrend.add(monthlyTrend / monthlyTotal);
-    }
 
-    double getMean(List<double> doubles) {
-      if (doubles.isEmpty) {
-        return 0;
+      for (int i = 1; i <= DateTime(month.year, month.month + 1, 0).day; i++) {
+        statistics.monthChartData[i] = getMean(monthlyChartRates[i] ?? []);
       }
 
-      double total = 0;
-      for (double value in doubles) {
-        total += value;
+      statistics.yearlySuccessRate = getMean(yearlyRates);
+      statistics.monthlySuccessRate = getMean(monthlyRates);
+
+      statistics.yearlySuccessRateTrend =
+          statistics.yearlySuccessRate - getMean(yearlyRatesTrend);
+      statistics.monthlySuccessRateTrend =
+          statistics.monthlySuccessRate - getMean(monthlyRatesTrend);
+
+      statistics.monthlyGoalsCompleted = monthlyGoalsCompleted;
+      statistics.monthlyGoalsCompletedTrend =
+          monthlyGoalsCompleted - monthlyGoalsCompletedTrend;
+      statistics.yearlyGoalsCompleted = yearlyGoalsCompleted;
+
+      statistics.bestStreak = bestStreak;
+      statistics.bestCurrentStreak = bestCurrentStreak;
+
+      statisticsList.add(statistics);
+    }
+
+    Map<int, double>? joinedChart =
+        statisticsList.map((e) => e.monthChartData).firstOrNull;
+
+    if (joinedChart != null) {
+      for (int value in joinedChart.keys) {
+        joinedChart[value] = getMean(
+            statisticsList.map((e) => e.monthChartData[value] ?? 0).toList());
       }
-
-      return total / doubles.length;
     }
 
-    for (int i = 1; i <= DateTime(month.year, month.month + 1, 0).day; i++) {
-      statistics.monthChartData[i] = getMean(monthlyChartRates[i] ?? []);
-    }
+    Statistics totalStatistics = Statistics(
+      monthlySuccessRate: getMean(
+        statisticsList.map((e) => e.monthlySuccessRate).toList(),
+      ),
+      monthlySuccessRateTrend: getMean(
+        statisticsList.map((e) => e.monthlySuccessRateTrend).toList(),
+      ),
+      yearlySuccessRate: getMean(
+        statisticsList.map((e) => e.yearlySuccessRate).toList(),
+      ),
+      yearlySuccessRateTrend: getMean(
+        statisticsList.map((e) => e.yearlySuccessRateTrend).toList(),
+      ),
+      yearlyGoalsCompleted: getAddition(
+        statisticsList.map((e) => e.yearlyGoalsCompleted).toList(),
+      ),
+      monthlyGoalsCompleted: getAddition(
+        statisticsList.map((e) => e.monthlyGoalsCompleted).toList(),
+      ),
+      monthlyGoalsCompletedTrend: getAddition(
+        statisticsList.map((e) => e.monthlyGoalsCompletedTrend).toList(),
+      ),
+      bestStreak: getHighest(
+        statisticsList.map((e) => e.bestStreak).toList(),
+      ),
+      bestCurrentStreak: getHighest(
+        statisticsList.map((e) => e.bestCurrentStreak).toList(),
+      ),
+      monthChartData: joinedChart ?? {},
+    );
 
-    statistics.yearlySuccessRate = getMean(yearlyRates);
-    statistics.monthlySuccessRate = getMean(monthlyRates);
-
-    statistics.yearlySuccessRateTrend =
-        statistics.yearlySuccessRate - getMean(yearlyRatesTrend);
-    statistics.monthlySuccessRateTrend =
-        statistics.monthlySuccessRate - getMean(monthlyRatesTrend);
-
-    statistics.monthlyGoalsCompleted = monthlyGoalsCompleted;
-    statistics.monthlyGoalsCompletedTrend =
-        monthlyGoalsCompleted - monthlyGoalsCompletedTrend;
-    statistics.yearlyGoalsCompleted = yearlyGoalsCompleted;
-
-    statistics.bestStreak = bestStreak;
-    statistics.bestCurrentStreak = bestCurrentStreak;
-
-    return statistics;
+    return totalStatistics;
   }
 }
