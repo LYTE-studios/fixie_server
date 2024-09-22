@@ -123,7 +123,15 @@ class StatisticsEndpoint extends Endpoint {
         monthChartData: {},
       );
 
-      DateTime now = month;
+      DateTime now = DateTime(month.year, month.month + 1).subtract(
+        Duration(
+          minutes: 1,
+        ),
+      );
+
+      if (now.isAfter(DateTime.now())) {
+        now = DateTime.now();
+      }
 
       DateTime startOfYear = DateTime(
         now.year,
