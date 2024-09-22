@@ -130,7 +130,15 @@ class StatisticsEndpoint extends Endpoint {
       );
 
       if (now.isAfter(DateTime.now())) {
-        now = DateTime.now();
+        now = DateTime(
+          DateTime.now().year,
+          DateTime.now().month,
+          DateTime.now().day,
+        ).add(
+          Duration(
+            days: 1,
+          ),
+        );
       }
 
       DateTime startOfYear = DateTime(
