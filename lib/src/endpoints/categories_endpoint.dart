@@ -39,7 +39,8 @@ class CategoriesEndpoint extends Endpoint {
       include: Goal.include(
         category: Category.include(),
       ),
-      where: (t) => t.categoryId.equals(categoryId),
+      where: (t) =>
+          t.categoryId.equals(categoryId) & t.archived.notEquals(true),
     );
 
     return goals;
