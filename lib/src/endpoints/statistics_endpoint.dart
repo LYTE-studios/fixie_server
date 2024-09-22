@@ -147,7 +147,7 @@ class StatisticsEndpoint extends Endpoint {
 
       int daysThisYear = now.difference(thisYear).inDays;
 
-      int daysThisMonth = now.difference(thisMonth).inDays; // 3
+      int daysThisMonth = now.difference(thisMonth).inDays;
 
       List<JournalLog> logs = await JournalLog.db.find(
         session,
@@ -163,10 +163,6 @@ class StatisticsEndpoint extends Endpoint {
             ),
       );
 
-      List<double> yearlyRates = [];
-      List<double> monthlyRates = [];
-      List<double> yearlyRatesTrend = [];
-      List<double> monthlyRatesTrend = [];
       Map<int, List<double>> monthlyChartRates = {};
 
       int yearlyGoalsCompleted = 0;
@@ -194,7 +190,7 @@ class StatisticsEndpoint extends Endpoint {
                 ((goal.weekdays?.length ?? 0) / 7) * goal.target * daysThisYear;
             monthlyTotal = ((goal.weekdays?.length ?? 0) / 7) *
                 goal.target *
-                daysThisMonth; // 3
+                daysThisMonth;
 
             JournalLog? log = logs.firstWhereOrNull(
               (e) =>
@@ -285,23 +281,17 @@ class StatisticsEndpoint extends Endpoint {
         }
       }
 
-      yearlyRates.add(yearly / yearlyTotal);
-      monthlyRates.add(monthly / monthlyTotal);
-
-      yearlyRatesTrend.add(yearlyTrend / yearlyTotal);
-      monthlyRatesTrend.add(monthlyTrend / monthlyTotal);
-
       for (int i = 1; i <= DateTime(month.year, month.month + 1, 0).day; i++) {
         statistics.monthChartData[i] = getMean(monthlyChartRates[i] ?? []);
       }
 
-      statistics.yearlySuccessRate = getMean(yearlyRates);
-      statistics.monthlySuccessRate = getMean(monthlyRates);
+      statistics.yearlySuccessRate = yearly / yearlyTotal;
+      statistics.monthlySuccessRate = monthly / monthlyTotal;
 
       statistics.yearlySuccessRateTrend =
-          statistics.yearlySuccessRate - getMean(yearlyRatesTrend);
+          statistics.yearlySuccessRate - (yearlyTrend / yearlyTotal);
       statistics.monthlySuccessRateTrend =
-          statistics.monthlySuccessRate - getMean(monthlyRatesTrend);
+          statistics.monthlySuccessRate - (monthlyTrend / monthlyTotal);
 
       statistics.monthlyGoalsCompleted = monthlyGoalsCompleted;
       statistics.monthlyGoalsCompletedTrend =
