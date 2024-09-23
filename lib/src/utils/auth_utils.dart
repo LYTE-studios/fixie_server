@@ -17,7 +17,13 @@ class AuthUtils {
 
     assert(user.id != null);
 
-    return User.db.findById(session, user.id!);
+    return User.db.findById(
+      session,
+      user.id!,
+      include: User.include(
+        userInfo: UserInfo.include(),
+      ),
+    );
   }
 
   static Future<User> getAuthenticatedUser(Session session) async {
