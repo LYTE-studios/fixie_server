@@ -1,9 +1,8 @@
 services:
   api:
-    build:
-      context: .
-      args:
-        - runmode: $runmode
+    environment:
+      - "runmode=${runmode}"
+    build: .
     network_mode: "host"
     expose:
       - 8080
