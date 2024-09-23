@@ -1,4 +1,4 @@
-sudo docker compose up -d --build --build-arg runmode="$1"
+sudo docker compose up -d --build
 
 sudo rm /etc/nginx/certificate.crt
 sudo rm /etc/nginx/private.key
