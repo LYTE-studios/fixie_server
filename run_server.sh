@@ -1,9 +1,4 @@
-docker build -t fixie_server .
-
-docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
-
-docker run -d -p 8080:8080 -p 8081:8081 fixie_server
+sudo docker compose up -d --build --build-arg runmode="$1"
 
 sudo rm /etc/nginx/certificate.crt
 sudo rm /etc/nginx/private.key
