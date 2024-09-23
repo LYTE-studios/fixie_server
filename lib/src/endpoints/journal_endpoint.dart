@@ -275,7 +275,8 @@ class JournalEndpoint extends Endpoint {
             category: Category.include(),
           ),
         ),
-        where: (p0) => p0.goalId.equals(goalId),
+        where: (p0) =>
+            p0.goalId.equals(goalId) & p0.goal.archived.notEquals(true),
       );
     } else if (categoryId != null) {
       logs = await JournalLog.db.find(
@@ -285,7 +286,9 @@ class JournalEndpoint extends Endpoint {
             category: Category.include(),
           ),
         ),
-        where: (p0) => p0.goal.categoryId.equals(categoryId),
+        where: (p0) =>
+            p0.goal.categoryId.equals(categoryId) &
+            p0.goal.archived.notEquals(true),
       );
     } else {
       logs = await JournalLog.db.find(
@@ -295,7 +298,8 @@ class JournalEndpoint extends Endpoint {
             category: Category.include(),
           ),
         ),
-        where: (p0) => p0.goal.userId.equals(user.id),
+        where: (p0) =>
+            p0.goal.userId.equals(user.id) & p0.goal.archived.notEquals(true),
       );
     }
 
