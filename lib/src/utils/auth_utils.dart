@@ -4,16 +4,20 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
 class AuthUtils {
-  static Future<User> createUserProfileForId(
+  static Future<User?> createUserProfileForId(
     Session session,
     int userId,
   ) async {
-    return User.db.insertRow(
+    User user = await User.db.insertRow(
       session,
       User(
         userInfoId: userId,
       ),
     );
+
+    assert(user.id != null);
+
+    return User.db.findById(session, user.id!);
   }
 
   static Future<User> getAuthenticatedUser(Session session) async {
@@ -33,10 +37,16 @@ class AuthUtils {
 
         if (fetchedUser == null) {
           // In case a user has been authenticated, but a profile has not yet been made, create a profile
-          return await createUserProfileForId(
+          User? createdUser = await createUserProfileForId(
             session,
             authenticatedUserId,
           );
+
+          if (createdUser == null) {
+            throw Exception('User could not be created');
+          }
+
+          return createdUser;
         }
 
         return fetchedUser;
