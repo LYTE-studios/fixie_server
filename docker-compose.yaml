@@ -3,7 +3,7 @@ services:
     build:
       context: .
       args:
-        - runmode=$runmode
+        - runmode="$runmode"
     network_mode: "host"
     expose:
       - 8080
