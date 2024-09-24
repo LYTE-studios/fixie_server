@@ -77,7 +77,7 @@ class JournalEndpoint extends Endpoint {
       switch (goal.repetition) {
         case Repetition.Daily:
           {
-            if (!(goal.weekdays?.contains(DateTime.now().weekday) ?? false)) {
+            if (!(goal.weekdays?.contains(start.weekday) ?? false)) {
               continue;
             }
 
