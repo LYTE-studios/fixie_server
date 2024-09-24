@@ -158,6 +158,10 @@ class ProfileEndpoint extends Endpoint {
     ))
         .firstOrNull;
 
+    if (user.userInfo?.email == null) {
+      return HttpStatus.ok;
+    }
+
     if (locales == null) {
       return await setEmptyLocale(session, user.userInfo!.email!, locale);
     }

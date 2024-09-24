@@ -1,3 +1,4 @@
+import 'package:fixie_server/src/data/notification_factory.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -22,6 +23,9 @@ class DailyCronFuture extends FutureCall {
 
     List<Goal> goals = await Goal.db.find(
       session,
+      include: Goal.include(
+        user: User.include(),
+      ),
       where: (t) =>
           t.archived.equals(false) &
           t.userId.inSet(users.map((user) => user.id ?? 0).toSet()),
@@ -33,14 +37,16 @@ class DailyCronFuture extends FutureCall {
       }
 
       for (DateTime reminder in goal.reminders ?? []) {
-        // TODO: personalize
+        Notification notification =
+            await NotificationFactory.getNotificationForGoal(
+          session,
+          goal,
+          [goal.user?.fcmToken ?? ''],
+        );
+
         session.serverpod.futureCallAtTime(
           'SendNotification',
-          Notification(
-            title: goal.title,
-            description: 'Got to do!',
-            tokens: [goal.user?.fcmToken ?? ''],
-          ),
+          notification,
           toTodayTime(reminder),
         );
       }

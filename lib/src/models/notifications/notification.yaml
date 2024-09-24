@@ -4,3 +4,4 @@ fields:
   description: String
   routeRedirect: String?
   tokens: List<String>
+  image: String?

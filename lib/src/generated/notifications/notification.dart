@@ -18,6 +18,7 @@ abstract class Notification
     required this.description,
     this.routeRedirect,
     required this.tokens,
+    this.image,
   });
 
   factory Notification({
@@ -25,6 +26,7 @@ abstract class Notification
     required String description,
     String? routeRedirect,
     required List<String> tokens,
+    String? image,
   }) = _NotificationImpl;
 
   factory Notification.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -35,6 +37,7 @@ abstract class Notification
       tokens: (jsonSerialization['tokens'] as List)
           .map((e) => e as String)
           .toList(),
+      image: jsonSerialization['image'] as String?,
     );
   }
 
@@ -46,11 +49,14 @@ abstract class Notification
 
   List<String> tokens;
 
+  String? image;
+
   Notification copyWith({
     String? title,
     String? description,
     String? routeRedirect,
     List<String>? tokens,
+    String? image,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -59,6 +65,7 @@ abstract class Notification
       'description': description,
       if (routeRedirect != null) 'routeRedirect': routeRedirect,
       'tokens': tokens.toJson(),
+      if (image != null) 'image': image,
     };
   }
 
@@ -69,6 +76,7 @@ abstract class Notification
       'description': description,
       if (routeRedirect != null) 'routeRedirect': routeRedirect,
       'tokens': tokens.toJson(),
+      if (image != null) 'image': image,
     };
   }
 
@@ -86,11 +94,13 @@ class _NotificationImpl extends Notification {
     required String description,
     String? routeRedirect,
     required List<String> tokens,
+    String? image,
   }) : super._(
           title: title,
           description: description,
           routeRedirect: routeRedirect,
           tokens: tokens,
+          image: image,
         );
 
   @override
@@ -99,6 +109,7 @@ class _NotificationImpl extends Notification {
     String? description,
     Object? routeRedirect = _Undefined,
     List<String>? tokens,
+    Object? image = _Undefined,
   }) {
     return Notification(
       title: title ?? this.title,
@@ -106,6 +117,7 @@ class _NotificationImpl extends Notification {
       routeRedirect:
           routeRedirect is String? ? routeRedirect : this.routeRedirect,
       tokens: tokens ?? this.tokens.clone(),
+      image: image is String? ? image : this.image,
     );
   }
 }
