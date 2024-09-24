@@ -1,9 +1,11 @@
+import 'package:fixie_server/src/data/notification_factory.dart';
 import 'package:fixie_server/src/generated/goals/goal.dart';
 import 'package:fixie_server/src/generated/notifications/notification.dart';
 import 'package:serverpod/serverpod.dart';
 
 class GoalManager {
-  static void scheduleCurrentNotification(Session session, Goal goal) {
+  static Future<void> scheduleCurrentNotification(
+      Session session, Goal goal) async {
     if (goal.user?.fcmToken == null) {
       return;
     }
@@ -23,13 +25,16 @@ class GoalManager {
         return;
       }
 
+      Notification notification =
+          await NotificationFactory.getNotificationForGoal(
+        session,
+        goal,
+        [goal.user?.fcmToken ?? ''],
+      );
+
       session.serverpod.futureCallAtTime(
         'SendNotification',
-        Notification(
-          title: goal.title,
-          description: 'Got to do!',
-          tokens: [goal.user?.fcmToken ?? ''],
-        ),
+        notification,
         time,
       );
     }
