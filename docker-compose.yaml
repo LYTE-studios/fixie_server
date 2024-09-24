@@ -1,7 +1,5 @@
 services:
   api:
-    environment:
-      - "runmode=${runmode}"
     build: .
     network_mode: "host"
     expose:
@@ -13,5 +11,3 @@ services:
     command: redis-server
     environment:
       - REDIS_REPLICATION_MODE=master
-volumes:
-  tradelog_data:
