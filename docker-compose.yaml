@@ -1,10 +1,10 @@
 services:
   api:
-    build:
-      context: .
-      args:
-        - runmode="$runmode"
+    build: .
     network_mode: "host"
+    expose:
+      - 8080
+      - 8081
   redis:
     image: redis:6.2.6
     network_mode: "host"
