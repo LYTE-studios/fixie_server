@@ -17,6 +17,8 @@ ENV serverid=default
 ENV logging=normal
 ENV role=monolith
 
+COPY ./bin/main ./bin/main
+
 EXPOSE 8080
 EXPOSE 8081
 EXPOSE 8082
