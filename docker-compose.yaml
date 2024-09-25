@@ -3,7 +3,9 @@ services:
     network_mode: "host"
     expose:
       - "8000"
-    build: ./image_conversion_api
+    build:
+      context: ../image_conversion_api/
+      dockerfile: ../image_conversion_api/Dockerfile
     restart: on-failure
   api:
     build: .
