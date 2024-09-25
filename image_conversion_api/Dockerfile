@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 RUN apt update
-RUN apt install build-essential
+RUN apt -y install build-essential
 
 RUN pip install pipenv
 RUN pipenv sync
