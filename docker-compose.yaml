@@ -5,7 +5,7 @@ services:
       - "8000"
     build:
       context: ./image_conversion_api/
-      dockerfile: ./image_conversion_api/Dockerfile
+      dockerfile: ./Dockerfile
     restart: on-failure
   api:
     build: .
