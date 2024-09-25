@@ -1,4 +1,10 @@
 services:
+  image_conversion_api:
+    network_mode: "host"
+    expose:
+      - "8000"
+    build: ./image_conversion_api/
+    restart: on-failure
   api:
     build: .
     network_mode: "host"

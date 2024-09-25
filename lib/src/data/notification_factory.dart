@@ -1,12 +1,12 @@
 import 'dart:math';
-import 'dart:ui';
+import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:fixie_server/src/data/notification_keywords_en.dart';
 import 'package:fixie_server/src/data/notification_keywords_nl.dart';
 import 'package:fixie_server/src/generated/locales/user_locales.dart';
 import 'package:fixie_server/src/generated/notifications/notification.dart';
 import 'package:fixie_server/src/utils/date_time_utils.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serverpod/server.dart';
 
 import '../generated/goals/goal.dart';
@@ -92,17 +92,17 @@ class NotificationFactory {
     String? imageUrl;
 
     if (goal.picture != null) {
-      final pictureInfo =
-          await vg.loadPicture(SvgStringLoader(goal.picture!), null);
+      Dio dio = Dio();
 
-      final image = await pictureInfo.picture.toImage(100, 100);
-      final byteData = await image.toByteData(format: ImageByteFormat.png);
+      Response response = await dio.post(
+        "http://127.0.0.1:8000/svg-to-png",
+        data: goal.picture!,
+        options: Options(
+          responseType: ResponseType.bytes,
+        ),
+      );
 
-      if (byteData == null) {
-        throw Exception('Unable to convert SVG to PNG');
-      }
-
-      final pngBytes = byteData;
+      ByteData pngBytes = response.data;
 
       imageUrl ??=
           'notifications/${DateTimeUtils.formatDate(DateTime.now())}/images/${goal.id}.png';
