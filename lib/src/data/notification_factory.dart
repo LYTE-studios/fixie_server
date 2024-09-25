@@ -1,12 +1,12 @@
-import 'dart:convert';
 import 'dart:math';
-import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:fixie_server/src/data/notification_keywords_en.dart';
 import 'package:fixie_server/src/data/notification_keywords_nl.dart';
 import 'package:fixie_server/src/generated/locales/user_locales.dart';
 import 'package:fixie_server/src/generated/notifications/notification.dart';
 import 'package:fixie_server/src/utils/date_time_utils.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serverpod/server.dart';
 
 import '../generated/goals/goal.dart';
@@ -92,13 +92,25 @@ class NotificationFactory {
     String? imageUrl;
 
     if (goal.picture != null) {
+      final pictureInfo =
+          await vg.loadPicture(SvgStringLoader(goal.picture!), null);
+
+      final image = await pictureInfo.picture.toImage(100, 100);
+      final byteData = await image.toByteData(format: ImageByteFormat.png);
+
+      if (byteData == null) {
+        throw Exception('Unable to convert SVG to PNG');
+      }
+
+      final pngBytes = byteData;
+
       imageUrl ??=
-          'notifications/${DateTimeUtils.formatDate(DateTime.now())}/images/${goal.id}.svg';
+          'notifications/${DateTimeUtils.formatDate(DateTime.now())}/images/${goal.id}.png';
 
       await session.storage.storeFile(
         storageId: 'public',
         path: imageUrl,
-        byteData: ByteData.view(utf8.encode(goal.picture!).buffer),
+        byteData: pngBytes,
       );
 
       Uri? uri = await session.storage.getPublicUrl(

@@ -16,6 +16,9 @@ dependencies:
   # Firebase
   firebase_cloud_messaging_flutter: ^1.0.6
 
+  # Images
+  flutter_svg: ^2.0.10+1
+
   # Testing
   test: any
   # Monitoring
