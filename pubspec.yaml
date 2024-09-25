@@ -18,6 +18,7 @@ dependencies:
 
   # Testing
   test: any
+
   # Monitoring
   sentry: ^8.3.0
 
