@@ -98,7 +98,7 @@ class OpenAIService {
       );
 
       final data = response.data;
-      final generatedText = data['choices'][0]['text'].trim();
+      final generatedText = data;
 
       return generatedText;
     } on DioException catch (e) {
