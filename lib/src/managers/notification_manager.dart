@@ -34,6 +34,9 @@ class NotificationFutureCall extends FutureCall<Notification> {
           FirebaseSend(
             validateOnly: false,
             message: FirebaseMessage(
+              fcmOptions: FirebaseFcmOptions(),
+              android: FirebaseAndroidConfig(),
+              apns: FirebaseApnsConfig(),
               notification: FirebaseNotification(
                 title: notification.title,
                 body: notification.description,
