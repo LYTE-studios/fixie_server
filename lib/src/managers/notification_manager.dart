@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_cloud_messaging_flutter/firebase_cloud_messaging_flutter.dart';
 import 'package:fixie_server/src/generated/notifications/notification.dart';
+import 'package:sentry/sentry.dart';
 import 'package:serverpod/serverpod.dart';
 
 class NotificationFutureCall extends FutureCall<Notification> {
@@ -11,14 +12,14 @@ class NotificationFutureCall extends FutureCall<Notification> {
       return;
     }
 
+    Sentry.captureMessage('Sending Notification to Firebase');
+
     Notification notification = object;
 
     FirebaseCloudMessagingServer server =
         await NotificationManager.getMessagingServer(
       session,
     );
-
-    List<ServerResult> results = [];
 
     for (String token in notification.tokens) {
       if (notification.tokens.indexOf(token) > 0) {
@@ -27,6 +28,7 @@ class NotificationFutureCall extends FutureCall<Notification> {
           Duration(milliseconds: 100),
         );
       }
+
       ServerResult result = await server.send(
         FirebaseSend(
           validateOnly: false,
@@ -40,7 +42,13 @@ class NotificationFutureCall extends FutureCall<Notification> {
         ),
       );
 
-      results.add(result);
+      if (!result.successful) {
+        Sentry.captureException(
+          Exception(
+            '${result.statusCode} Firebase message did not send - ${result.errorPhrase ?? ''}',
+          ),
+        );
+      }
     }
   }
 }
