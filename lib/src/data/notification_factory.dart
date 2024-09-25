@@ -7,6 +7,7 @@ import 'package:fixie_server/src/data/notification_keywords_nl.dart';
 import 'package:fixie_server/src/generated/locales/user_locales.dart';
 import 'package:fixie_server/src/generated/notifications/notification.dart';
 import 'package:fixie_server/src/utils/date_time_utils.dart';
+import 'package:sentry/sentry.dart';
 import 'package:serverpod/server.dart';
 
 import '../generated/goals/goal.dart';
@@ -92,33 +93,37 @@ class NotificationFactory {
     String? imageUrl;
 
     if (goal.picture != null) {
-      Dio dio = Dio();
+      try {
+        Dio dio = Dio();
 
-      Response response = await dio.post(
-        "http://127.0.0.1:8000/svg-to-png",
-        data: goal.picture!,
-        options: Options(
-          responseType: ResponseType.bytes,
-        ),
-      );
+        Response response = await dio.post(
+          "http://127.0.0.1:8000/svg-to-png",
+          data: goal.picture!,
+          options: Options(
+            responseType: ResponseType.bytes,
+          ),
+        );
 
-      ByteData pngBytes = response.data;
+        ByteData pngBytes = response.data;
 
-      imageUrl ??=
-          'notifications/${DateTimeUtils.formatDate(DateTime.now())}/images/${goal.id}.png';
+        imageUrl ??=
+            'notifications/${DateTimeUtils.formatDate(DateTime.now())}/images/${goal.id}.png';
 
-      await session.storage.storeFile(
-        storageId: 'public',
-        path: imageUrl,
-        byteData: pngBytes,
-      );
+        await session.storage.storeFile(
+          storageId: 'public',
+          path: imageUrl,
+          byteData: pngBytes,
+        );
 
-      Uri? uri = await session.storage.getPublicUrl(
-        storageId: 'public',
-        path: imageUrl,
-      );
+        Uri? uri = await session.storage.getPublicUrl(
+          storageId: 'public',
+          path: imageUrl,
+        );
 
-      imageUrl = 'https://${uri?.host ?? ''}${uri?.path ?? ''}';
+        imageUrl = 'https://${uri?.host ?? ''}${uri?.path ?? ''}';
+      } catch (e) {
+        Sentry.captureException(e);
+      }
     }
 
     return Notification(
