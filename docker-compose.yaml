@@ -4,8 +4,8 @@ services:
     expose:
       - "8000"
     build:
-      context: ../image_conversion_api/
-      dockerfile: ../image_conversion_api/Dockerfile
+      context: ./image_conversion_api/
+      dockerfile: ./image_conversion_api/Dockerfile
     restart: on-failure
   api:
     build: .
