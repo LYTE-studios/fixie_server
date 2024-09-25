@@ -7,6 +7,7 @@ COPY . .
 
 RUN apt update
 RUN apt -y install build-essential
+RUN apt -y install libcairo2-dev libjpeg-dev libgif-dev
 
 RUN pip install pipenv
 RUN pipenv sync
