@@ -101,7 +101,14 @@ class OpenAIService {
 
       return generatedText;
     } on DioException catch (e) {
-      Sentry.captureException(e);
+      Sentry.captureException(
+        e,
+        hint: Hint.withMap(
+          {
+            'prompt': prompt,
+          },
+        ),
+      );
       return null;
     }
   }
