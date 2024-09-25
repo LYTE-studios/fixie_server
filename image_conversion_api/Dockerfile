@@ -5,7 +5,8 @@ FROM python:3.11-slim
 WORKDIR /app
 COPY . .
 
-RUN sudo apt install build-essential
+RUN apt update
+RUN apt install build-essential
 
 RUN pip install pipenv
 RUN pipenv sync
