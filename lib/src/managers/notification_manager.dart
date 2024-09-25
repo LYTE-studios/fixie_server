@@ -9,46 +9,50 @@ class NotificationFutureCall extends FutureCall<Notification> {
   @override
   Future<void> invoke(Session session, Notification? object) async {
     if (object == null) {
+      Sentry.captureMessage('No notification was passed to Future task');
       return;
     }
 
-    Sentry.captureMessage('Sending Notification to Firebase');
+    try {
+      Notification notification = object;
 
-    Notification notification = object;
-
-    FirebaseCloudMessagingServer server =
-        await NotificationManager.getMessagingServer(
-      session,
-    );
-
-    for (String token in notification.tokens) {
-      if (notification.tokens.indexOf(token) > 0) {
-        // Prevents the server from clogging
-        await Future.delayed(
-          Duration(milliseconds: 100),
-        );
-      }
-
-      ServerResult result = await server.send(
-        FirebaseSend(
-          validateOnly: false,
-          message: FirebaseMessage(
-            notification: FirebaseNotification(
-              title: notification.title,
-              body: notification.description,
-            ),
-            token: token,
-          ),
-        ),
+      // Fetches the remote server
+      FirebaseCloudMessagingServer server =
+          await NotificationManager.getMessagingServer(
+        session,
       );
 
-      if (!result.successful) {
-        Sentry.captureException(
-          Exception(
-            '${result.statusCode} Firebase message did not send - ${result.errorPhrase ?? ''}',
+      for (String token in notification.tokens) {
+        if (notification.tokens.indexOf(token) > 0) {
+          // Prevents the server from clogging
+          await Future.delayed(
+            Duration(milliseconds: 100),
+          );
+        }
+
+        ServerResult result = await server.send(
+          FirebaseSend(
+            validateOnly: false,
+            message: FirebaseMessage(
+              notification: FirebaseNotification(
+                title: notification.title,
+                body: notification.description,
+              ),
+              token: token,
+            ),
           ),
         );
+
+        if (!result.successful) {
+          Sentry.captureException(
+            Exception(
+              '${result.statusCode} Firebase message did not send - ${result.errorPhrase ?? ''}',
+            ),
+          );
+        }
       }
+    } catch (exception) {
+      Sentry.captureException(exception);
     }
   }
 }
