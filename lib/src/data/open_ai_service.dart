@@ -2,20 +2,13 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:sentry/sentry.dart';
+import 'package:serverpod/serverpod.dart';
 
 import '../generated/category/category.dart';
 import '../generated/goals/goal.dart';
 import '../generated/users/user.dart';
 
 class OpenAIService {
-  final String apiKey;
-  final Dio _dio;
-
-  OpenAIService(this.apiKey) : _dio = Dio() {
-    _dio.options.headers['Authorization'] = 'Bearer $apiKey';
-    _dio.options.headers['Content-Type'] = 'application/json';
-  }
-
   String generateMotivationPrompt(
     Goal goal,
     String? locale,
@@ -73,10 +66,18 @@ class OpenAIService {
     return prompt;
   }
 
-  Future<String?> generateText(String prompt) async {
+  Future<String?> generateText(Session session, String prompt) async {
     try {
-      final response = await _dio.post(
+      final String apiKey = session.serverpod.getPassword('openApiKey')!;
+
+      final response = await Dio().post(
         'https://api.openai.com/v1/chat/completions',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $apiKey',
+          },
+        ),
         data: jsonEncode({
           'model': 'gpt-3.5-turbo',
           'messages': [
