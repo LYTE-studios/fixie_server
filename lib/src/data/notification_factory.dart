@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:fixie_server/src/data/notification_keywords_en.dart';
 import 'package:fixie_server/src/data/notification_keywords_nl.dart';
+import 'package:fixie_server/src/data/open_ai_service.dart';
 import 'package:fixie_server/src/generated/locales/user_locales.dart';
 import 'package:fixie_server/src/generated/notifications/notification.dart';
 import 'package:fixie_server/src/utils/date_time_utils.dart';
@@ -55,8 +56,9 @@ class NotificationFactory {
 
     // Select a random sentence from the best matching set
     if (bestMatchKey != null) {
-      List<String> sentences =
-          List<String>.from(motivationalData[bestMatchKey]?["sentences"] ?? []);
+      List<String> sentences = List<String>.from(
+        motivationalData[bestMatchKey]?["sentences"] ?? [],
+      );
       return getRandomSentence(sentences);
     } else {
       List<String> sentences =
@@ -85,10 +87,13 @@ class NotificationFactory {
 
     String title = goal.title;
 
-    String description = findBestMatchingPhrase(
-      goal.title,
-      locale?.locale ?? 'en',
-    );
+    final String apiKey = session.serverpod.getPassword('openApiKey')!;
+
+    OpenAIService service = OpenAIService(apiKey);
+
+    String prompt = service.generateMotivationPrompt(goal, locale?.locale);
+
+    String description = await service.generateText(prompt);
 
     String? imageUrl;
 
