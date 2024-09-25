@@ -86,14 +86,19 @@ class NotificationFactory {
         .firstOrNull;
 
     String title = goal.title;
-
     final String apiKey = session.serverpod.getPassword('openApiKey')!;
 
     OpenAIService service = OpenAIService(apiKey);
 
     String prompt = service.generateMotivationPrompt(goal, locale?.locale);
 
-    String description = await service.generateText(prompt);
+    String description = '';
+
+    try {
+      description = await service.generateText(prompt);
+    } catch (e) {
+      Sentry.captureException(e);
+    }
 
     String? imageUrl;
 
