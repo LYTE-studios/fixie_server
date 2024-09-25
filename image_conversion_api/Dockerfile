@@ -6,6 +6,7 @@ WORKDIR /app
 COPY . .
 
 RUN pip install pipenv
+RUN pipenv sync
 
 EXPOSE 8000
 
