@@ -114,7 +114,9 @@ class NotificationFactory {
           ),
         );
 
-        ByteData pngBytes = response.data;
+        Uint8List bytes = response.data as Uint8List;
+
+        ByteData pngBytes = ByteData.view(bytes.buffer);
 
         imageUrl ??=
             'notifications/${DateTimeUtils.formatDate(DateTime.now())}/images/${goal.id}.png';
