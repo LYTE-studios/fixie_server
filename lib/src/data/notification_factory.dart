@@ -106,7 +106,7 @@ class NotificationFactory {
         path: imageUrl,
       );
 
-      imageUrl = '${uri?.host ?? ''}${uri?.path ?? ''}';
+      imageUrl = 'https://${uri?.host ?? ''}${uri?.path ?? ''}';
     }
 
     return Notification(

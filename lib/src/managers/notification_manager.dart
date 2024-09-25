@@ -30,20 +30,22 @@ class NotificationFutureCall extends FutureCall<Notification> {
           );
         }
 
-        ServerResult result = await server.send(
-          FirebaseSend(
-            validateOnly: false,
-            message: FirebaseMessage(
-              fcmOptions: FirebaseFcmOptions(),
-              android: FirebaseAndroidConfig(),
-              apns: FirebaseApnsConfig(),
-              notification: FirebaseNotification(
-                title: notification.title,
-                body: notification.description,
-              ),
-              token: token,
+        FirebaseSend send = FirebaseSend(
+          validateOnly: false,
+          message: FirebaseMessage(
+            fcmOptions: FirebaseFcmOptions(),
+            android: FirebaseAndroidConfig(),
+            apns: FirebaseApnsConfig(),
+            notification: FirebaseNotification(
+              title: notification.title,
+              body: notification.description,
             ),
+            token: token,
           ),
+        );
+
+        ServerResult result = await server.send(
+          send,
         );
 
         if (!result.successful) {
@@ -51,6 +53,9 @@ class NotificationFutureCall extends FutureCall<Notification> {
             Exception(
               '${result.statusCode} Firebase message did not send - ${result.errorPhrase ?? ''}',
             ),
+            hint: Hint.withMap({
+              'data': send.toJson(),
+            }),
           );
         }
       }
