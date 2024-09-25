@@ -55,6 +55,8 @@ class NotificationFutureCall extends FutureCall<Notification> {
             ),
             hint: Hint.withMap({
               'data': send.toJson(),
+              'exception': result.toString(),
+              'message': result.messageSent.toJson(),
             }),
           );
         }
