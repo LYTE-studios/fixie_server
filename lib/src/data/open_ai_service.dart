@@ -74,22 +74,25 @@ class OpenAIService {
   }
 
   Future<String?> generateText(String prompt) async {
-    const String apiUrl = 'https://api.openai.com/v1/completions';
-
     try {
       final response = await _dio.post(
-        apiUrl,
+        'https://api.openai.com/v1/chat/completions',
         data: jsonEncode({
           'model': 'gpt-3.5-turbo',
-          // You can change this to the model you want (e.g., GPT-4)
-          'prompt': prompt,
-          'max_tokens': 64,
-          // Approx. 16 words (1 token ~ 0.75 words)
+          'messages': [
+            {
+              'role': 'system',
+              'content':
+                  'You are a helpful assistant that generates motivational messages.'
+            },
+            {
+              'role': 'user',
+              'content': prompt,
+            }
+          ],
+          'max_tokens': 64, // Approx. 16 words
           'n': 1,
-          'stop': ['.'],
-          // Optional: stops response after a sentence.
-          'temperature': 0.7,
-          // Controls creativity
+          'temperature': 0.7, // Creativity control
         }),
       );
 
