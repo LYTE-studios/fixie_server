@@ -92,13 +92,18 @@ class NotificationFactory {
 
     String prompt = service.generateMotivationPrompt(goal, locale?.locale);
 
-    String description = '';
+    String? description = null;
 
     try {
       description = await service.generateText(prompt);
     } catch (e) {
       Sentry.captureException(e);
     }
+
+    description ??= NotificationFactory.findBestMatchingPhrase(
+      goal.title,
+      locale?.locale ?? 'en',
+    );
 
     String? imageUrl;
 

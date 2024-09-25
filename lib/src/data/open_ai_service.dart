@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:sentry/sentry.dart';
 
 import '../generated/category/category.dart';
 import '../generated/goals/goal.dart';
@@ -72,7 +73,7 @@ class OpenAIService {
     return prompt;
   }
 
-  Future<String> generateText(String prompt) async {
+  Future<String?> generateText(String prompt) async {
     const String apiUrl = 'https://api.openai.com/v1/completions';
 
     try {
@@ -97,8 +98,8 @@ class OpenAIService {
 
       return generatedText;
     } on DioException catch (e) {
-      print('Failed to fetch response: ${e.response?.data}');
-      return 'Error occurred: ${e.response?.statusMessage}';
+      Sentry.captureException(e);
+      return null;
     }
   }
 }
