@@ -62,7 +62,7 @@ class NotificationManager {
   static Future<FirebaseCloudMessagingServer> getMessagingServer(
     Session session,
   ) async {
-    Map<String, String> serviceAccount = jsonDecode(
+    Map<String, dynamic> serviceAccount = jsonDecode(
       session.serverpod.getPassword('fcmServiceAccount') ?? '{}',
     );
 
