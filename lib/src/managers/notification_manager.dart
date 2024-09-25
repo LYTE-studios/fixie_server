@@ -39,6 +39,7 @@ class NotificationFutureCall extends FutureCall<Notification> {
             notification: FirebaseNotification(
               title: notification.title,
               body: notification.description,
+              image: notification.image,
             ),
             token: token,
           ),
