@@ -101,9 +101,12 @@ class NotificationFactory {
         byteData: ByteData.view(utf8.encode(goal.picture!).buffer),
       );
 
-      imageUrl = (await session.storage
-              .getPublicUrl(storageId: 'public', path: imageUrl))
-          ?.path;
+      Uri? uri = await session.storage.getPublicUrl(
+        storageId: 'public',
+        path: imageUrl,
+      );
+
+      imageUrl = '${uri?.host ?? ''}${uri?.path ?? ''}';
     }
 
     return Notification(
