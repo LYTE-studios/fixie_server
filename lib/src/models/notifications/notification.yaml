@@ -3,5 +3,5 @@ fields:
   title: String
   description: String
   routeRedirect: String?
-  tokens: List<String>
+  userId: int
   image: String?

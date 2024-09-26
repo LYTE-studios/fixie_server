@@ -655,10 +655,6 @@ class Protocol extends _i1.SerializationManagerServer {
               .toList()
           : null) as dynamic;
     }
-    if (t == List<String>) {
-      return (data as List).map((e) => deserialize<String>(e)).toList()
-          as dynamic;
-    }
     if (t == Map<DateTime, double?>) {
       return Map.fromEntries((data as List).map((e) => MapEntry(
               deserialize<DateTime>(e['k']), deserialize<double?>(e['v']))))

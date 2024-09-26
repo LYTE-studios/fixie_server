@@ -146,7 +146,7 @@ class NotificationFactory {
     return Notification(
       title: title,
       description: description,
-      tokens: tokens,
+      userId: goal.userId,
       image: imageUrl,
     );
   }

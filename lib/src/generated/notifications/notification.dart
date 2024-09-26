@@ -9,7 +9,6 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class Notification
     implements _i1.SerializableModel, _i1.ProtocolSerialization {
@@ -17,7 +16,7 @@ abstract class Notification
     required this.title,
     required this.description,
     this.routeRedirect,
-    required this.tokens,
+    required this.userId,
     this.image,
   });
 
@@ -25,7 +24,7 @@ abstract class Notification
     required String title,
     required String description,
     String? routeRedirect,
-    required List<String> tokens,
+    required int userId,
     String? image,
   }) = _NotificationImpl;
 
@@ -34,9 +33,7 @@ abstract class Notification
       title: jsonSerialization['title'] as String,
       description: jsonSerialization['description'] as String,
       routeRedirect: jsonSerialization['routeRedirect'] as String?,
-      tokens: (jsonSerialization['tokens'] as List)
-          .map((e) => e as String)
-          .toList(),
+      userId: jsonSerialization['userId'] as int,
       image: jsonSerialization['image'] as String?,
     );
   }
@@ -47,7 +44,7 @@ abstract class Notification
 
   String? routeRedirect;
 
-  List<String> tokens;
+  int userId;
 
   String? image;
 
@@ -55,7 +52,7 @@ abstract class Notification
     String? title,
     String? description,
     String? routeRedirect,
-    List<String>? tokens,
+    int? userId,
     String? image,
   });
   @override
@@ -64,7 +61,7 @@ abstract class Notification
       'title': title,
       'description': description,
       if (routeRedirect != null) 'routeRedirect': routeRedirect,
-      'tokens': tokens.toJson(),
+      'userId': userId,
       if (image != null) 'image': image,
     };
   }
@@ -75,7 +72,7 @@ abstract class Notification
       'title': title,
       'description': description,
       if (routeRedirect != null) 'routeRedirect': routeRedirect,
-      'tokens': tokens.toJson(),
+      'userId': userId,
       if (image != null) 'image': image,
     };
   }
@@ -93,13 +90,13 @@ class _NotificationImpl extends Notification {
     required String title,
     required String description,
     String? routeRedirect,
-    required List<String> tokens,
+    required int userId,
     String? image,
   }) : super._(
           title: title,
           description: description,
           routeRedirect: routeRedirect,
-          tokens: tokens,
+          userId: userId,
           image: image,
         );
 
@@ -108,7 +105,7 @@ class _NotificationImpl extends Notification {
     String? title,
     String? description,
     Object? routeRedirect = _Undefined,
-    List<String>? tokens,
+    int? userId,
     Object? image = _Undefined,
   }) {
     return Notification(
@@ -116,7 +113,7 @@ class _NotificationImpl extends Notification {
       description: description ?? this.description,
       routeRedirect:
           routeRedirect is String? ? routeRedirect : this.routeRedirect,
-      tokens: tokens ?? this.tokens.clone(),
+      userId: userId ?? this.userId,
       image: image is String? ? image : this.image,
     );
   }
