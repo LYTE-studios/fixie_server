@@ -1,3 +1,5 @@
+sudo timedatectl set-timezone UTC
+
 sudo docker compose up --build -d
 
 sudo rm /etc/nginx/certificate.crt
