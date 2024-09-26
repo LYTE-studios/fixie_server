@@ -35,7 +35,7 @@ void run(List<String> args) async {
   );
 
   DateTime now = DateTime.now();
-  DateTime next = DateTime(now.year, now.month, now.day, 6, 0);
+  DateTime next = DateTime(now.year, now.month, now.day, 8, 0);
 
   pod.cancelFutureCall(next.toString());
 
