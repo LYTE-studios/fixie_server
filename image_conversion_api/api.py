@@ -5,20 +5,11 @@ from cairosvg import svg2png
 import datetime
 
 import base64
+import json
 
 import os
 
 app = FastAPI()
-
-class RawResponse(Response):
-    media_type = "binary/octet-stream"
-
-    def render(self, content: bytes) -> bytes:
-        b = base64.b64encode(content)
-
-        return {
-            'base64': b,
-        }
 
 @app.post("/svg-to-png")
 async def convert_svg_to_png(request: Request):
@@ -35,6 +26,8 @@ async def convert_svg_to_png(request: Request):
 
     os.remove(name)
 
-    return RawResponse(
-        content=bytes,
+    b = base64.b64encode(bytes)
+
+    return Response(
+        content= b,
     )
