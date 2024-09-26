@@ -119,7 +119,7 @@ class NotificationFactory {
           ),
         );
 
-        Uint8List bytes = base64Decode(response.data['bytes']);
+        Uint8List bytes = base64Decode(response.data['base64']);
 
         ByteData pngBytes = ByteData.view(bytes.buffer);
 
