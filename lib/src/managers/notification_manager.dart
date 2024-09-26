@@ -34,12 +34,23 @@ class NotificationFutureCall extends FutureCall<Notification> {
           validateOnly: false,
           message: FirebaseMessage(
             fcmOptions: FirebaseFcmOptions(),
-            android: FirebaseAndroidConfig(),
-            apns: FirebaseApnsConfig(),
+            android: FirebaseAndroidConfig(
+                notification: FirebaseAndroidNotification(
+              image: notification.image,
+            )),
+            apns: FirebaseApnsConfig(
+              payload: {
+                "aps": {"mutable-content": 1},
+              },
+              headers: notification.image == null
+                  ? {}
+                  : {
+                      "image": notification.image!,
+                    },
+            ),
             notification: FirebaseNotification(
               title: notification.title,
               body: notification.description,
-              image: notification.image,
             ),
             token: token,
           ),
