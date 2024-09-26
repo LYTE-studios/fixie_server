@@ -1,6 +1,7 @@
 import 'package:fixie_server/src/data/notification_factory.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
 class DailyCronFuture extends FutureCall {
   DateTime toTodayTime(DateTime dateTime) {
@@ -24,7 +25,9 @@ class DailyCronFuture extends FutureCall {
     List<Goal> goals = await Goal.db.find(
       session,
       include: Goal.include(
-        user: User.include(),
+        user: User.include(
+          userInfo: UserInfo.include(),
+        ),
       ),
       where: (t) =>
           t.archived.equals(false) &

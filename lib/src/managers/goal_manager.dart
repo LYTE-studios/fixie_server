@@ -5,7 +5,9 @@ import 'package:serverpod/serverpod.dart';
 
 class GoalManager {
   static Future<void> scheduleCurrentNotification(
-      Session session, Goal goal) async {
+    Session session,
+    Goal goal,
+  ) async {
     if (goal.user?.fcmToken == null) {
       return;
     }
