@@ -23,4 +23,7 @@ async def convert_svg_to_png(request: Request):
 
     os.remove(name)
 
-    return Response(content=bytes, media_type="image/png")
+    return Response(content={
+        "bytes": bytes,
+        }, media_type="image/png",
+    )

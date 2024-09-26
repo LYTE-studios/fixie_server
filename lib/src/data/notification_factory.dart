@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -114,11 +115,11 @@ class NotificationFactory {
           "http://127.0.0.1:8000/svg-to-png",
           data: goal.picture!,
           options: Options(
-            responseType: ResponseType.bytes,
+            responseType: ResponseType.json,
           ),
         );
 
-        Uint8List bytes = response.data as Uint8List;
+        Uint8List bytes = base64Decode(response.data['bytes']);
 
         ByteData pngBytes = ByteData.view(bytes.buffer);
 
