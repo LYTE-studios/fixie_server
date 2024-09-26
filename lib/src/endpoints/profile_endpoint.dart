@@ -114,8 +114,8 @@ class ProfileEndpoint extends Endpoint {
       picture: userInfo.imageUrl,
       hasPassedOnboarding: user.hasPassedOnboarding ?? false,
       hasPassedGoalTutorial: user.hasPassedGoalTutorial ?? false,
-      informationCollectionSetting: user.informationCollectionSetting,
-      automaticRemindersSetting: user.automaticRemindersSetting,
+      informationCollectionSetting: user.informationCollectionSetting ?? true,
+      automaticRemindersSetting: user.automaticRemindersSetting ?? true,
       locale: locale,
     );
 
