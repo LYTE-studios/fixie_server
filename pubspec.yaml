@@ -1,6 +1,6 @@
 name: fixie_server
 description: Fixie - Your pal in daily progress
-version: 1.0.0
+version: 1.0.1
 homepage: https://fixie.world
 
 environment:
