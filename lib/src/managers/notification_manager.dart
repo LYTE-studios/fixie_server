@@ -1,9 +1,69 @@
 import 'dart:convert';
 
 import 'package:firebase_cloud_messaging_flutter/firebase_cloud_messaging_flutter.dart';
+import 'package:fixie_server/src/data/notification_factory.dart';
+import 'package:fixie_server/src/endpoints/journal_endpoint.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
+import 'package:fixie_server/src/utils/date_time_utils.dart';
 import 'package:sentry/sentry.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/module.dart';
+
+class GoalNotificationFutureCall extends FutureCall<Goal> {
+  @override
+  Future<void> invoke(Session session, Goal? object) async {
+    if (object == null || object.id == null) {
+      Sentry.captureMessage('No notification was passed to Future task.');
+      return;
+    }
+
+    Goal? goal = await Goal.db.findById(
+      session,
+      object.id!,
+      include: Goal.include(
+        category: Category.include(),
+        user: User.include(
+          userInfo: UserInfo.include(),
+        ),
+      ),
+    );
+
+    if (goal == null) {
+      Sentry.captureMessage('No goal was found for passed id. ');
+      return;
+    }
+
+    if (goal.user?.fcmToken?.isEmpty ?? true) {
+      Sentry.captureMessage('User does not have a destination token.');
+      return;
+    }
+
+    JournalListDto logs = await JournalEndpoint().getLogsForRange(
+      session,
+      start: DateTimeUtils.toStartOfDay(DateTime.now()),
+      end: DateTimeUtils.toEndOfDay(
+        DateTime.now(),
+      ),
+    );
+
+    JournalLog? log = logs.daily.where((t) => t.goalId == goal.id).firstOrNull;
+    log ??= logs.weekly.where((t) => t.goalId == goal.id).firstOrNull;
+    log ??= logs.monthly.where((t) => t.goalId == goal.id).firstOrNull;
+    log ??= logs.yearly.where((t) => t.goalId == goal.id).firstOrNull;
+
+    Notification notification =
+        await NotificationFactory.getNotificationForGoal(
+      session,
+      goal,
+      log: log,
+    );
+
+    NotificationManager.sendUserNotification(
+      session,
+      notification: notification,
+    );
+  }
+}
 
 class NotificationFutureCall extends FutureCall<Notification> {
   @override

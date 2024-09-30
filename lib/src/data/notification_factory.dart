@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:fixie_server/src/data/notification_keywords_en.dart';
 import 'package:fixie_server/src/data/notification_keywords_nl.dart';
 import 'package:fixie_server/src/data/open_ai_service.dart';
+import 'package:fixie_server/src/generated/journals/journal_log.dart';
 import 'package:fixie_server/src/generated/locales/user_locales.dart';
 import 'package:fixie_server/src/generated/notifications/notification.dart';
 import 'package:fixie_server/src/utils/date_time_utils.dart';
@@ -77,9 +78,9 @@ class NotificationFactory {
 
   static Future<Notification> getNotificationForGoal(
     Session session,
-    Goal goal,
-    List<String> tokens,
-  ) async {
+    Goal goal, {
+    JournalLog? log,
+  }) async {
     UserLocales? locale = (await UserLocales.db.find(
       session,
       where: (t) => t.email.equals(goal.user?.userInfo?.email),
@@ -90,7 +91,11 @@ class NotificationFactory {
 
     OpenAIService service = OpenAIService();
 
-    String prompt = service.generateMotivationPrompt(goal, locale?.locale);
+    String prompt = service.generateMotivationPrompt(
+      goal,
+      locale?.locale,
+      log: log,
+    );
 
     String? description;
 

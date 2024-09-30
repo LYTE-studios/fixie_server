@@ -30,6 +30,11 @@ void run(List<String> args) async {
   );
 
   pod.registerFutureCall(
+    GoalNotificationFutureCall(),
+    'SendGoalNotification',
+  );
+
+  pod.registerFutureCall(
     DailyCronFuture(),
     'DailyCron',
   );

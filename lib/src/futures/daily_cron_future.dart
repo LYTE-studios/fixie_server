@@ -1,4 +1,3 @@
-import 'package:fixie_server/src/data/notification_factory.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart';
@@ -40,16 +39,9 @@ class DailyCronFuture extends FutureCall {
       }
 
       for (DateTime reminder in goal.reminders ?? []) {
-        Notification notification =
-            await NotificationFactory.getNotificationForGoal(
-          session,
-          goal,
-          [goal.user?.fcmToken ?? ''],
-        );
-
         session.serverpod.futureCallAtTime(
-          'SendNotification',
-          notification,
+          'SendGoalNotification',
+          goal,
           toTodayTime(reminder),
         );
       }

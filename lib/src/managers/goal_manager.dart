@@ -1,6 +1,4 @@
-import 'package:fixie_server/src/data/notification_factory.dart';
 import 'package:fixie_server/src/generated/goals/goal.dart';
-import 'package:fixie_server/src/generated/notifications/notification.dart';
 import 'package:serverpod/serverpod.dart';
 
 class GoalManager {
@@ -27,16 +25,9 @@ class GoalManager {
         return;
       }
 
-      Notification notification =
-          await NotificationFactory.getNotificationForGoal(
-        session,
-        goal,
-        [goal.user?.fcmToken ?? ''],
-      );
-
       session.serverpod.futureCallAtTime(
-        'SendNotification',
-        notification,
+        'SendGoalNotification',
+        goal,
         time,
       );
     }

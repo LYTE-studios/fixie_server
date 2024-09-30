@@ -1,18 +1,17 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:fixie_server/src/generated/protocol.dart';
+import 'package:fixie_server/src/utils/date_time_utils.dart';
 import 'package:sentry/sentry.dart';
 import 'package:serverpod/serverpod.dart';
-
-import '../generated/category/category.dart';
-import '../generated/goals/goal.dart';
-import '../generated/users/user.dart';
 
 class OpenAIService {
   String generateMotivationPrompt(
     Goal goal,
-    String? locale,
-  ) {
+    String? locale, {
+    JournalLog? log,
+  }) {
     // Default to English if locale is not provided
     locale ??= 'en';
 
@@ -27,7 +26,37 @@ class OpenAIService {
 
     // Add unit and target if they are provided
     if (goal.unit != null && goal.unit!.isNotEmpty) {
-      prompt += " The goal involves reaching ${goal.target} ${goal.unit}.";
+      prompt += " The goal involves reaching ${goal.target} ${goal.unit}";
+    }
+
+    // Add repetition and timing if available
+    if (goal.repetition != null && goal.repeatEvery != null) {
+      if (goal.repetition == Repetition.Daily &&
+          (goal.weekdays?.isNotEmpty ?? false)) {
+        String days = '';
+
+        for (int day in goal.weekdays ?? []) {
+          days += DateTimeUtils.formatWeekday(day);
+
+          if (goal.weekdays!.indexOf(day) != goal.weekdays!.length - 1) {
+            if (goal.weekdays!.indexOf(day) == goal.weekdays!.length - 2) {
+              days += ' and ';
+            } else {
+              days += ', ';
+            }
+          }
+        }
+
+        prompt += " every $days.";
+      } else {
+        prompt +=
+            " on a ${goal.repeatEvery == 1 ? '' : goal.repeatEvery ?? ''} ${goal.repetition!.name} basis.";
+      }
+    }
+
+    if (log != null && log.loggedValue != 0) {
+      prompt +=
+          " The user has currently logged a value of ${log.loggedValue} ${goal.unit} for the current period.";
     }
 
     // Mention the goal category if available
@@ -38,16 +67,11 @@ class OpenAIService {
     // Mention the user's highest streak if available
     if (user != null && user.highestStreak != null) {
       prompt +=
-          " the user has a personal best streak of ${user.highestStreak} days.";
-    } else if (goal.highestStreak != null) {
-      prompt +=
-          " The user has reached a streak of ${goal.highestStreak} days in the past.";
+          " The user has a total personal best streak of ${user.highestStreak}.";
     }
-
-    // Add repetition and timing if available
-    if (goal.repetition != null && goal.repeatEvery != null) {
+    if (goal.highestStreak != null) {
       prompt +=
-          " The goal should be repeated every ${goal.repeatEvery} ${goal.repetition!.name}.";
+          " The user has a total personal best streak for this goal of ${goal.highestStreak}.";
     }
 
     // Encourage finishing strong if the goal has an end date
