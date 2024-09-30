@@ -1,0 +1,3 @@
+class: IdDto
+fields:
+  id: int

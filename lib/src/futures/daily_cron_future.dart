@@ -41,7 +41,7 @@ class DailyCronFuture extends FutureCall {
       for (DateTime reminder in goal.reminders ?? []) {
         session.serverpod.futureCallAtTime(
           'SendGoalNotification',
-          goal,
+          IdDto(id: goal.id!),
           toTodayTime(reminder),
         );
       }

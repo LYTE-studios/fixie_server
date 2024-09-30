@@ -1,3 +1,4 @@
+import 'package:fixie_server/src/generated/core/id_dto.dart';
 import 'package:fixie_server/src/generated/goals/goal.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -27,7 +28,7 @@ class GoalManager {
 
       session.serverpod.futureCallAtTime(
         'SendGoalNotification',
-        goal,
+        IdDto(id: goal.id!),
         time,
       );
     }
