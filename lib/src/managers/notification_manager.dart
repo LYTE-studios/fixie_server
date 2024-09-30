@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:firebase_cloud_messaging_flutter/firebase_cloud_messaging_flutter.dart';
 import 'package:fixie_server/src/data/notification_factory.dart';
-import 'package:fixie_server/src/endpoints/journal_endpoint.dart';
 import 'package:fixie_server/src/generated/protocol.dart';
+import 'package:fixie_server/src/managers/journal_manager.dart';
 import 'package:fixie_server/src/utils/date_time_utils.dart';
 import 'package:sentry/sentry.dart';
 import 'package:serverpod/serverpod.dart';
@@ -39,12 +39,13 @@ class GoalNotificationFutureCall extends FutureCall<IdDto> {
     }
 
     try {
-      JournalListDto logs = await JournalEndpoint().getLogsForRange(
+      JournalListDto logs = await JournalManager.getLogsForRange(
         session,
         start: DateTimeUtils.toStartOfDay(DateTime.now()),
         end: DateTimeUtils.toEndOfDay(
           DateTime.now(),
         ),
+        user: goal.user!,
       );
 
       JournalLog? log =
