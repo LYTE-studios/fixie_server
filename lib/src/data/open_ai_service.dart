@@ -30,33 +30,31 @@ class OpenAIService {
     }
 
     // Add repetition and timing if available
-    if (goal.repetition != null && goal.repeatEvery != null) {
-      if (goal.repetition == Repetition.Daily &&
-          (goal.weekdays?.isNotEmpty ?? false)) {
-        String days = '';
+    if (goal.repetition == Repetition.Daily &&
+        (goal.weekdays?.isNotEmpty ?? false)) {
+      String days = '';
 
-        for (int day in goal.weekdays ?? []) {
-          days += DateTimeUtils.formatWeekday(day);
+      for (int day in goal.weekdays ?? []) {
+        days += DateTimeUtils.formatWeekday(day);
 
-          if (goal.weekdays!.indexOf(day) != goal.weekdays!.length - 1) {
-            if (goal.weekdays!.indexOf(day) == goal.weekdays!.length - 2) {
-              days += ' and ';
-            } else {
-              days += ', ';
-            }
+        if (goal.weekdays!.indexOf(day) != goal.weekdays!.length - 1) {
+          if (goal.weekdays!.indexOf(day) == goal.weekdays!.length - 2) {
+            days += ' and ';
+          } else {
+            days += ', ';
           }
         }
-
-        prompt += " every $days.";
-      } else {
-        prompt +=
-            " on a ${goal.repeatEvery == 1 ? '' : goal.repeatEvery ?? ''} ${goal.repetition!.name} basis.";
       }
+
+      prompt += " every $days.";
+    } else {
+      prompt +=
+          " on a ${goal.repeatEvery == 1 ? '' : goal.repeatEvery ?? ''} ${goal.repetition!.name} basis.";
     }
 
     if (log != null && log.loggedValue != 0) {
       prompt +=
-          " The user has currently logged a value of ${log.loggedValue} ${goal.unit} for the current period.";
+          " The user has currently logged a value of ${log.loggedValue ?? 0} ${goal.unit} for the current period. If this value has already reached its target, please inspire the user to achieve more.";
     }
 
     // Mention the goal category if available
@@ -85,7 +83,8 @@ class OpenAIService {
         " Generate the description in the language of the locale: $locale.";
 
     // Ensure that the response stays concise
-    prompt += " Keep it within 16 words and inspire action.";
+    prompt +=
+        " Keep it within 16 words and mainly remind the user of the goal they have set out to do.";
 
     return prompt;
   }
