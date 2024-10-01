@@ -122,7 +122,20 @@ class OpenAIService {
       );
 
       final data = response.data;
-      final generatedText = data["choices"][0]["message"]["content"] ?? '';
+
+      final generatedText = await json.decode(
+        json.encode(
+          data["choices"][0]["message"]["content"] ?? '',
+        ),
+      );
+
+      Sentry.captureMessage(
+        'Saved prompt message',
+        params: [
+          prompt,
+          generatedText,
+        ],
+      );
 
       return generatedText;
     } on DioException catch (e) {

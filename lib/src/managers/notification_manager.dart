@@ -104,9 +104,10 @@ class NotificationFutureCall extends FutureCall<Notification> {
         message: FirebaseMessage(
           fcmOptions: FirebaseFcmOptions(),
           android: FirebaseAndroidConfig(
-              notification: FirebaseAndroidNotification(
-            image: notification.image,
-          )),
+            notification: FirebaseAndroidNotification(
+              image: notification.image,
+            ),
+          ),
           apns: FirebaseApnsConfig(
             payload: {
               "aps": {"mutable-content": 1},
@@ -131,6 +132,18 @@ class NotificationFutureCall extends FutureCall<Notification> {
       );
 
       if (!result.successful) {
+        if (result.statusCode == 404) {
+          Sentry.captureMessage(
+            'Firebase token not found.',
+            hint: Hint.withMap(
+              {
+                'token': token,
+              },
+            ),
+          );
+          return;
+        }
+
         Sentry.captureException(
           Exception(
             '${result.statusCode} Firebase message did not send - ${result.errorPhrase ?? ''}',
