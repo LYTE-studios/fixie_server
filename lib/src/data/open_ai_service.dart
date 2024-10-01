@@ -84,7 +84,7 @@ class OpenAIService {
 
     // Ensure that the response stays concise
     prompt +=
-        " Keep it within 16 words and mainly remind the user of the goal they have set out to do.";
+        " Keep it within 16 words and mainly remind the user of the goal they have set out to do. The goal title doesn't have to be in this message literally, the notification title already contains this. Be inspiring in what you say and if possible, use terminology or add something clever specific to their goal.";
 
     return prompt;
   }
