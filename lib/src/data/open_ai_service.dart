@@ -128,7 +128,8 @@ class OpenAIService {
           data["choices"][0]["message"]["content"] ?? '',
         ),
       ))
-          .toString();
+          .toString()
+          .replaceAll('"', '');
 
       Sentry.captureMessage(
         'Saved prompt message',
