@@ -19,7 +19,7 @@ class OpenAIService {
     User? user = goal.user;
 
     // Start building the prompt dynamically
-    String prompt = "Create a short and motivating notification for the user, ";
+    String prompt = "Create a short and positive notification for the user, ";
 
     // Add the goal's title
     prompt += "to register or accomplish the goal titled '${goal.title}'.";
