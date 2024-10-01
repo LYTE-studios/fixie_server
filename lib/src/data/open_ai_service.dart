@@ -107,7 +107,7 @@ class OpenAIService {
             {
               'role': 'system',
               'content':
-                  'You are a helpful assistant that generates motivational messages.'
+                  'You are a helpful assistant that generates helpful reminders.'
             },
             {
               'role': 'user',
