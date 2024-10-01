@@ -46,6 +46,13 @@ class StatisticsEndpoint extends Endpoint {
 
     List<Goal> goals = [];
 
+    ISentrySpan span = Sentry.startTransaction(
+      'Load user statistics',
+      'getMonthlyJournalStatistics',
+      startTimestamp: DateTime.now(),
+      autoFinishAfter: Duration(seconds: 20),
+    );
+
     try {
       if (goal?.id != null) {
         goals = await Goal.db.find(
@@ -392,8 +399,14 @@ class StatisticsEndpoint extends Endpoint {
         monthChartData: joinedChart ?? {},
       );
 
+      span.finish();
       return totalStatistics;
     } catch (e) {
+      span.finish(
+        status: SpanStatus.internalError(),
+        endTimestamp: DateTime.now(),
+      );
+
       Sentry.captureException(e);
       rethrow;
     }
