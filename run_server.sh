@@ -2,8 +2,6 @@ sudo timedatectl set-timezone UTC
 
 sudo docker compose up --build -d
 
-sudo docker system prune
-
 sudo rm /etc/nginx/certificate.crt
 sudo rm /etc/nginx/private.key
 
@@ -18,3 +16,5 @@ sudo systemctl daemon-reload
 
 sudo systemctl restart nginx
 sudo systemctl status nginx
+
+sudo docker system prune
