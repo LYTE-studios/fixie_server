@@ -123,11 +123,12 @@ class OpenAIService {
 
       final data = response.data;
 
-      final generatedText = await json.decode(
+      final String generatedText = (await json.decode(
         json.encode(
           data["choices"][0]["message"]["content"] ?? '',
         ),
-      );
+      ))
+          .toString();
 
       Sentry.captureMessage(
         'Saved prompt message',
