@@ -46,13 +46,6 @@ class StatisticsEndpoint extends Endpoint {
 
     List<Goal> goals = [];
 
-    ISentrySpan span = Sentry.startTransaction(
-      'Load user statistics',
-      'getMonthlyJournalStatistics',
-      startTimestamp: DateTime.now(),
-      autoFinishAfter: Duration(seconds: 20),
-    );
-
     try {
       if (goal?.id != null) {
         goals = await Goal.db.find(
@@ -187,8 +180,17 @@ class StatisticsEndpoint extends Endpoint {
               )
             : startOfYear;
 
-        DateTime lastYear = DateTime(now.year - 1);
-        DateTime lastMonth = DateTime(now.year, now.month - 1);
+        DateTime lastYear = DateTime(startOfYear.year - 1);
+
+        // set last month end
+        DateTime lastMonth = DateTime(now.year, now.month).subtract(
+          Duration(days: 1),
+        );
+        // Set to beginning of month
+        lastMonth = DateTime(
+          lastMonth.year,
+          lastMonth.month,
+        );
 
         DateTime thisMonth = (goal.created?.isAfter(startOfMonth) ?? false)
             ? DateTime(
@@ -239,19 +241,19 @@ class StatisticsEndpoint extends Endpoint {
         switch (goal.repetition) {
           case Repetition.Daily:
             {
-              yearlyTotal = ((goal.weekdays?.length ?? 0) / 7) *
-                  goal.target *
-                  daysThisYear;
-              monthlyTotal = ((goal.weekdays?.length ?? 0) / 7) *
-                  goal.target *
-                  daysThisMonth;
+              double totalDaily =
+                  ((goal.weekdays?.length ?? 0) / 7) * goal.target;
+
+              yearlyTotal = totalDaily * daysThisYear;
+              monthlyTotal = totalDaily * daysThisMonth;
 
               JournalLog? log = logs.firstWhereOrNull(
                 (e) =>
-                    e.date.year == now.year &&
-                    e.date.month == now.month &&
-                    e.date.day == now.day,
+                    e.date.year == DateTime.now().year &&
+                    e.date.month == DateTime.now().month &&
+                    e.date.day == DateTime.now().day,
               );
+
               if ((log?.currentStreak ?? 0) > bestCurrentStreak) {
                 bestCurrentStreak = log?.currentStreak ?? 0;
               }
@@ -263,10 +265,11 @@ class StatisticsEndpoint extends Endpoint {
 
               JournalLog? log = logs.firstWhereOrNull(
                 (e) =>
-                    e.date.year == now.year &&
+                    e.date.year == DateTime.now().year &&
                     DateTimeUtils.weekNumber(e.date) ==
-                        DateTimeUtils.weekNumber(now),
+                        DateTimeUtils.weekNumber(DateTime.now()),
               );
+
               if ((log?.currentStreak ?? 0) > bestCurrentStreak) {
                 bestCurrentStreak = log?.currentStreak ?? 0;
               }
@@ -277,7 +280,9 @@ class StatisticsEndpoint extends Endpoint {
               monthlyTotal = goal.target.toDouble();
 
               JournalLog? log = logs.firstWhereOrNull(
-                (e) => e.date.year == now.year && e.date.month == now.month,
+                (e) =>
+                    e.date.year == DateTime.now().year &&
+                    e.date.month == DateTime.now().month,
               );
               if ((log?.currentStreak ?? 0) > bestCurrentStreak) {
                 bestCurrentStreak = log?.currentStreak ?? 0;
@@ -289,8 +294,9 @@ class StatisticsEndpoint extends Endpoint {
               monthlyTotal = (goal.target / 12).toDouble();
 
               JournalLog? log = logs.firstWhereOrNull(
-                (e) => e.date.year == now.year,
+                (e) => e.date.year == DateTime.now().year,
               );
+
               if ((log?.currentStreak ?? 0) > bestCurrentStreak) {
                 bestCurrentStreak = log?.currentStreak ?? 0;
               }
@@ -336,9 +342,20 @@ class StatisticsEndpoint extends Endpoint {
         }
 
         for (int i = 1;
-            i <= DateTime(month.year, month.month + 1, 0).day;
+            i <=
+                DateTime(month.year, month.month + 1, 1)
+                    .subtract(Duration(days: 1))
+                    .day;
             i++) {
           statistics.monthChartData[i] = getMean(monthlyChartRates[i] ?? []);
+        }
+
+        if (yearlyTotal == 0) {
+          yearlyTotal = 1;
+        }
+
+        if (monthlyTotal == 0) {
+          monthlyTotal = 1;
         }
 
         statistics.yearlySuccessRate = yearly / yearlyTotal;
@@ -401,15 +418,10 @@ class StatisticsEndpoint extends Endpoint {
         monthChartData: joinedChart ?? {},
       );
 
-      span.finish();
       return totalStatistics;
     } catch (e) {
-      span.finish(
-        status: SpanStatus.internalError(),
-        endTimestamp: DateTime.now(),
-      );
-
       Sentry.captureException(e);
+
       return null;
     }
   }
