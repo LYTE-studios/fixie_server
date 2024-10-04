@@ -156,7 +156,9 @@ class StatisticsEndpoint extends Endpoint {
           ),
         );
 
-        if (now.isAfter(DateTime.now())) {
+        if (now.isAfter(DateTime.now()) &&
+            now.month == DateTime.now().month &&
+            now.year == DateTime.now().year) {
           now = DateTime(
             DateTime.now().year,
             DateTime.now().month,
@@ -408,7 +410,7 @@ class StatisticsEndpoint extends Endpoint {
       );
 
       Sentry.captureException(e);
-      rethrow;
+      return null;
     }
   }
 }
