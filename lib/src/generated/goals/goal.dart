@@ -1,20 +1,20 @@
 /* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
 /*   To generate run: "serverpod generate"    */
 
-// ignore_for_file: library_private_types_in_public_api
-// ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
-// ignore_for_file: use_super_parameters
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../protocol.dart' as _i2;
-import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
+abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
   Goal._({
-    int? id,
+    this.id,
     required this.title,
     required this.userId,
     this.user,
@@ -33,7 +33,7 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
     required this.active,
     required this.archived,
     this.created,
-  }) : super(id);
+  });
 
   factory Goal({
     int? id,
@@ -102,6 +102,9 @@ abstract class Goal extends _i1.TableRow implements _i1.ProtocolSerialization {
   static final t = GoalTable();
 
   static const db = GoalRepository._();
+
+  @override
+  int? id;
 
   String title;
 
@@ -335,12 +338,16 @@ class _GoalImpl extends Goal {
           category is _i2.Category? ? category : this.category?.copyWith(),
       repetition: repetition is _i2.Repetition? ? repetition : this.repetition,
       repeatEvery: repeatEvery is int? ? repeatEvery : this.repeatEvery,
-      weekdays: weekdays is List<int>? ? weekdays : this.weekdays?.clone(),
+      weekdays: weekdays is List<int>?
+          ? weekdays
+          : this.weekdays?.map((e0) => e0).toList(),
       end: end is DateTime? ? end : this.end,
-      reminders:
-          reminders is List<DateTime>? ? reminders : this.reminders?.clone(),
-      journal:
-          journal is List<_i2.JournalLog>? ? journal : this.journal?.clone(),
+      reminders: reminders is List<DateTime>?
+          ? reminders
+          : this.reminders?.map((e0) => e0).toList(),
+      journal: journal is List<_i2.JournalLog>?
+          ? journal
+          : this.journal?.map((e0) => e0.copyWith()).toList(),
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
       active: active ?? this.active,
       archived: archived ?? this.archived,
@@ -604,7 +611,7 @@ class GoalRepository {
   final detachRow = const GoalDetachRowRepository._();
 
   Future<List<Goal>> find(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<GoalTable>? where,
     int? limit,
     int? offset,
@@ -614,20 +621,20 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return session.db.find<Goal>(
+    return databaseAccessor.db.find<Goal>(
       where: where?.call(Goal.t),
       orderBy: orderBy?.call(Goal.t),
       orderByList: orderByList?.call(Goal.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
       include: include,
     );
   }
 
   Future<Goal?> findFirstRow(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<GoalTable>? where,
     int? offset,
     _i1.OrderByBuilder<GoalTable>? orderBy,
@@ -636,121 +643,121 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return session.db.findFirstRow<Goal>(
+    return databaseAccessor.db.findFirstRow<Goal>(
       where: where?.call(Goal.t),
       orderBy: orderBy?.call(Goal.t),
       orderByList: orderByList?.call(Goal.t),
       orderDescending: orderDescending,
       offset: offset,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
       include: include,
     );
   }
 
   Future<Goal?> findById(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     int id, {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return session.db.findById<Goal>(
+    return databaseAccessor.db.findById<Goal>(
       id,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
       include: include,
     );
   }
 
   Future<List<Goal>> insert(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<Goal> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insert<Goal>(
+    return databaseAccessor.db.insert<Goal>(
       rows,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<Goal> insertRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Goal row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insertRow<Goal>(
+    return databaseAccessor.db.insertRow<Goal>(
       row,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<Goal>> update(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<Goal> rows, {
     _i1.ColumnSelections<GoalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.update<Goal>(
+    return databaseAccessor.db.update<Goal>(
       rows,
       columns: columns?.call(Goal.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<Goal> updateRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Goal row, {
     _i1.ColumnSelections<GoalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.updateRow<Goal>(
+    return databaseAccessor.db.updateRow<Goal>(
       row,
       columns: columns?.call(Goal.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<Goal>> delete(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<Goal> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<Goal>(
+    return databaseAccessor.db.delete<Goal>(
       rows,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<Goal> deleteRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Goal row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteRow<Goal>(
+    return databaseAccessor.db.deleteRow<Goal>(
       row,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<Goal>> deleteWhere(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     required _i1.WhereExpressionBuilder<GoalTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteWhere<Goal>(
+    return databaseAccessor.db.deleteWhere<Goal>(
       where: where(Goal.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<int> count(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<GoalTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<Goal>(
+    return databaseAccessor.db.count<Goal>(
       where: where?.call(Goal.t),
       limit: limit,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }
@@ -759,10 +766,11 @@ class GoalAttachRepository {
   const GoalAttachRepository._();
 
   Future<void> journal(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Goal goal,
-    List<_i2.JournalLog> journalLog,
-  ) async {
+    List<_i2.JournalLog> journalLog, {
+    _i1.Transaction? transaction,
+  }) async {
     if (journalLog.any((e) => e.id == null)) {
       throw ArgumentError.notNull('journalLog.id');
     }
@@ -772,9 +780,10 @@ class GoalAttachRepository {
 
     var $journalLog =
         journalLog.map((e) => e.copyWith(goalId: goal.id)).toList();
-    await session.db.update<_i2.JournalLog>(
+    await databaseAccessor.db.update<_i2.JournalLog>(
       $journalLog,
       columns: [_i2.JournalLog.t.goalId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }
@@ -783,10 +792,11 @@ class GoalAttachRowRepository {
   const GoalAttachRowRepository._();
 
   Future<void> user(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Goal goal,
-    _i2.User user,
-  ) async {
+    _i2.User user, {
+    _i1.Transaction? transaction,
+  }) async {
     if (goal.id == null) {
       throw ArgumentError.notNull('goal.id');
     }
@@ -795,17 +805,19 @@ class GoalAttachRowRepository {
     }
 
     var $goal = goal.copyWith(userId: user.id);
-    await session.db.updateRow<Goal>(
+    await databaseAccessor.db.updateRow<Goal>(
       $goal,
       columns: [Goal.t.userId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<void> category(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Goal goal,
-    _i2.Category category,
-  ) async {
+    _i2.Category category, {
+    _i1.Transaction? transaction,
+  }) async {
     if (goal.id == null) {
       throw ArgumentError.notNull('goal.id');
     }
@@ -814,17 +826,19 @@ class GoalAttachRowRepository {
     }
 
     var $goal = goal.copyWith(categoryId: category.id);
-    await session.db.updateRow<Goal>(
+    await databaseAccessor.db.updateRow<Goal>(
       $goal,
       columns: [Goal.t.categoryId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<void> journal(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Goal goal,
-    _i2.JournalLog journalLog,
-  ) async {
+    _i2.JournalLog journalLog, {
+    _i1.Transaction? transaction,
+  }) async {
     if (journalLog.id == null) {
       throw ArgumentError.notNull('journalLog.id');
     }
@@ -833,9 +847,10 @@ class GoalAttachRowRepository {
     }
 
     var $journalLog = journalLog.copyWith(goalId: goal.id);
-    await session.db.updateRow<_i2.JournalLog>(
+    await databaseAccessor.db.updateRow<_i2.JournalLog>(
       $journalLog,
       columns: [_i2.JournalLog.t.goalId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }
@@ -844,17 +859,19 @@ class GoalDetachRepository {
   const GoalDetachRepository._();
 
   Future<void> journal(
-    _i1.Session session,
-    List<_i2.JournalLog> journalLog,
-  ) async {
+    _i1.DatabaseAccessor databaseAccessor,
+    List<_i2.JournalLog> journalLog, {
+    _i1.Transaction? transaction,
+  }) async {
     if (journalLog.any((e) => e.id == null)) {
       throw ArgumentError.notNull('journalLog.id');
     }
 
     var $journalLog = journalLog.map((e) => e.copyWith(goalId: null)).toList();
-    await session.db.update<_i2.JournalLog>(
+    await databaseAccessor.db.update<_i2.JournalLog>(
       $journalLog,
       columns: [_i2.JournalLog.t.goalId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }
@@ -863,17 +880,19 @@ class GoalDetachRowRepository {
   const GoalDetachRowRepository._();
 
   Future<void> journal(
-    _i1.Session session,
-    _i2.JournalLog journalLog,
-  ) async {
+    _i1.DatabaseAccessor databaseAccessor,
+    _i2.JournalLog journalLog, {
+    _i1.Transaction? transaction,
+  }) async {
     if (journalLog.id == null) {
       throw ArgumentError.notNull('journalLog.id');
     }
 
     var $journalLog = journalLog.copyWith(goalId: null);
-    await session.db.updateRow<_i2.JournalLog>(
+    await databaseAccessor.db.updateRow<_i2.JournalLog>(
       $journalLog,
       columns: [_i2.JournalLog.t.goalId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }

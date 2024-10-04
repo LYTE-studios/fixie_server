@@ -1,21 +1,21 @@
 /* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
 /*   To generate run: "serverpod generate"    */
 
-// ignore_for_file: library_private_types_in_public_api
-// ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
-// ignore_for_file: use_super_parameters
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i2;
 import '../protocol.dart' as _i3;
-import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
+abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
   User._({
-    int? id,
+    this.id,
     required this.userInfoId,
     this.userInfo,
     this.birthday,
@@ -27,7 +27,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     this.hasPassedGoalTutorial,
     this.informationCollectionSetting,
     this.automaticRemindersSetting,
-  }) : super(id);
+  });
 
   factory User({
     int? id,
@@ -74,6 +74,9 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
   static final t = UserTable();
 
   static const db = UserRepository._();
+
+  @override
+  int? id;
 
   int userInfoId;
 
@@ -247,7 +250,9 @@ class _UserImpl extends User {
       userInfo:
           userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
       birthday: birthday is DateTime? ? birthday : this.birthday,
-      goals: goals is List<_i3.Goal>? ? goals : this.goals?.clone(),
+      goals: goals is List<_i3.Goal>?
+          ? goals
+          : this.goals?.map((e0) => e0.copyWith()).toList(),
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
       picture: picture is String? ? picture : this.picture,
       hasPassedOnboarding: hasPassedOnboarding is bool?
@@ -452,7 +457,7 @@ class UserRepository {
   final attachRow = const UserAttachRowRepository._();
 
   Future<List<User>> find(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<UserTable>? where,
     int? limit,
     int? offset,
@@ -462,20 +467,20 @@ class UserRepository {
     _i1.Transaction? transaction,
     UserInclude? include,
   }) async {
-    return session.db.find<User>(
+    return databaseAccessor.db.find<User>(
       where: where?.call(User.t),
       orderBy: orderBy?.call(User.t),
       orderByList: orderByList?.call(User.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
       include: include,
     );
   }
 
   Future<User?> findFirstRow(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<UserTable>? where,
     int? offset,
     _i1.OrderByBuilder<UserTable>? orderBy,
@@ -484,121 +489,121 @@ class UserRepository {
     _i1.Transaction? transaction,
     UserInclude? include,
   }) async {
-    return session.db.findFirstRow<User>(
+    return databaseAccessor.db.findFirstRow<User>(
       where: where?.call(User.t),
       orderBy: orderBy?.call(User.t),
       orderByList: orderByList?.call(User.t),
       orderDescending: orderDescending,
       offset: offset,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
       include: include,
     );
   }
 
   Future<User?> findById(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     int id, {
     _i1.Transaction? transaction,
     UserInclude? include,
   }) async {
-    return session.db.findById<User>(
+    return databaseAccessor.db.findById<User>(
       id,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
       include: include,
     );
   }
 
   Future<List<User>> insert(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<User> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insert<User>(
+    return databaseAccessor.db.insert<User>(
       rows,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<User> insertRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     User row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insertRow<User>(
+    return databaseAccessor.db.insertRow<User>(
       row,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<User>> update(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<User> rows, {
     _i1.ColumnSelections<UserTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.update<User>(
+    return databaseAccessor.db.update<User>(
       rows,
       columns: columns?.call(User.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<User> updateRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     User row, {
     _i1.ColumnSelections<UserTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.updateRow<User>(
+    return databaseAccessor.db.updateRow<User>(
       row,
       columns: columns?.call(User.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<User>> delete(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<User> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<User>(
+    return databaseAccessor.db.delete<User>(
       rows,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<User> deleteRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     User row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteRow<User>(
+    return databaseAccessor.db.deleteRow<User>(
       row,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<User>> deleteWhere(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     required _i1.WhereExpressionBuilder<UserTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteWhere<User>(
+    return databaseAccessor.db.deleteWhere<User>(
       where: where(User.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<int> count(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<UserTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<User>(
+    return databaseAccessor.db.count<User>(
       where: where?.call(User.t),
       limit: limit,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }
@@ -607,10 +612,11 @@ class UserAttachRepository {
   const UserAttachRepository._();
 
   Future<void> goals(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     User user,
-    List<_i3.Goal> goal,
-  ) async {
+    List<_i3.Goal> goal, {
+    _i1.Transaction? transaction,
+  }) async {
     if (goal.any((e) => e.id == null)) {
       throw ArgumentError.notNull('goal.id');
     }
@@ -619,9 +625,10 @@ class UserAttachRepository {
     }
 
     var $goal = goal.map((e) => e.copyWith(userId: user.id)).toList();
-    await session.db.update<_i3.Goal>(
+    await databaseAccessor.db.update<_i3.Goal>(
       $goal,
       columns: [_i3.Goal.t.userId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }
@@ -630,10 +637,11 @@ class UserAttachRowRepository {
   const UserAttachRowRepository._();
 
   Future<void> userInfo(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     User user,
-    _i2.UserInfo userInfo,
-  ) async {
+    _i2.UserInfo userInfo, {
+    _i1.Transaction? transaction,
+  }) async {
     if (user.id == null) {
       throw ArgumentError.notNull('user.id');
     }
@@ -642,17 +650,19 @@ class UserAttachRowRepository {
     }
 
     var $user = user.copyWith(userInfoId: userInfo.id);
-    await session.db.updateRow<User>(
+    await databaseAccessor.db.updateRow<User>(
       $user,
       columns: [User.t.userInfoId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<void> goals(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     User user,
-    _i3.Goal goal,
-  ) async {
+    _i3.Goal goal, {
+    _i1.Transaction? transaction,
+  }) async {
     if (goal.id == null) {
       throw ArgumentError.notNull('goal.id');
     }
@@ -661,9 +671,10 @@ class UserAttachRowRepository {
     }
 
     var $goal = goal.copyWith(userId: user.id);
-    await session.db.updateRow<_i3.Goal>(
+    await databaseAccessor.db.updateRow<_i3.Goal>(
       $goal,
       columns: [_i3.Goal.t.userId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }

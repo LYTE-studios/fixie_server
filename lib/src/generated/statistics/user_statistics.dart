@@ -1,16 +1,16 @@
 /* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
 /*   To generate run: "serverpod generate"    */
 
-// ignore_for_file: library_private_types_in_public_api
-// ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
-// ignore_for_file: use_super_parameters
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../protocol.dart' as _i2;
-import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class UserStatistics
     implements _i1.SerializableModel, _i1.ProtocolSerialization {
@@ -111,7 +111,15 @@ class _UserStatisticsImpl extends UserStatistics {
       user: user ?? this.user.copyWith(),
       total: total ?? this.total,
       bestStreak: bestStreak is int? ? bestStreak : this.bestStreak,
-      loggedDays: loggedDays ?? this.loggedDays.clone(),
+      loggedDays: loggedDays ??
+          this.loggedDays.map((
+                key0,
+                value0,
+              ) =>
+                  MapEntry(
+                    key0,
+                    value0,
+                  )),
     );
   }
 }

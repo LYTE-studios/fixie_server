@@ -1,24 +1,24 @@
 /* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
 /*   To generate run: "serverpod generate"    */
 
-// ignore_for_file: library_private_types_in_public_api
-// ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
-// ignore_for_file: use_super_parameters
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-abstract class Category extends _i1.TableRow
-    implements _i1.ProtocolSerialization {
+abstract class Category implements _i1.TableRow, _i1.ProtocolSerialization {
   Category._({
-    int? id,
+    this.id,
     required this.title,
     required this.color,
     this.icon,
     this.userId,
-  }) : super(id);
+  });
 
   factory Category({
     int? id,
@@ -41,6 +41,9 @@ abstract class Category extends _i1.TableRow
   static final t = CategoryTable();
 
   static const db = CategoryRepository._();
+
+  @override
+  int? id;
 
   String title;
 
@@ -219,7 +222,7 @@ class CategoryRepository {
   const CategoryRepository._();
 
   Future<List<Category>> find(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<CategoryTable>? where,
     int? limit,
     int? offset,
@@ -228,19 +231,19 @@ class CategoryRepository {
     _i1.OrderByListBuilder<CategoryTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.find<Category>(
+    return databaseAccessor.db.find<Category>(
       where: where?.call(Category.t),
       orderBy: orderBy?.call(Category.t),
       orderByList: orderByList?.call(Category.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<Category?> findFirstRow(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<CategoryTable>? where,
     int? offset,
     _i1.OrderByBuilder<CategoryTable>? orderBy,
@@ -248,118 +251,118 @@ class CategoryRepository {
     _i1.OrderByListBuilder<CategoryTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.findFirstRow<Category>(
+    return databaseAccessor.db.findFirstRow<Category>(
       where: where?.call(Category.t),
       orderBy: orderBy?.call(Category.t),
       orderByList: orderByList?.call(Category.t),
       orderDescending: orderDescending,
       offset: offset,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<Category?> findById(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     int id, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.findById<Category>(
+    return databaseAccessor.db.findById<Category>(
       id,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<Category>> insert(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<Category> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insert<Category>(
+    return databaseAccessor.db.insert<Category>(
       rows,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<Category> insertRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Category row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insertRow<Category>(
+    return databaseAccessor.db.insertRow<Category>(
       row,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<Category>> update(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<Category> rows, {
     _i1.ColumnSelections<CategoryTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.update<Category>(
+    return databaseAccessor.db.update<Category>(
       rows,
       columns: columns?.call(Category.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<Category> updateRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Category row, {
     _i1.ColumnSelections<CategoryTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.updateRow<Category>(
+    return databaseAccessor.db.updateRow<Category>(
       row,
       columns: columns?.call(Category.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<Category>> delete(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<Category> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<Category>(
+    return databaseAccessor.db.delete<Category>(
       rows,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<Category> deleteRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     Category row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteRow<Category>(
+    return databaseAccessor.db.deleteRow<Category>(
       row,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<Category>> deleteWhere(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     required _i1.WhereExpressionBuilder<CategoryTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteWhere<Category>(
+    return databaseAccessor.db.deleteWhere<Category>(
       where: where(Category.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<int> count(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<CategoryTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<Category>(
+    return databaseAccessor.db.count<Category>(
       where: where?.call(Category.t),
       limit: limit,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }

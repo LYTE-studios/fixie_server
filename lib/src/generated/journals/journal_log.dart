@@ -1,21 +1,20 @@
 /* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
 /*   To generate run: "serverpod generate"    */
 
-// ignore_for_file: library_private_types_in_public_api
-// ignore_for_file: public_member_api_docs
 // ignore_for_file: implementation_imports
-// ignore_for_file: use_super_parameters
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../protocol.dart' as _i2;
-import 'package:serverpod_serialization/serverpod_serialization.dart';
 
-abstract class JournalLog extends _i1.TableRow
-    implements _i1.ProtocolSerialization {
+abstract class JournalLog implements _i1.TableRow, _i1.ProtocolSerialization {
   JournalLog._({
-    int? id,
+    this.id,
     required this.goalId,
     this.goal,
     this.picture,
@@ -27,7 +26,7 @@ abstract class JournalLog extends _i1.TableRow
     required this.date,
     this.streak,
     this.currentStreak,
-  }) : super(id);
+  });
 
   factory JournalLog({
     int? id,
@@ -74,6 +73,9 @@ abstract class JournalLog extends _i1.TableRow
   static final t = JournalLogTable();
 
   static const db = JournalLogRepository._();
+
+  @override
+  int? id;
 
   int goalId;
 
@@ -234,12 +236,14 @@ class _JournalLogImpl extends JournalLog {
       id: id is int? ? id : this.id,
       goalId: goalId ?? this.goalId,
       goal: goal is _i2.Goal? ? goal : this.goal?.copyWith(),
-      picture: picture is List<String>? ? picture : this.picture?.clone(),
+      picture: picture is List<String>?
+          ? picture
+          : this.picture?.map((e0) => e0).toList(),
       note: note ?? this.note,
       loggedValue: loggedValue is double? ? loggedValue : this.loggedValue,
       registrationLog: registrationLog is List<_i2.RegistrationLog>?
           ? registrationLog
-          : this.registrationLog?.clone(),
+          : this.registrationLog?.map((e0) => e0.copyWith()).toList(),
       createdAt: createdAt ?? this.createdAt,
       modifiedAt: modifiedAt ?? this.modifiedAt,
       date: date ?? this.date,
@@ -392,7 +396,7 @@ class JournalLogRepository {
   final attachRow = const JournalLogAttachRowRepository._();
 
   Future<List<JournalLog>> find(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? limit,
     int? offset,
@@ -402,20 +406,20 @@ class JournalLogRepository {
     _i1.Transaction? transaction,
     JournalLogInclude? include,
   }) async {
-    return session.db.find<JournalLog>(
+    return databaseAccessor.db.find<JournalLog>(
       where: where?.call(JournalLog.t),
       orderBy: orderBy?.call(JournalLog.t),
       orderByList: orderByList?.call(JournalLog.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
       include: include,
     );
   }
 
   Future<JournalLog?> findFirstRow(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? offset,
     _i1.OrderByBuilder<JournalLogTable>? orderBy,
@@ -424,121 +428,121 @@ class JournalLogRepository {
     _i1.Transaction? transaction,
     JournalLogInclude? include,
   }) async {
-    return session.db.findFirstRow<JournalLog>(
+    return databaseAccessor.db.findFirstRow<JournalLog>(
       where: where?.call(JournalLog.t),
       orderBy: orderBy?.call(JournalLog.t),
       orderByList: orderByList?.call(JournalLog.t),
       orderDescending: orderDescending,
       offset: offset,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
       include: include,
     );
   }
 
   Future<JournalLog?> findById(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     int id, {
     _i1.Transaction? transaction,
     JournalLogInclude? include,
   }) async {
-    return session.db.findById<JournalLog>(
+    return databaseAccessor.db.findById<JournalLog>(
       id,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
       include: include,
     );
   }
 
   Future<List<JournalLog>> insert(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<JournalLog> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insert<JournalLog>(
+    return databaseAccessor.db.insert<JournalLog>(
       rows,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<JournalLog> insertRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     JournalLog row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insertRow<JournalLog>(
+    return databaseAccessor.db.insertRow<JournalLog>(
       row,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<JournalLog>> update(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<JournalLog> rows, {
     _i1.ColumnSelections<JournalLogTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.update<JournalLog>(
+    return databaseAccessor.db.update<JournalLog>(
       rows,
       columns: columns?.call(JournalLog.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<JournalLog> updateRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     JournalLog row, {
     _i1.ColumnSelections<JournalLogTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.updateRow<JournalLog>(
+    return databaseAccessor.db.updateRow<JournalLog>(
       row,
       columns: columns?.call(JournalLog.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<JournalLog>> delete(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     List<JournalLog> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<JournalLog>(
+    return databaseAccessor.db.delete<JournalLog>(
       rows,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<JournalLog> deleteRow(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     JournalLog row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteRow<JournalLog>(
+    return databaseAccessor.db.deleteRow<JournalLog>(
       row,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<List<JournalLog>> deleteWhere(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     required _i1.WhereExpressionBuilder<JournalLogTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteWhere<JournalLog>(
+    return databaseAccessor.db.deleteWhere<JournalLog>(
       where: where(JournalLog.t),
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 
   Future<int> count(
-    _i1.Session session, {
+    _i1.DatabaseAccessor databaseAccessor, {
     _i1.WhereExpressionBuilder<JournalLogTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<JournalLog>(
+    return databaseAccessor.db.count<JournalLog>(
       where: where?.call(JournalLog.t),
       limit: limit,
-      transaction: transaction,
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }
@@ -547,10 +551,11 @@ class JournalLogAttachRowRepository {
   const JournalLogAttachRowRepository._();
 
   Future<void> goal(
-    _i1.Session session,
+    _i1.DatabaseAccessor databaseAccessor,
     JournalLog journalLog,
-    _i2.Goal goal,
-  ) async {
+    _i2.Goal goal, {
+    _i1.Transaction? transaction,
+  }) async {
     if (journalLog.id == null) {
       throw ArgumentError.notNull('journalLog.id');
     }
@@ -559,9 +564,10 @@ class JournalLogAttachRowRepository {
     }
 
     var $journalLog = journalLog.copyWith(goalId: goal.id);
-    await session.db.updateRow<JournalLog>(
+    await databaseAccessor.db.updateRow<JournalLog>(
       $journalLog,
       columns: [JournalLog.t.goalId],
+      transaction: transaction ?? databaseAccessor.transaction,
     );
   }
 }
