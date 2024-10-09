@@ -52,11 +52,20 @@ class JournalManager {
               continue;
             }
 
+            DateTime dayBefore = DateTime(start.year, start.month, start.day)
+                .subtract(Duration(days: 1));
+
             JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
-                (log.goal?.id == goal.id) & (log.date.day == start.day - 1));
+                (log.goal?.id == goal.id) &
+                (log.date.year == dayBefore.year) &
+                (log.date.month == dayBefore.month) &
+                (log.date.day == dayBefore.day));
 
             JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
-                (log.goal?.id == goal.id) & (log.date.day == start.day));
+                (log.goal?.id == goal.id) &
+                (log.date.year == start.year) &
+                (log.date.month == start.month) &
+                (log.date.day == start.day));
 
             bool hasStreak = dayBeforeLog == null
                 ? false
