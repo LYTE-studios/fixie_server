@@ -92,11 +92,14 @@ class JournalManager {
           }
         case Repetition.Weekly:
           {
+            DateTime dayBefore = DateTime(start.year, start.month, start.day)
+                .subtract(Duration(days: 7));
+
             JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
                 (log.goal?.id == goal.id) &&
-                log.date.year == start.year &&
+                log.date.year == dayBefore.year &&
                 (DateTimeUtils.weekNumber(log.date) ==
-                    DateTimeUtils.weekNumber(start) - 1));
+                    DateTimeUtils.weekNumber(dayBefore)));
 
             JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
                 (log.goal?.id == goal.id) &&
@@ -129,12 +132,18 @@ class JournalManager {
           }
         case Repetition.Monthly:
           {
+            DateTime dayBefore =
+                DateTime(start.year, start.month).subtract(Duration(days: 1));
+
             JournalLog? dayBeforeLog = definedLogs.firstWhereOrNull((log) =>
                 (log.goal?.id == goal.id) &
-                (log.date.month == log.date.month - 1));
+                (log.date.year == dayBefore.year) &
+                (log.date.month == dayBefore.month));
 
             JournalLog? todayLog = definedLogs.firstWhereOrNull((log) =>
-                (log.goal?.id == goal.id) & (log.date.month == start.month));
+                (log.goal?.id == goal.id) &
+                (log.date.year == start.year) &
+                (log.date.month == start.month));
 
             bool hasStreak = dayBeforeLog == null
                 ? false
