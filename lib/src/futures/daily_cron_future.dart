@@ -38,6 +38,12 @@ class DailyCronFuture extends FutureCall {
         continue;
       }
 
+      if (goal.repetition == Repetition.Daily) {
+        if (!(goal.weekdays?.contains(DateTime.now().weekday) ?? true)) {
+          continue;
+        }
+      }
+
       for (DateTime reminder in goal.reminders ?? []) {
         session.serverpod.futureCallAtTime(
           'SendGoalNotification',
