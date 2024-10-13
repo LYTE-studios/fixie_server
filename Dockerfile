@@ -18,7 +18,4 @@ COPY --from=build /app/bin/server server
 COPY --from=build /app/config/ config/
 COPY --from=build /app/web/ web/
 
-EXPOSE 8080
-EXPOSE 8081
-
 ENTRYPOINT ./server --mode $runmode --server-id $serverid --logging $logging --role $role
