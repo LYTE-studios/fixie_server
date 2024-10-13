@@ -30,7 +30,7 @@ webServer:
 # If you are connecting on a public IP (e.g. on AWS or Google Cloud Run), you
 # connect on the public IP of the database e.g. database.examplepod.com.
 database:
-  host: bash aws rds describe-db-instances --db-instance-identifier fixie | jq ".DBInstances.[0].Endpoint.Address" -r
+  host: fixie.cd4qc66im6mq.eu-central-1.rds.amazonaws.com
   port: 5432
   name: lytestudios_api_fixie
   user: fixie_admin
