@@ -33,7 +33,7 @@ database:
   host: fixie.cd4qc66im6mq.eu-central-1.rds.amazonaws.com
   port: 5432
   name: lytestudios_api_fixie
-  user: fixie_admin
+  user: postgres
   requireSsl: true
 
 # This is the setup for Redis. The default for the Google Cloud Engine Terraform
