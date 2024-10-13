@@ -10,7 +10,7 @@ FROM alpine:latest
 
 ENV runmode=production
 ENV serverid=default
-ENV logging=normal
+ENV logging=verbose
 ENV role=monolith
 
 COPY --from=build /runtime/ /
