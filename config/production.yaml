@@ -33,7 +33,7 @@ database:
   host: database.fixie.lytestudios.be
   port: 5432
   name: lytestudios_api_fixie
-  user: lytestudios_admin
+  user: postgres
 
 # This is the setup for Redis. The default for the Google Cloud Engine Terraform
 # configuration is to connect on a private IP address.
