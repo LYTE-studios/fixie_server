@@ -68,7 +68,7 @@ void run(List<String> args) async {
       storageId: 'public',
       public: true,
       region: 'eu-central-1',
-      bucket: 'fixie-public-storage-4138473',
+      bucket: 'fixie-lytestudios-be',
       publicHost: 'storage.fixie.lytestudios.be',
     ),
   );
