@@ -1,0 +1,8 @@
+class: PurchaseItem
+table: purchase_item
+fields:
+  benefitIdentifier: Benefit
+  expiryDate: DateTime?
+  created: DateTime?
+  internalInfo: String?
+  user: User?, relation(name=user_purchase_items)

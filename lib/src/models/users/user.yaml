@@ -4,6 +4,7 @@ fields:
   userInfo: module:auth:UserInfo?, relation # Base user info model
   birthday: DateTime? # Nullable birthday field
   goals: List<Goal>?, relation(name=user_goals) # The goals connected to the users' profile
+  purchases: List<PurchaseItem>?, relation(name=user_purchase_items) # The purchases connected to the users' profile
   highestStreak: int? # The longest streak a user has been able to maintain
   picture: String? # Stored image for the registration stored via url
   hasPassedOnboarding: bool?

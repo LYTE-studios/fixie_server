@@ -20,6 +20,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     this.userInfo,
     this.birthday,
     this.goals,
+    this.purchases,
     this.highestStreak,
     this.picture,
     this.hasPassedOnboarding,
@@ -35,6 +36,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
+    List<_i3.PurchaseItem>? purchases,
     int? highestStreak,
     String? picture,
     bool? hasPassedOnboarding,
@@ -57,6 +59,9 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['birthday']),
       goals: (jsonSerialization['goals'] as List?)
           ?.map((e) => _i3.Goal.fromJson((e as Map<String, dynamic>)))
+          .toList(),
+      purchases: (jsonSerialization['purchases'] as List?)
+          ?.map((e) => _i3.PurchaseItem.fromJson((e as Map<String, dynamic>)))
           .toList(),
       highestStreak: jsonSerialization['highestStreak'] as int?,
       picture: jsonSerialization['picture'] as String?,
@@ -86,6 +91,8 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
 
   List<_i3.Goal>? goals;
 
+  List<_i3.PurchaseItem>? purchases;
+
   int? highestStreak;
 
   String? picture;
@@ -109,6 +116,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
+    List<_i3.PurchaseItem>? purchases,
     int? highestStreak,
     String? picture,
     bool? hasPassedOnboarding,
@@ -125,6 +133,8 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
       if (userInfo != null) 'userInfo': userInfo?.toJson(),
       if (birthday != null) 'birthday': birthday?.toJson(),
       if (goals != null) 'goals': goals?.toJson(valueToJson: (v) => v.toJson()),
+      if (purchases != null)
+        'purchases': purchases?.toJson(valueToJson: (v) => v.toJson()),
       if (highestStreak != null) 'highestStreak': highestStreak,
       if (picture != null) 'picture': picture,
       if (hasPassedOnboarding != null)
@@ -148,6 +158,9 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
       if (birthday != null) 'birthday': birthday?.toJson(),
       if (goals != null)
         'goals': goals?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+      if (purchases != null)
+        'purchases':
+            purchases?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
       if (highestStreak != null) 'highestStreak': highestStreak,
       if (picture != null) 'picture': picture,
       if (hasPassedOnboarding != null)
@@ -165,10 +178,12 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
   static UserInclude include({
     _i2.UserInfoInclude? userInfo,
     _i3.GoalIncludeList? goals,
+    _i3.PurchaseItemIncludeList? purchases,
   }) {
     return UserInclude._(
       userInfo: userInfo,
       goals: goals,
+      purchases: purchases,
     );
   }
 
@@ -207,6 +222,7 @@ class _UserImpl extends User {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
+    List<_i3.PurchaseItem>? purchases,
     int? highestStreak,
     String? picture,
     bool? hasPassedOnboarding,
@@ -220,6 +236,7 @@ class _UserImpl extends User {
           userInfo: userInfo,
           birthday: birthday,
           goals: goals,
+          purchases: purchases,
           highestStreak: highestStreak,
           picture: picture,
           hasPassedOnboarding: hasPassedOnboarding,
@@ -236,6 +253,7 @@ class _UserImpl extends User {
     Object? userInfo = _Undefined,
     Object? birthday = _Undefined,
     Object? goals = _Undefined,
+    Object? purchases = _Undefined,
     Object? highestStreak = _Undefined,
     Object? picture = _Undefined,
     Object? hasPassedOnboarding = _Undefined,
@@ -253,6 +271,9 @@ class _UserImpl extends User {
       goals: goals is List<_i3.Goal>?
           ? goals
           : this.goals?.map((e0) => e0.copyWith()).toList(),
+      purchases: purchases is List<_i3.PurchaseItem>?
+          ? purchases
+          : this.purchases?.map((e0) => e0.copyWith()).toList(),
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
       picture: picture is String? ? picture : this.picture,
       hasPassedOnboarding: hasPassedOnboarding is bool?
@@ -322,6 +343,10 @@ class UserTable extends _i1.Table {
 
   _i1.ManyRelation<_i3.GoalTable>? _goals;
 
+  _i3.PurchaseItemTable? ___purchases;
+
+  _i1.ManyRelation<_i3.PurchaseItemTable>? _purchases;
+
   late final _i1.ColumnInt highestStreak;
 
   late final _i1.ColumnString picture;
@@ -362,6 +387,19 @@ class UserTable extends _i1.Table {
     return ___goals!;
   }
 
+  _i3.PurchaseItemTable get __purchases {
+    if (___purchases != null) return ___purchases!;
+    ___purchases = _i1.createRelationTable(
+      relationFieldName: '__purchases',
+      field: User.t.id,
+      foreignField: _i3.PurchaseItem.t.userId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.PurchaseItemTable(tableRelation: foreignTableRelation),
+    );
+    return ___purchases!;
+  }
+
   _i1.ManyRelation<_i3.GoalTable> get goals {
     if (_goals != null) return _goals!;
     var relationTable = _i1.createRelationTable(
@@ -378,6 +416,24 @@ class UserTable extends _i1.Table {
           tableRelation: relationTable.tableRelation!.lastRelation),
     );
     return _goals!;
+  }
+
+  _i1.ManyRelation<_i3.PurchaseItemTable> get purchases {
+    if (_purchases != null) return _purchases!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'purchases',
+      field: User.t.id,
+      foreignField: _i3.PurchaseItem.t.userId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.PurchaseItemTable(tableRelation: foreignTableRelation),
+    );
+    _purchases = _i1.ManyRelation<_i3.PurchaseItemTable>(
+      tableWithRelations: relationTable,
+      table: _i3.PurchaseItemTable(
+          tableRelation: relationTable.tableRelation!.lastRelation),
+    );
+    return _purchases!;
   }
 
   @override
@@ -402,6 +458,9 @@ class UserTable extends _i1.Table {
     if (relationField == 'goals') {
       return __goals;
     }
+    if (relationField == 'purchases') {
+      return __purchases;
+    }
     return null;
   }
 }
@@ -410,19 +469,24 @@ class UserInclude extends _i1.IncludeObject {
   UserInclude._({
     _i2.UserInfoInclude? userInfo,
     _i3.GoalIncludeList? goals,
+    _i3.PurchaseItemIncludeList? purchases,
   }) {
     _userInfo = userInfo;
     _goals = goals;
+    _purchases = purchases;
   }
 
   _i2.UserInfoInclude? _userInfo;
 
   _i3.GoalIncludeList? _goals;
 
+  _i3.PurchaseItemIncludeList? _purchases;
+
   @override
   Map<String, _i1.Include?> get includes => {
         'userInfo': _userInfo,
         'goals': _goals,
+        'purchases': _purchases,
       };
 
   @override
@@ -631,6 +695,28 @@ class UserAttachRepository {
       transaction: transaction ?? databaseAccessor.transaction,
     );
   }
+
+  Future<void> purchases(
+    _i1.DatabaseAccessor databaseAccessor,
+    User user,
+    List<_i3.PurchaseItem> purchaseItem, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (purchaseItem.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('purchaseItem.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $purchaseItem =
+        purchaseItem.map((e) => e.copyWith(userId: user.id)).toList();
+    await databaseAccessor.db.update<_i3.PurchaseItem>(
+      $purchaseItem,
+      columns: [_i3.PurchaseItem.t.userId],
+      transaction: transaction ?? databaseAccessor.transaction,
+    );
+  }
 }
 
 class UserAttachRowRepository {
@@ -674,6 +760,27 @@ class UserAttachRowRepository {
     await databaseAccessor.db.updateRow<_i3.Goal>(
       $goal,
       columns: [_i3.Goal.t.userId],
+      transaction: transaction ?? databaseAccessor.transaction,
+    );
+  }
+
+  Future<void> purchases(
+    _i1.DatabaseAccessor databaseAccessor,
+    User user,
+    _i3.PurchaseItem purchaseItem, {
+    _i1.Transaction? transaction,
+  }) async {
+    if (purchaseItem.id == null) {
+      throw ArgumentError.notNull('purchaseItem.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $purchaseItem = purchaseItem.copyWith(userId: user.id);
+    await databaseAccessor.db.updateRow<_i3.PurchaseItem>(
+      $purchaseItem,
+      columns: [_i3.PurchaseItem.t.userId],
       transaction: transaction ?? databaseAccessor.transaction,
     );
   }

@@ -1,0 +1,4 @@
+enum: Benefit
+serialized: byName
+values:
+  - trialPremium

@@ -25,16 +25,18 @@ import 'journals/journal_log.dart' as _i12;
 import 'journals/registration_log.dart' as _i13;
 import 'locales/user_locales.dart' as _i14;
 import 'notifications/notification.dart' as _i15;
-import 'shared/repetition.dart' as _i16;
-import 'statistics/goal_statistics.dart' as _i17;
-import 'statistics/statistics.dart' as _i18;
-import 'statistics/user_statistics.dart' as _i19;
-import 'users/user.dart' as _i20;
-import 'users/user_profile_dto.dart' as _i21;
-import 'protocol.dart' as _i22;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i23;
-import 'package:fixie_server/src/generated/category/category.dart' as _i24;
-import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i25;
+import 'payment/benefit.dart' as _i16;
+import 'payment/purchase_item.dart' as _i17;
+import 'shared/repetition.dart' as _i18;
+import 'statistics/goal_statistics.dart' as _i19;
+import 'statistics/statistics.dart' as _i20;
+import 'statistics/user_statistics.dart' as _i21;
+import 'users/user.dart' as _i22;
+import 'users/user_profile_dto.dart' as _i23;
+import 'protocol.dart' as _i24;
+import 'package:fixie_server/src/generated/goals/goal.dart' as _i25;
+import 'package:fixie_server/src/generated/category/category.dart' as _i26;
+import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i27;
 export 'category/category.dart';
 export 'category/create_category_dto.dart';
 export 'core/endpoint_exception.dart';
@@ -47,6 +49,8 @@ export 'journals/journal_log.dart';
 export 'journals/registration_log.dart';
 export 'locales/user_locales.dart';
 export 'notifications/notification.dart';
+export 'payment/benefit.dart';
+export 'payment/purchase_item.dart';
 export 'shared/repetition.dart';
 export 'statistics/goal_statistics.dart';
 export 'statistics/statistics.dart';
@@ -462,6 +466,79 @@ class Protocol extends _i1.SerializationManagerServer {
       managed: true,
     ),
     _i2.TableDefinition(
+      name: 'purchase_item',
+      dartName: 'PurchaseItem',
+      schema: 'public',
+      module: 'fixie',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'purchase_item_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'benefitIdentifier',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:Benefit',
+        ),
+        _i2.ColumnDefinition(
+          name: 'expiryDate',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'created',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'internalInfo',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'purchase_item_fk_0',
+          columns: ['userId'],
+          referenceTable: 'fixie_user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'purchase_item_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
       name: 'user_locales',
       dartName: 'UserLocales',
       schema: 'public',
@@ -551,23 +628,29 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i15.Notification) {
       return _i15.Notification.fromJson(data) as T;
     }
-    if (t == _i16.Repetition) {
-      return _i16.Repetition.fromJson(data) as T;
+    if (t == _i16.Benefit) {
+      return _i16.Benefit.fromJson(data) as T;
     }
-    if (t == _i17.GoalStatistics) {
-      return _i17.GoalStatistics.fromJson(data) as T;
+    if (t == _i17.PurchaseItem) {
+      return _i17.PurchaseItem.fromJson(data) as T;
     }
-    if (t == _i18.Statistics) {
-      return _i18.Statistics.fromJson(data) as T;
+    if (t == _i18.Repetition) {
+      return _i18.Repetition.fromJson(data) as T;
     }
-    if (t == _i19.UserStatistics) {
-      return _i19.UserStatistics.fromJson(data) as T;
+    if (t == _i19.GoalStatistics) {
+      return _i19.GoalStatistics.fromJson(data) as T;
     }
-    if (t == _i20.User) {
-      return _i20.User.fromJson(data) as T;
+    if (t == _i20.Statistics) {
+      return _i20.Statistics.fromJson(data) as T;
     }
-    if (t == _i21.UserProfileDto) {
-      return _i21.UserProfileDto.fromJson(data) as T;
+    if (t == _i21.UserStatistics) {
+      return _i21.UserStatistics.fromJson(data) as T;
+    }
+    if (t == _i22.User) {
+      return _i22.User.fromJson(data) as T;
+    }
+    if (t == _i23.UserProfileDto) {
+      return _i23.UserProfileDto.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Category?>()) {
       return (data != null ? _i4.Category.fromJson(data) : null) as T;
@@ -605,33 +688,29 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i15.Notification?>()) {
       return (data != null ? _i15.Notification.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i16.Repetition?>()) {
-      return (data != null ? _i16.Repetition.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i16.Benefit?>()) {
+      return (data != null ? _i16.Benefit.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i17.GoalStatistics?>()) {
-      return (data != null ? _i17.GoalStatistics.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i17.PurchaseItem?>()) {
+      return (data != null ? _i17.PurchaseItem.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i18.Statistics?>()) {
-      return (data != null ? _i18.Statistics.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i18.Repetition?>()) {
+      return (data != null ? _i18.Repetition.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i19.UserStatistics?>()) {
-      return (data != null ? _i19.UserStatistics.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i19.GoalStatistics?>()) {
+      return (data != null ? _i19.GoalStatistics.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i20.User?>()) {
-      return (data != null ? _i20.User.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i20.Statistics?>()) {
+      return (data != null ? _i20.Statistics.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i21.UserProfileDto?>()) {
-      return (data != null ? _i21.UserProfileDto.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i21.UserStatistics?>()) {
+      return (data != null ? _i21.UserStatistics.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<List<int>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<int>(e)).toList()
-          : null) as dynamic;
+    if (t == _i1.getType<_i22.User?>()) {
+      return (data != null ? _i22.User.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<List<DateTime>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
-          : null) as dynamic;
+    if (t == _i1.getType<_i23.UserProfileDto?>()) {
+      return (data != null ? _i23.UserProfileDto.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<List<int>?>()) {
       return (data != null
@@ -643,13 +722,23 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i22.JournalLog>?>()) {
+    if (t == _i1.getType<List<int>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i22.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<int>(e)).toList()
           : null) as dynamic;
     }
-    if (t == List<_i22.JournalLog>) {
-      return (data as List).map((e) => deserialize<_i22.JournalLog>(e)).toList()
+    if (t == _i1.getType<List<DateTime>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<_i24.JournalLog>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i24.JournalLog>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == List<_i24.JournalLog>) {
+      return (data as List).map((e) => deserialize<_i24.JournalLog>(e)).toList()
           as dynamic;
     }
     if (t == _i1.getType<List<String>?>()) {
@@ -657,10 +746,10 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<String>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i22.RegistrationLog>?>()) {
+    if (t == _i1.getType<List<_i24.RegistrationLog>?>()) {
       return (data != null
           ? (data as List)
-              .map((e) => deserialize<_i22.RegistrationLog>(e))
+              .map((e) => deserialize<_i24.RegistrationLog>(e))
               .toList()
           : null) as dynamic;
     }
@@ -674,31 +763,38 @@ class Protocol extends _i1.SerializationManagerServer {
               MapEntry(deserialize<int>(e['k']), deserialize<double>(e['v']))))
           as dynamic;
     }
-    if (t == _i1.getType<List<_i22.Goal>?>()) {
+    if (t == _i1.getType<List<_i24.Goal>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i22.Goal>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i24.Goal>(e)).toList()
           : null) as dynamic;
     }
-    if (t == List<_i23.Goal>) {
-      return (data as List).map((e) => deserialize<_i23.Goal>(e)).toList()
-          as dynamic;
-    }
-    if (t == List<_i24.Category>) {
-      return (data as List).map((e) => deserialize<_i24.Category>(e)).toList()
-          as dynamic;
-    }
-    if (t == _i1.getType<List<_i23.Goal>?>()) {
+    if (t == _i1.getType<List<_i24.PurchaseItem>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i23.Goal>(e)).toList()
+          ? (data as List)
+              .map((e) => deserialize<_i24.PurchaseItem>(e))
+              .toList()
+          : null) as dynamic;
+    }
+    if (t == List<_i25.Goal>) {
+      return (data as List).map((e) => deserialize<_i25.Goal>(e)).toList()
+          as dynamic;
+    }
+    if (t == List<_i26.Category>) {
+      return (data as List).map((e) => deserialize<_i26.Category>(e)).toList()
+          as dynamic;
+    }
+    if (t == _i1.getType<List<_i25.Goal>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i25.Goal>(e)).toList()
           : null) as dynamic;
     }
     if (t == Map<String, String?>) {
       return (data as Map).map((k, v) =>
           MapEntry(deserialize<String>(k), deserialize<String?>(v))) as dynamic;
     }
-    if (t == _i1.getType<List<_i25.JournalLog>?>()) {
+    if (t == _i1.getType<List<_i27.JournalLog>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i25.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i27.JournalLog>(e)).toList()
           : null) as dynamic;
     }
     try {
@@ -750,22 +846,28 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i15.Notification) {
       return 'Notification';
     }
-    if (data is _i16.Repetition) {
+    if (data is _i16.Benefit) {
+      return 'Benefit';
+    }
+    if (data is _i17.PurchaseItem) {
+      return 'PurchaseItem';
+    }
+    if (data is _i18.Repetition) {
       return 'Repetition';
     }
-    if (data is _i17.GoalStatistics) {
+    if (data is _i19.GoalStatistics) {
       return 'GoalStatistics';
     }
-    if (data is _i18.Statistics) {
+    if (data is _i20.Statistics) {
       return 'Statistics';
     }
-    if (data is _i19.UserStatistics) {
+    if (data is _i21.UserStatistics) {
       return 'UserStatistics';
     }
-    if (data is _i20.User) {
+    if (data is _i22.User) {
       return 'User';
     }
-    if (data is _i21.UserProfileDto) {
+    if (data is _i23.UserProfileDto) {
       return 'UserProfileDto';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -817,23 +919,29 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'Notification') {
       return deserialize<_i15.Notification>(data['data']);
     }
+    if (data['className'] == 'Benefit') {
+      return deserialize<_i16.Benefit>(data['data']);
+    }
+    if (data['className'] == 'PurchaseItem') {
+      return deserialize<_i17.PurchaseItem>(data['data']);
+    }
     if (data['className'] == 'Repetition') {
-      return deserialize<_i16.Repetition>(data['data']);
+      return deserialize<_i18.Repetition>(data['data']);
     }
     if (data['className'] == 'GoalStatistics') {
-      return deserialize<_i17.GoalStatistics>(data['data']);
+      return deserialize<_i19.GoalStatistics>(data['data']);
     }
     if (data['className'] == 'Statistics') {
-      return deserialize<_i18.Statistics>(data['data']);
+      return deserialize<_i20.Statistics>(data['data']);
     }
     if (data['className'] == 'UserStatistics') {
-      return deserialize<_i19.UserStatistics>(data['data']);
+      return deserialize<_i21.UserStatistics>(data['data']);
     }
     if (data['className'] == 'User') {
-      return deserialize<_i20.User>(data['data']);
+      return deserialize<_i22.User>(data['data']);
     }
     if (data['className'] == 'UserProfileDto') {
-      return deserialize<_i21.UserProfileDto>(data['data']);
+      return deserialize<_i23.UserProfileDto>(data['data']);
     }
     if (data['className'].startsWith('serverpod.')) {
       data['className'] = data['className'].substring(10);
@@ -869,8 +977,10 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i12.JournalLog.t;
       case _i14.UserLocales:
         return _i14.UserLocales.t;
-      case _i20.User:
-        return _i20.User.t;
+      case _i17.PurchaseItem:
+        return _i17.PurchaseItem.t;
+      case _i22.User:
+        return _i22.User.t;
     }
     return null;
   }

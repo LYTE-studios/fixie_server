@@ -17,6 +17,16 @@ class AuthUtils {
 
     assert(user.id != null);
 
+    await PurchaseItem.db.insertRow(
+      session,
+      PurchaseItem(
+        benefitIdentifier: Benefit.trialPremium,
+        userId: user.id!,
+        expiryDate: DateTime.now().add(Duration(days: 7)),
+        created: DateTime.now(),
+      ),
+    );
+
     return User.db.findById(
       session,
       user.id!,
