@@ -24,6 +24,8 @@ journal:
   - updateLog:
 notification:
   - setFcmToken:
+payments:
+  - fetchActivePurchases:
 profile:
   - updatePrivacySettings:
   - deleteAccount:

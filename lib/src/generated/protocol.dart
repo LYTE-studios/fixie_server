@@ -37,6 +37,7 @@ import 'protocol.dart' as _i24;
 import 'package:fixie_server/src/generated/goals/goal.dart' as _i25;
 import 'package:fixie_server/src/generated/category/category.dart' as _i26;
 import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i27;
+import 'package:fixie_server/src/generated/payment/purchase_item.dart' as _i28;
 export 'category/category.dart';
 export 'category/create_category_dto.dart';
 export 'core/endpoint_exception.dart';
@@ -796,6 +797,11 @@ class Protocol extends _i1.SerializationManagerServer {
       return (data != null
           ? (data as List).map((e) => deserialize<_i27.JournalLog>(e)).toList()
           : null) as dynamic;
+    }
+    if (t == List<_i28.PurchaseItem>) {
+      return (data as List)
+          .map((e) => deserialize<_i28.PurchaseItem>(e))
+          .toList() as dynamic;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);

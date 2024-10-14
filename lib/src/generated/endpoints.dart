@@ -15,15 +15,16 @@ import '../endpoints/file_endpoint.dart' as _i3;
 import '../endpoints/goals_endpoint.dart' as _i4;
 import '../endpoints/journal_endpoint.dart' as _i5;
 import '../endpoints/notification_endpoint.dart' as _i6;
-import '../endpoints/profile_endpoint.dart' as _i7;
-import '../endpoints/statistics_endpoint.dart' as _i8;
+import '../endpoints/payments_endpoint.dart' as _i7;
+import '../endpoints/profile_endpoint.dart' as _i8;
+import '../endpoints/statistics_endpoint.dart' as _i9;
 import 'package:fixie_server/src/generated/category/create_category_dto.dart'
-    as _i9;
-import 'package:fixie_server/src/generated/category/category.dart' as _i10;
-import 'package:fixie_server/src/generated/goals/create_goal_dto.dart' as _i11;
-import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i12;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i13;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i14;
+    as _i10;
+import 'package:fixie_server/src/generated/category/category.dart' as _i11;
+import 'package:fixie_server/src/generated/goals/create_goal_dto.dart' as _i12;
+import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i13;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i14;
+import 'package:fixie_server/src/generated/goals/goal.dart' as _i15;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -59,13 +60,19 @@ class Endpoints extends _i1.EndpointDispatch {
           'notification',
           null,
         ),
-      'profile': _i7.ProfileEndpoint()
+      'payments': _i7.PaymentsEndpoint()
+        ..initialize(
+          server,
+          'payments',
+          null,
+        ),
+      'profile': _i8.ProfileEndpoint()
         ..initialize(
           server,
           'profile',
           null,
         ),
-      'statistics': _i8.StatisticsEndpoint()
+      'statistics': _i9.StatisticsEndpoint()
         ..initialize(
           server,
           'statistics',
@@ -81,7 +88,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'dto': _i1.ParameterDescription(
               name: 'dto',
-              type: _i1.getType<_i9.CreateCategoryDto>(),
+              type: _i1.getType<_i10.CreateCategoryDto>(),
               nullable: false,
             )
           },
@@ -99,7 +106,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i10.Category>(),
+              type: _i1.getType<_i11.Category>(),
               nullable: false,
             )
           },
@@ -194,7 +201,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'dto': _i1.ParameterDescription(
               name: 'dto',
-              type: _i1.getType<_i11.CreateGoalDto>(),
+              type: _i1.getType<_i12.CreateGoalDto>(),
               nullable: false,
             )
           },
@@ -244,7 +251,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'newGoal': _i1.ParameterDescription(
               name: 'newGoal',
-              type: _i1.getType<_i11.CreateGoalDto>(),
+              type: _i1.getType<_i12.CreateGoalDto>(),
               nullable: false,
             ),
           },
@@ -306,7 +313,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'log': _i1.ParameterDescription(
               name: 'log',
-              type: _i1.getType<_i12.JournalLog>(),
+              type: _i1.getType<_i13.JournalLog>(),
               nullable: false,
             ),
             'fileName': _i1.ParameterDescription(
@@ -378,7 +385,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'log': _i1.ParameterDescription(
               name: 'log',
-              type: _i1.getType<_i12.JournalLog>(),
+              type: _i1.getType<_i13.JournalLog>(),
               nullable: false,
             ),
           },
@@ -451,7 +458,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'editedLog': _i1.ParameterDescription(
               name: 'editedLog',
-              type: _i1.getType<_i12.JournalLog>(),
+              type: _i1.getType<_i13.JournalLog>(),
               nullable: false,
             )
           },
@@ -491,6 +498,22 @@ class Endpoints extends _i1.EndpointDispatch {
         )
       },
     );
+    connectors['payments'] = _i1.EndpointConnector(
+      name: 'payments',
+      endpoint: endpoints['payments']!,
+      methodConnectors: {
+        'fetchActivePurchases': _i1.MethodConnector(
+          name: 'fetchActivePurchases',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['payments'] as _i7.PaymentsEndpoint)
+                  .fetchActivePurchases(session),
+        )
+      },
+    );
     connectors['profile'] = _i1.EndpointConnector(
       name: 'profile',
       endpoint: endpoints['profile']!,
@@ -513,7 +536,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint)
+              (endpoints['profile'] as _i8.ProfileEndpoint)
                   .updatePrivacySettings(
             session,
             informationCollection: params['informationCollection'],
@@ -527,7 +550,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint)
+              (endpoints['profile'] as _i8.ProfileEndpoint)
                   .deleteAccount(session),
         ),
         'createUser': _i1.MethodConnector(
@@ -535,7 +558,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'user': _i1.ParameterDescription(
               name: 'user',
-              type: _i1.getType<_i13.UserInfo?>(),
+              type: _i1.getType<_i14.UserInfo?>(),
               nullable: true,
             ),
             'birthday': _i1.ParameterDescription(
@@ -548,7 +571,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint).createUser(
+              (endpoints['profile'] as _i8.ProfileEndpoint).createUser(
             session,
             params['user'],
             params['birthday'],
@@ -561,7 +584,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint)
+              (endpoints['profile'] as _i8.ProfileEndpoint)
                   .getProfileData(session),
         ),
         'setEmptyLocale': _i1.MethodConnector(
@@ -582,7 +605,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint).setEmptyLocale(
+              (endpoints['profile'] as _i8.ProfileEndpoint).setEmptyLocale(
             session,
             params['email'],
             params['locale'],
@@ -601,7 +624,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint).updateLocale(
+              (endpoints['profile'] as _i8.ProfileEndpoint).updateLocale(
             session,
             params['locale'],
           ),
@@ -619,7 +642,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint).updateBirthday(
+              (endpoints['profile'] as _i8.ProfileEndpoint).updateBirthday(
             session,
             params['birthday'],
           ),
@@ -637,7 +660,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint).updateName(
+              (endpoints['profile'] as _i8.ProfileEndpoint).updateName(
             session,
             params['name'],
           ),
@@ -649,7 +672,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint)
+              (endpoints['profile'] as _i8.ProfileEndpoint)
                   .completeOnboarding(session),
         ),
         'completeGoalTutorial': _i1.MethodConnector(
@@ -659,7 +682,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint)
+              (endpoints['profile'] as _i8.ProfileEndpoint)
                   .completeGoalTutorial(session),
         ),
         'getImageUploadDescription': _i1.MethodConnector(
@@ -675,7 +698,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint)
+              (endpoints['profile'] as _i8.ProfileEndpoint)
                   .getImageUploadDescription(
             session,
             fileName: params['fileName'],
@@ -694,7 +717,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint).verifyUpload(
+              (endpoints['profile'] as _i8.ProfileEndpoint).verifyUpload(
             session,
             params['path'],
           ),
@@ -712,7 +735,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['profile'] as _i7.ProfileEndpoint)
+              (endpoints['profile'] as _i8.ProfileEndpoint)
                   .updateProfilePicture(
             session,
             params['url'],
@@ -729,7 +752,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'goal': _i1.ParameterDescription(
               name: 'goal',
-              type: _i1.getType<_i14.Goal>(),
+              type: _i1.getType<_i15.Goal>(),
               nullable: false,
             )
           },
@@ -737,7 +760,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['statistics'] as _i8.StatisticsEndpoint)
+              (endpoints['statistics'] as _i9.StatisticsEndpoint)
                   .getStatisticsForGoal(
             session,
             params['goal'],
@@ -748,12 +771,12 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i10.Category?>(),
+              type: _i1.getType<_i11.Category?>(),
               nullable: true,
             ),
             'goal': _i1.ParameterDescription(
               name: 'goal',
-              type: _i1.getType<_i14.Goal?>(),
+              type: _i1.getType<_i15.Goal?>(),
               nullable: true,
             ),
             'month': _i1.ParameterDescription(
@@ -766,7 +789,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['statistics'] as _i8.StatisticsEndpoint)
+              (endpoints['statistics'] as _i9.StatisticsEndpoint)
                   .getMonthlyJournalStatistics(
             session,
             params['category'],
@@ -776,6 +799,6 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth'] = _i13.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i14.Endpoints()..initializeEndpoints(server);
   }
 }
