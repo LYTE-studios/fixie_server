@@ -31,13 +31,14 @@ import 'shared/repetition.dart' as _i18;
 import 'statistics/goal_statistics.dart' as _i19;
 import 'statistics/statistics.dart' as _i20;
 import 'statistics/user_statistics.dart' as _i21;
-import 'users/user.dart' as _i22;
-import 'users/user_profile_dto.dart' as _i23;
-import 'protocol.dart' as _i24;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i25;
-import 'package:fixie_server/src/generated/category/category.dart' as _i26;
-import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i27;
-import 'package:fixie_server/src/generated/payment/purchase_item.dart' as _i28;
+import 'theme/app_theme.dart' as _i22;
+import 'users/user.dart' as _i23;
+import 'users/user_profile_dto.dart' as _i24;
+import 'protocol.dart' as _i25;
+import 'package:fixie_server/src/generated/goals/goal.dart' as _i26;
+import 'package:fixie_server/src/generated/category/category.dart' as _i27;
+import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i28;
+import 'package:fixie_server/src/generated/payment/purchase_item.dart' as _i29;
 export 'category/category.dart';
 export 'category/create_category_dto.dart';
 export 'core/endpoint_exception.dart';
@@ -56,6 +57,7 @@ export 'shared/repetition.dart';
 export 'statistics/goal_statistics.dart';
 export 'statistics/statistics.dart';
 export 'statistics/user_statistics.dart';
+export 'theme/app_theme.dart';
 export 'users/user.dart';
 export 'users/user_profile_dto.dart';
 
@@ -67,6 +69,80 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
+    _i2.TableDefinition(
+      name: 'app_theme',
+      dartName: 'AppTheme',
+      schema: 'public',
+      module: 'fixie',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'app_theme_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'validFrom',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'validUntil',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'disabled',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: true,
+          dartType: 'bool?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'primaryColor',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'mainGradientFirstColor',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'mainGradientSecondColor',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'backgroundColor',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'app_theme_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
     _i2.TableDefinition(
       name: 'category',
       dartName: 'Category',
@@ -100,6 +176,12 @@ class Protocol extends _i1.SerializationManagerServer {
         ),
         _i2.ColumnDefinition(
           name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'presetId',
           columnType: _i2.ColumnType.bigint,
           isNullable: true,
           dartType: 'int?',
@@ -647,11 +729,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i21.UserStatistics) {
       return _i21.UserStatistics.fromJson(data) as T;
     }
-    if (t == _i22.User) {
-      return _i22.User.fromJson(data) as T;
+    if (t == _i22.AppTheme) {
+      return _i22.AppTheme.fromJson(data) as T;
     }
-    if (t == _i23.UserProfileDto) {
-      return _i23.UserProfileDto.fromJson(data) as T;
+    if (t == _i23.User) {
+      return _i23.User.fromJson(data) as T;
+    }
+    if (t == _i24.UserProfileDto) {
+      return _i24.UserProfileDto.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Category?>()) {
       return (data != null ? _i4.Category.fromJson(data) : null) as T;
@@ -707,21 +792,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i21.UserStatistics?>()) {
       return (data != null ? _i21.UserStatistics.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i22.User?>()) {
-      return (data != null ? _i22.User.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i22.AppTheme?>()) {
+      return (data != null ? _i22.AppTheme.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i23.UserProfileDto?>()) {
-      return (data != null ? _i23.UserProfileDto.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i23.User?>()) {
+      return (data != null ? _i23.User.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<List<int>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<int>(e)).toList()
-          : null) as dynamic;
-    }
-    if (t == _i1.getType<List<DateTime>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
-          : null) as dynamic;
+    if (t == _i1.getType<_i24.UserProfileDto?>()) {
+      return (data != null ? _i24.UserProfileDto.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<List<int>?>()) {
       return (data != null
@@ -733,13 +811,23 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i24.JournalLog>?>()) {
+    if (t == _i1.getType<List<int>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i24.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<int>(e)).toList()
           : null) as dynamic;
     }
-    if (t == List<_i24.JournalLog>) {
-      return (data as List).map((e) => deserialize<_i24.JournalLog>(e)).toList()
+    if (t == _i1.getType<List<DateTime>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<_i25.JournalLog>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i25.JournalLog>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == List<_i25.JournalLog>) {
+      return (data as List).map((e) => deserialize<_i25.JournalLog>(e)).toList()
           as dynamic;
     }
     if (t == _i1.getType<List<String>?>()) {
@@ -747,10 +835,10 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<String>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i24.RegistrationLog>?>()) {
+    if (t == _i1.getType<List<_i25.RegistrationLog>?>()) {
       return (data != null
           ? (data as List)
-              .map((e) => deserialize<_i24.RegistrationLog>(e))
+              .map((e) => deserialize<_i25.RegistrationLog>(e))
               .toList()
           : null) as dynamic;
     }
@@ -764,43 +852,43 @@ class Protocol extends _i1.SerializationManagerServer {
               MapEntry(deserialize<int>(e['k']), deserialize<double>(e['v']))))
           as dynamic;
     }
-    if (t == _i1.getType<List<_i24.Goal>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<_i24.Goal>(e)).toList()
-          : null) as dynamic;
-    }
-    if (t == _i1.getType<List<_i24.PurchaseItem>?>()) {
-      return (data != null
-          ? (data as List)
-              .map((e) => deserialize<_i24.PurchaseItem>(e))
-              .toList()
-          : null) as dynamic;
-    }
-    if (t == List<_i25.Goal>) {
-      return (data as List).map((e) => deserialize<_i25.Goal>(e)).toList()
-          as dynamic;
-    }
-    if (t == List<_i26.Category>) {
-      return (data as List).map((e) => deserialize<_i26.Category>(e)).toList()
-          as dynamic;
-    }
     if (t == _i1.getType<List<_i25.Goal>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i25.Goal>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == _i1.getType<List<_i25.PurchaseItem>?>()) {
+      return (data != null
+          ? (data as List)
+              .map((e) => deserialize<_i25.PurchaseItem>(e))
+              .toList()
+          : null) as dynamic;
+    }
+    if (t == List<_i26.Goal>) {
+      return (data as List).map((e) => deserialize<_i26.Goal>(e)).toList()
+          as dynamic;
+    }
+    if (t == List<_i27.Category>) {
+      return (data as List).map((e) => deserialize<_i27.Category>(e)).toList()
+          as dynamic;
+    }
+    if (t == _i1.getType<List<_i26.Goal>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i26.Goal>(e)).toList()
           : null) as dynamic;
     }
     if (t == Map<String, String?>) {
       return (data as Map).map((k, v) =>
           MapEntry(deserialize<String>(k), deserialize<String?>(v))) as dynamic;
     }
-    if (t == _i1.getType<List<_i27.JournalLog>?>()) {
+    if (t == _i1.getType<List<_i28.JournalLog>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i27.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i28.JournalLog>(e)).toList()
           : null) as dynamic;
     }
-    if (t == List<_i28.PurchaseItem>) {
+    if (t == List<_i29.PurchaseItem>) {
       return (data as List)
-          .map((e) => deserialize<_i28.PurchaseItem>(e))
+          .map((e) => deserialize<_i29.PurchaseItem>(e))
           .toList() as dynamic;
     }
     try {
@@ -870,10 +958,13 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i21.UserStatistics) {
       return 'UserStatistics';
     }
-    if (data is _i22.User) {
+    if (data is _i22.AppTheme) {
+      return 'AppTheme';
+    }
+    if (data is _i23.User) {
       return 'User';
     }
-    if (data is _i23.UserProfileDto) {
+    if (data is _i24.UserProfileDto) {
       return 'UserProfileDto';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -943,11 +1034,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'UserStatistics') {
       return deserialize<_i21.UserStatistics>(data['data']);
     }
+    if (data['className'] == 'AppTheme') {
+      return deserialize<_i22.AppTheme>(data['data']);
+    }
     if (data['className'] == 'User') {
-      return deserialize<_i22.User>(data['data']);
+      return deserialize<_i23.User>(data['data']);
     }
     if (data['className'] == 'UserProfileDto') {
-      return deserialize<_i23.UserProfileDto>(data['data']);
+      return deserialize<_i24.UserProfileDto>(data['data']);
     }
     if (data['className'].startsWith('serverpod.')) {
       data['className'] = data['className'].substring(10);
@@ -985,8 +1079,10 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i14.UserLocales.t;
       case _i17.PurchaseItem:
         return _i17.PurchaseItem.t;
-      case _i22.User:
-        return _i22.User.t;
+      case _i22.AppTheme:
+        return _i22.AppTheme.t;
+      case _i23.User:
+        return _i23.User.t;
     }
     return null;
   }

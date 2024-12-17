@@ -1,0 +1,13 @@
+class: AppTheme
+table: app_theme
+fields:
+  validFrom: DateTime
+  validUntil: DateTime
+  disabled: bool?
+
+  primaryColor: String?
+
+  mainGradientFirstColor: String?
+  mainGradientSecondColor: String?
+
+  backgroundColor: String?

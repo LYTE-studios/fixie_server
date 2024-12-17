@@ -18,13 +18,14 @@ import '../endpoints/notification_endpoint.dart' as _i6;
 import '../endpoints/payments_endpoint.dart' as _i7;
 import '../endpoints/profile_endpoint.dart' as _i8;
 import '../endpoints/statistics_endpoint.dart' as _i9;
+import '../endpoints/theme_endpoint.dart' as _i10;
 import 'package:fixie_server/src/generated/category/create_category_dto.dart'
-    as _i10;
-import 'package:fixie_server/src/generated/category/category.dart' as _i11;
-import 'package:fixie_server/src/generated/goals/create_goal_dto.dart' as _i12;
-import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i13;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i14;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i15;
+    as _i11;
+import 'package:fixie_server/src/generated/category/category.dart' as _i12;
+import 'package:fixie_server/src/generated/goals/create_goal_dto.dart' as _i13;
+import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i14;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i15;
+import 'package:fixie_server/src/generated/goals/goal.dart' as _i16;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -78,6 +79,12 @@ class Endpoints extends _i1.EndpointDispatch {
           'statistics',
           null,
         ),
+      'theme': _i10.ThemeEndpoint()
+        ..initialize(
+          server,
+          'theme',
+          null,
+        ),
     };
     connectors['categories'] = _i1.EndpointConnector(
       name: 'categories',
@@ -88,7 +95,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'dto': _i1.ParameterDescription(
               name: 'dto',
-              type: _i1.getType<_i10.CreateCategoryDto>(),
+              type: _i1.getType<_i11.CreateCategoryDto>(),
               nullable: false,
             )
           },
@@ -106,7 +113,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i11.Category>(),
+              type: _i1.getType<_i12.Category>(),
               nullable: false,
             )
           },
@@ -201,7 +208,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'dto': _i1.ParameterDescription(
               name: 'dto',
-              type: _i1.getType<_i12.CreateGoalDto>(),
+              type: _i1.getType<_i13.CreateGoalDto>(),
               nullable: false,
             )
           },
@@ -251,7 +258,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'newGoal': _i1.ParameterDescription(
               name: 'newGoal',
-              type: _i1.getType<_i12.CreateGoalDto>(),
+              type: _i1.getType<_i13.CreateGoalDto>(),
               nullable: false,
             ),
           },
@@ -313,7 +320,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'log': _i1.ParameterDescription(
               name: 'log',
-              type: _i1.getType<_i13.JournalLog>(),
+              type: _i1.getType<_i14.JournalLog>(),
               nullable: false,
             ),
             'fileName': _i1.ParameterDescription(
@@ -385,7 +392,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'log': _i1.ParameterDescription(
               name: 'log',
-              type: _i1.getType<_i13.JournalLog>(),
+              type: _i1.getType<_i14.JournalLog>(),
               nullable: false,
             ),
           },
@@ -458,7 +465,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'editedLog': _i1.ParameterDescription(
               name: 'editedLog',
-              type: _i1.getType<_i13.JournalLog>(),
+              type: _i1.getType<_i14.JournalLog>(),
               nullable: false,
             )
           },
@@ -558,7 +565,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'user': _i1.ParameterDescription(
               name: 'user',
-              type: _i1.getType<_i14.UserInfo?>(),
+              type: _i1.getType<_i15.UserInfo?>(),
               nullable: true,
             ),
             'birthday': _i1.ParameterDescription(
@@ -752,7 +759,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'goal': _i1.ParameterDescription(
               name: 'goal',
-              type: _i1.getType<_i15.Goal>(),
+              type: _i1.getType<_i16.Goal>(),
               nullable: false,
             )
           },
@@ -771,12 +778,12 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i11.Category?>(),
+              type: _i1.getType<_i12.Category?>(),
               nullable: true,
             ),
             'goal': _i1.ParameterDescription(
               name: 'goal',
-              type: _i1.getType<_i15.Goal?>(),
+              type: _i1.getType<_i16.Goal?>(),
               nullable: true,
             ),
             'month': _i1.ParameterDescription(
@@ -799,6 +806,36 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth'] = _i14.Endpoints()..initializeEndpoints(server);
+    connectors['theme'] = _i1.EndpointConnector(
+      name: 'theme',
+      endpoint: endpoints['theme']!,
+      methodConnectors: {
+        'updatePrivacySettings': _i1.MethodConnector(
+          name: 'updatePrivacySettings',
+          params: {
+            'informationCollection': _i1.ParameterDescription(
+              name: 'informationCollection',
+              type: _i1.getType<bool?>(),
+              nullable: true,
+            ),
+            'automaticReminders': _i1.ParameterDescription(
+              name: 'automaticReminders',
+              type: _i1.getType<bool?>(),
+              nullable: true,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['theme'] as _i10.ThemeEndpoint).updatePrivacySettings(
+            session,
+            informationCollection: params['informationCollection'],
+            automaticReminders: params['automaticReminders'],
+          ),
+        )
+      },
+    );
+    modules['serverpod_auth'] = _i15.Endpoints()..initializeEndpoints(server);
   }
 }

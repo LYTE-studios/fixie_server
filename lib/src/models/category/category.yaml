@@ -5,4 +5,4 @@ fields:
   color: String
   icon: String?
   userId: int?
-
+  presetId: int?
