@@ -8,8 +8,7 @@
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
 
-library protocol; // ignore_for_file: no_leading_underscores_for_library_prefixes
-
+// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
@@ -34,11 +33,10 @@ import 'statistics/user_statistics.dart' as _i21;
 import 'theme/app_theme.dart' as _i22;
 import 'users/user.dart' as _i23;
 import 'users/user_profile_dto.dart' as _i24;
-import 'protocol.dart' as _i25;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i26;
-import 'package:fixie_server/src/generated/category/category.dart' as _i27;
-import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i28;
-import 'package:fixie_server/src/generated/payment/purchase_item.dart' as _i29;
+import 'package:fixie_server/src/generated/goals/goal.dart' as _i25;
+import 'package:fixie_server/src/generated/category/category.dart' as _i26;
+import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i27;
+import 'package:fixie_server/src/generated/payment/purchase_item.dart' as _i28;
 export 'category/category.dart';
 export 'category/create_category_dto.dart';
 export 'core/endpoint_exception.dart';
@@ -821,13 +819,13 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i25.JournalLog>?>()) {
+    if (t == _i1.getType<List<_i12.JournalLog>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i25.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i12.JournalLog>(e)).toList()
           : null) as dynamic;
     }
-    if (t == List<_i25.JournalLog>) {
-      return (data as List).map((e) => deserialize<_i25.JournalLog>(e)).toList()
+    if (t == List<_i12.JournalLog>) {
+      return (data as List).map((e) => deserialize<_i12.JournalLog>(e)).toList()
           as dynamic;
     }
     if (t == _i1.getType<List<String>?>()) {
@@ -835,10 +833,10 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<String>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i25.RegistrationLog>?>()) {
+    if (t == _i1.getType<List<_i13.RegistrationLog>?>()) {
       return (data != null
           ? (data as List)
-              .map((e) => deserialize<_i25.RegistrationLog>(e))
+              .map((e) => deserialize<_i13.RegistrationLog>(e))
               .toList()
           : null) as dynamic;
     }
@@ -852,43 +850,43 @@ class Protocol extends _i1.SerializationManagerServer {
               MapEntry(deserialize<int>(e['k']), deserialize<double>(e['v']))))
           as dynamic;
     }
-    if (t == _i1.getType<List<_i25.Goal>?>()) {
+    if (t == _i1.getType<List<_i10.Goal>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i25.Goal>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i10.Goal>(e)).toList()
           : null) as dynamic;
     }
-    if (t == _i1.getType<List<_i25.PurchaseItem>?>()) {
+    if (t == _i1.getType<List<_i17.PurchaseItem>?>()) {
       return (data != null
           ? (data as List)
-              .map((e) => deserialize<_i25.PurchaseItem>(e))
+              .map((e) => deserialize<_i17.PurchaseItem>(e))
               .toList()
           : null) as dynamic;
     }
-    if (t == List<_i26.Goal>) {
-      return (data as List).map((e) => deserialize<_i26.Goal>(e)).toList()
+    if (t == List<_i25.Goal>) {
+      return (data as List).map((e) => deserialize<_i25.Goal>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i27.Category>) {
-      return (data as List).map((e) => deserialize<_i27.Category>(e)).toList()
+    if (t == List<_i26.Category>) {
+      return (data as List).map((e) => deserialize<_i26.Category>(e)).toList()
           as dynamic;
     }
-    if (t == _i1.getType<List<_i26.Goal>?>()) {
+    if (t == _i1.getType<List<_i25.Goal>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i26.Goal>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i25.Goal>(e)).toList()
           : null) as dynamic;
     }
     if (t == Map<String, String?>) {
       return (data as Map).map((k, v) =>
           MapEntry(deserialize<String>(k), deserialize<String?>(v))) as dynamic;
     }
-    if (t == _i1.getType<List<_i28.JournalLog>?>()) {
+    if (t == _i1.getType<List<_i27.JournalLog>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i28.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i27.JournalLog>(e)).toList()
           : null) as dynamic;
     }
-    if (t == List<_i29.PurchaseItem>) {
+    if (t == List<_i28.PurchaseItem>) {
       return (data as List)
-          .map((e) => deserialize<_i29.PurchaseItem>(e))
+          .map((e) => deserialize<_i28.PurchaseItem>(e))
           .toList() as dynamic;
     }
     try {
@@ -980,75 +978,79 @@ class Protocol extends _i1.SerializationManagerServer {
 
   @override
   dynamic deserializeByClassName(Map<String, dynamic> data) {
-    if (data['className'] == 'Category') {
+    var dataClassName = data['className'];
+    if (dataClassName is! String) {
+      return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'Category') {
       return deserialize<_i4.Category>(data['data']);
     }
-    if (data['className'] == 'CreateCategoryDto') {
+    if (dataClassName == 'CreateCategoryDto') {
       return deserialize<_i5.CreateCategoryDto>(data['data']);
     }
-    if (data['className'] == 'EndpointException') {
+    if (dataClassName == 'EndpointException') {
       return deserialize<_i6.EndpointException>(data['data']);
     }
-    if (data['className'] == 'ErrorType') {
+    if (dataClassName == 'ErrorType') {
       return deserialize<_i7.ErrorType>(data['data']);
     }
-    if (data['className'] == 'IdDto') {
+    if (dataClassName == 'IdDto') {
       return deserialize<_i8.IdDto>(data['data']);
     }
-    if (data['className'] == 'CreateGoalDto') {
+    if (dataClassName == 'CreateGoalDto') {
       return deserialize<_i9.CreateGoalDto>(data['data']);
     }
-    if (data['className'] == 'Goal') {
+    if (dataClassName == 'Goal') {
       return deserialize<_i10.Goal>(data['data']);
     }
-    if (data['className'] == 'JournalListDto') {
+    if (dataClassName == 'JournalListDto') {
       return deserialize<_i11.JournalListDto>(data['data']);
     }
-    if (data['className'] == 'JournalLog') {
+    if (dataClassName == 'JournalLog') {
       return deserialize<_i12.JournalLog>(data['data']);
     }
-    if (data['className'] == 'RegistrationLog') {
+    if (dataClassName == 'RegistrationLog') {
       return deserialize<_i13.RegistrationLog>(data['data']);
     }
-    if (data['className'] == 'UserLocales') {
+    if (dataClassName == 'UserLocales') {
       return deserialize<_i14.UserLocales>(data['data']);
     }
-    if (data['className'] == 'Notification') {
+    if (dataClassName == 'Notification') {
       return deserialize<_i15.Notification>(data['data']);
     }
-    if (data['className'] == 'Benefit') {
+    if (dataClassName == 'Benefit') {
       return deserialize<_i16.Benefit>(data['data']);
     }
-    if (data['className'] == 'PurchaseItem') {
+    if (dataClassName == 'PurchaseItem') {
       return deserialize<_i17.PurchaseItem>(data['data']);
     }
-    if (data['className'] == 'Repetition') {
+    if (dataClassName == 'Repetition') {
       return deserialize<_i18.Repetition>(data['data']);
     }
-    if (data['className'] == 'GoalStatistics') {
+    if (dataClassName == 'GoalStatistics') {
       return deserialize<_i19.GoalStatistics>(data['data']);
     }
-    if (data['className'] == 'Statistics') {
+    if (dataClassName == 'Statistics') {
       return deserialize<_i20.Statistics>(data['data']);
     }
-    if (data['className'] == 'UserStatistics') {
+    if (dataClassName == 'UserStatistics') {
       return deserialize<_i21.UserStatistics>(data['data']);
     }
-    if (data['className'] == 'AppTheme') {
+    if (dataClassName == 'AppTheme') {
       return deserialize<_i22.AppTheme>(data['data']);
     }
-    if (data['className'] == 'User') {
+    if (dataClassName == 'User') {
       return deserialize<_i23.User>(data['data']);
     }
-    if (data['className'] == 'UserProfileDto') {
+    if (dataClassName == 'UserProfileDto') {
       return deserialize<_i24.UserProfileDto>(data['data']);
     }
-    if (data['className'].startsWith('serverpod.')) {
-      data['className'] = data['className'].substring(10);
+    if (dataClassName.startsWith('serverpod.')) {
+      data['className'] = dataClassName.substring(10);
       return _i2.Protocol().deserializeByClassName(data);
     }
-    if (data['className'].startsWith('serverpod_auth.')) {
-      data['className'] = data['className'].substring(15);
+    if (dataClassName.startsWith('serverpod_auth.')) {
+      data['className'] = dataClassName.substring(15);
       return _i3.Protocol().deserializeByClassName(data);
     }
     return super.deserializeByClassName(data);

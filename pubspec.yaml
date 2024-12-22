@@ -8,10 +8,10 @@ environment:
 
 dependencies:
   # Serverpod
-  serverpod: ^2.1.4
-  serverpod_auth_server: ^2.1.4
-  serverpod_cloud_storage_s3: ^2.1.4
-  serverpod_serialization: ^2.1.4
+  serverpod: 2.3.0
+  serverpod_auth_server: 2.3.0
+  serverpod_cloud_storage_s3: 2.3.0
+  serverpod_serialization: 2.3.0
 
   # Firebase
   firebase_cloud_messaging_flutter: ^1.0.6
@@ -28,4 +28,4 @@ dependencies:
   intl: any
 
 dev_dependencies:
-  lints: ^3.0.0
+  lints: ^5.1.1

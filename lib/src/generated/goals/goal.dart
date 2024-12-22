@@ -10,7 +10,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../protocol.dart' as _i2;
+import '../users/user.dart' as _i2;
+import '../category/category.dart' as _i3;
+import '../shared/repetition.dart' as _i4;
+import '../journals/journal_log.dart' as _i5;
 
 abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
   Goal._({
@@ -44,13 +47,13 @@ abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
     required int target,
     String? unit,
     required int categoryId,
-    _i2.Category? category,
-    _i2.Repetition? repetition,
+    _i3.Category? category,
+    _i4.Repetition? repetition,
     int? repeatEvery,
     List<int>? weekdays,
     DateTime? end,
     List<DateTime>? reminders,
-    List<_i2.JournalLog>? journal,
+    List<_i5.JournalLog>? journal,
     int? highestStreak,
     required bool active,
     required bool archived,
@@ -72,11 +75,11 @@ abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
       categoryId: jsonSerialization['categoryId'] as int,
       category: jsonSerialization['category'] == null
           ? null
-          : _i2.Category.fromJson(
+          : _i3.Category.fromJson(
               (jsonSerialization['category'] as Map<String, dynamic>)),
       repetition: jsonSerialization['repetition'] == null
           ? null
-          : _i2.Repetition.fromJson((jsonSerialization['repetition'] as int)),
+          : _i4.Repetition.fromJson((jsonSerialization['repetition'] as int)),
       repeatEvery: jsonSerialization['repeatEvery'] as int?,
       weekdays: (jsonSerialization['weekdays'] as List?)
           ?.map((e) => e as int)
@@ -88,7 +91,7 @@ abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
           ?.map((e) => _i1.DateTimeJsonExtension.fromJson(e))
           .toList(),
       journal: (jsonSerialization['journal'] as List?)
-          ?.map((e) => _i2.JournalLog.fromJson((e as Map<String, dynamic>)))
+          ?.map((e) => _i5.JournalLog.fromJson((e as Map<String, dynamic>)))
           .toList(),
       highestStreak: jsonSerialization['highestStreak'] as int?,
       active: jsonSerialization['active'] as bool,
@@ -120,9 +123,9 @@ abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
 
   int categoryId;
 
-  _i2.Category? category;
+  _i3.Category? category;
 
-  _i2.Repetition? repetition;
+  _i4.Repetition? repetition;
 
   int? repeatEvery;
 
@@ -132,7 +135,7 @@ abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
 
   List<DateTime>? reminders;
 
-  List<_i2.JournalLog>? journal;
+  List<_i5.JournalLog>? journal;
 
   int? highestStreak;
 
@@ -154,13 +157,13 @@ abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
     int? target,
     String? unit,
     int? categoryId,
-    _i2.Category? category,
-    _i2.Repetition? repetition,
+    _i3.Category? category,
+    _i4.Repetition? repetition,
     int? repeatEvery,
     List<int>? weekdays,
     DateTime? end,
     List<DateTime>? reminders,
-    List<_i2.JournalLog>? journal,
+    List<_i5.JournalLog>? journal,
     int? highestStreak,
     bool? active,
     bool? archived,
@@ -222,8 +225,8 @@ abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
 
   static GoalInclude include({
     _i2.UserInclude? user,
-    _i2.CategoryInclude? category,
-    _i2.JournalLogIncludeList? journal,
+    _i3.CategoryInclude? category,
+    _i5.JournalLogIncludeList? journal,
   }) {
     return GoalInclude._(
       user: user,
@@ -270,13 +273,13 @@ class _GoalImpl extends Goal {
     required int target,
     String? unit,
     required int categoryId,
-    _i2.Category? category,
-    _i2.Repetition? repetition,
+    _i3.Category? category,
+    _i4.Repetition? repetition,
     int? repeatEvery,
     List<int>? weekdays,
     DateTime? end,
     List<DateTime>? reminders,
-    List<_i2.JournalLog>? journal,
+    List<_i5.JournalLog>? journal,
     int? highestStreak,
     required bool active,
     required bool archived,
@@ -335,8 +338,8 @@ class _GoalImpl extends Goal {
       unit: unit is String? ? unit : this.unit,
       categoryId: categoryId ?? this.categoryId,
       category:
-          category is _i2.Category? ? category : this.category?.copyWith(),
-      repetition: repetition is _i2.Repetition? ? repetition : this.repetition,
+          category is _i3.Category? ? category : this.category?.copyWith(),
+      repetition: repetition is _i4.Repetition? ? repetition : this.repetition,
       repeatEvery: repeatEvery is int? ? repeatEvery : this.repeatEvery,
       weekdays: weekdays is List<int>?
           ? weekdays
@@ -345,7 +348,7 @@ class _GoalImpl extends Goal {
       reminders: reminders is List<DateTime>?
           ? reminders
           : this.reminders?.map((e0) => e0).toList(),
-      journal: journal is List<_i2.JournalLog>?
+      journal: journal is List<_i5.JournalLog>?
           ? journal
           : this.journal?.map((e0) => e0.copyWith()).toList(),
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
@@ -435,9 +438,9 @@ class GoalTable extends _i1.Table {
 
   late final _i1.ColumnInt categoryId;
 
-  _i2.CategoryTable? _category;
+  _i3.CategoryTable? _category;
 
-  late final _i1.ColumnEnum<_i2.Repetition> repetition;
+  late final _i1.ColumnEnum<_i4.Repetition> repetition;
 
   late final _i1.ColumnInt repeatEvery;
 
@@ -447,9 +450,9 @@ class GoalTable extends _i1.Table {
 
   late final _i1.ColumnSerializable reminders;
 
-  _i2.JournalLogTable? ___journal;
+  _i5.JournalLogTable? ___journal;
 
-  _i1.ManyRelation<_i2.JournalLogTable>? _journal;
+  _i1.ManyRelation<_i5.JournalLogTable>? _journal;
 
   late final _i1.ColumnInt highestStreak;
 
@@ -472,45 +475,45 @@ class GoalTable extends _i1.Table {
     return _user!;
   }
 
-  _i2.CategoryTable get category {
+  _i3.CategoryTable get category {
     if (_category != null) return _category!;
     _category = _i1.createRelationTable(
       relationFieldName: 'category',
       field: Goal.t.categoryId,
-      foreignField: _i2.Category.t.id,
+      foreignField: _i3.Category.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.CategoryTable(tableRelation: foreignTableRelation),
+          _i3.CategoryTable(tableRelation: foreignTableRelation),
     );
     return _category!;
   }
 
-  _i2.JournalLogTable get __journal {
+  _i5.JournalLogTable get __journal {
     if (___journal != null) return ___journal!;
     ___journal = _i1.createRelationTable(
       relationFieldName: '__journal',
       field: Goal.t.id,
-      foreignField: _i2.JournalLog.t.goalId,
+      foreignField: _i5.JournalLog.t.goalId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.JournalLogTable(tableRelation: foreignTableRelation),
+          _i5.JournalLogTable(tableRelation: foreignTableRelation),
     );
     return ___journal!;
   }
 
-  _i1.ManyRelation<_i2.JournalLogTable> get journal {
+  _i1.ManyRelation<_i5.JournalLogTable> get journal {
     if (_journal != null) return _journal!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'journal',
       field: Goal.t.id,
-      foreignField: _i2.JournalLog.t.goalId,
+      foreignField: _i5.JournalLog.t.goalId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.JournalLogTable(tableRelation: foreignTableRelation),
+          _i5.JournalLogTable(tableRelation: foreignTableRelation),
     );
-    _journal = _i1.ManyRelation<_i2.JournalLogTable>(
+    _journal = _i1.ManyRelation<_i5.JournalLogTable>(
       tableWithRelations: relationTable,
-      table: _i2.JournalLogTable(
+      table: _i5.JournalLogTable(
           tableRelation: relationTable.tableRelation!.lastRelation),
     );
     return _journal!;
@@ -554,8 +557,8 @@ class GoalTable extends _i1.Table {
 class GoalInclude extends _i1.IncludeObject {
   GoalInclude._({
     _i2.UserInclude? user,
-    _i2.CategoryInclude? category,
-    _i2.JournalLogIncludeList? journal,
+    _i3.CategoryInclude? category,
+    _i5.JournalLogIncludeList? journal,
   }) {
     _user = user;
     _category = category;
@@ -564,9 +567,9 @@ class GoalInclude extends _i1.IncludeObject {
 
   _i2.UserInclude? _user;
 
-  _i2.CategoryInclude? _category;
+  _i3.CategoryInclude? _category;
 
-  _i2.JournalLogIncludeList? _journal;
+  _i5.JournalLogIncludeList? _journal;
 
   @override
   Map<String, _i1.Include?> get includes => {
@@ -611,7 +614,7 @@ class GoalRepository {
   final detachRow = const GoalDetachRowRepository._();
 
   Future<List<Goal>> find(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<GoalTable>? where,
     int? limit,
     int? offset,
@@ -621,20 +624,20 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return databaseAccessor.db.find<Goal>(
+    return session.db.find<Goal>(
       where: where?.call(Goal.t),
       orderBy: orderBy?.call(Goal.t),
       orderByList: orderByList?.call(Goal.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
       include: include,
     );
   }
 
   Future<Goal?> findFirstRow(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<GoalTable>? where,
     int? offset,
     _i1.OrderByBuilder<GoalTable>? orderBy,
@@ -643,121 +646,121 @@ class GoalRepository {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return databaseAccessor.db.findFirstRow<Goal>(
+    return session.db.findFirstRow<Goal>(
       where: where?.call(Goal.t),
       orderBy: orderBy?.call(Goal.t),
       orderByList: orderByList?.call(Goal.t),
       orderDescending: orderDescending,
       offset: offset,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
       include: include,
     );
   }
 
   Future<Goal?> findById(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
     GoalInclude? include,
   }) async {
-    return databaseAccessor.db.findById<Goal>(
+    return session.db.findById<Goal>(
       id,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
       include: include,
     );
   }
 
   Future<List<Goal>> insert(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<Goal> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.insert<Goal>(
+    return session.db.insert<Goal>(
       rows,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<Goal> insertRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     Goal row, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.insertRow<Goal>(
+    return session.db.insertRow<Goal>(
       row,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<Goal>> update(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<Goal> rows, {
     _i1.ColumnSelections<GoalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.update<Goal>(
+    return session.db.update<Goal>(
       rows,
       columns: columns?.call(Goal.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<Goal> updateRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     Goal row, {
     _i1.ColumnSelections<GoalTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.updateRow<Goal>(
+    return session.db.updateRow<Goal>(
       row,
       columns: columns?.call(Goal.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<Goal>> delete(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<Goal> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.delete<Goal>(
+    return session.db.delete<Goal>(
       rows,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<Goal> deleteRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     Goal row, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.deleteRow<Goal>(
+    return session.db.deleteRow<Goal>(
       row,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<Goal>> deleteWhere(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     required _i1.WhereExpressionBuilder<GoalTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.deleteWhere<Goal>(
+    return session.db.deleteWhere<Goal>(
       where: where(Goal.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<int> count(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<GoalTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.count<Goal>(
+    return session.db.count<Goal>(
       where: where?.call(Goal.t),
       limit: limit,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 }
@@ -766,9 +769,9 @@ class GoalAttachRepository {
   const GoalAttachRepository._();
 
   Future<void> journal(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     Goal goal,
-    List<_i2.JournalLog> journalLog, {
+    List<_i5.JournalLog> journalLog, {
     _i1.Transaction? transaction,
   }) async {
     if (journalLog.any((e) => e.id == null)) {
@@ -780,10 +783,10 @@ class GoalAttachRepository {
 
     var $journalLog =
         journalLog.map((e) => e.copyWith(goalId: goal.id)).toList();
-    await databaseAccessor.db.update<_i2.JournalLog>(
+    await session.db.update<_i5.JournalLog>(
       $journalLog,
-      columns: [_i2.JournalLog.t.goalId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      columns: [_i5.JournalLog.t.goalId],
+      transaction: transaction,
     );
   }
 }
@@ -792,7 +795,7 @@ class GoalAttachRowRepository {
   const GoalAttachRowRepository._();
 
   Future<void> user(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     Goal goal,
     _i2.User user, {
     _i1.Transaction? transaction,
@@ -805,17 +808,17 @@ class GoalAttachRowRepository {
     }
 
     var $goal = goal.copyWith(userId: user.id);
-    await databaseAccessor.db.updateRow<Goal>(
+    await session.db.updateRow<Goal>(
       $goal,
       columns: [Goal.t.userId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<void> category(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     Goal goal,
-    _i2.Category category, {
+    _i3.Category category, {
     _i1.Transaction? transaction,
   }) async {
     if (goal.id == null) {
@@ -826,17 +829,17 @@ class GoalAttachRowRepository {
     }
 
     var $goal = goal.copyWith(categoryId: category.id);
-    await databaseAccessor.db.updateRow<Goal>(
+    await session.db.updateRow<Goal>(
       $goal,
       columns: [Goal.t.categoryId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<void> journal(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     Goal goal,
-    _i2.JournalLog journalLog, {
+    _i5.JournalLog journalLog, {
     _i1.Transaction? transaction,
   }) async {
     if (journalLog.id == null) {
@@ -847,10 +850,10 @@ class GoalAttachRowRepository {
     }
 
     var $journalLog = journalLog.copyWith(goalId: goal.id);
-    await databaseAccessor.db.updateRow<_i2.JournalLog>(
+    await session.db.updateRow<_i5.JournalLog>(
       $journalLog,
-      columns: [_i2.JournalLog.t.goalId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      columns: [_i5.JournalLog.t.goalId],
+      transaction: transaction,
     );
   }
 }
@@ -859,8 +862,8 @@ class GoalDetachRepository {
   const GoalDetachRepository._();
 
   Future<void> journal(
-    _i1.DatabaseAccessor databaseAccessor,
-    List<_i2.JournalLog> journalLog, {
+    _i1.Session session,
+    List<_i5.JournalLog> journalLog, {
     _i1.Transaction? transaction,
   }) async {
     if (journalLog.any((e) => e.id == null)) {
@@ -868,10 +871,10 @@ class GoalDetachRepository {
     }
 
     var $journalLog = journalLog.map((e) => e.copyWith(goalId: null)).toList();
-    await databaseAccessor.db.update<_i2.JournalLog>(
+    await session.db.update<_i5.JournalLog>(
       $journalLog,
-      columns: [_i2.JournalLog.t.goalId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      columns: [_i5.JournalLog.t.goalId],
+      transaction: transaction,
     );
   }
 }
@@ -880,8 +883,8 @@ class GoalDetachRowRepository {
   const GoalDetachRowRepository._();
 
   Future<void> journal(
-    _i1.DatabaseAccessor databaseAccessor,
-    _i2.JournalLog journalLog, {
+    _i1.Session session,
+    _i5.JournalLog journalLog, {
     _i1.Transaction? transaction,
   }) async {
     if (journalLog.id == null) {
@@ -889,10 +892,10 @@ class GoalDetachRowRepository {
     }
 
     var $journalLog = journalLog.copyWith(goalId: null);
-    await databaseAccessor.db.updateRow<_i2.JournalLog>(
+    await session.db.updateRow<_i5.JournalLog>(
       $journalLog,
-      columns: [_i2.JournalLog.t.goalId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      columns: [_i5.JournalLog.t.goalId],
+      transaction: transaction,
     );
   }
 }

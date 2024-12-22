@@ -292,7 +292,7 @@ class AppThemeRepository {
   const AppThemeRepository._();
 
   Future<List<AppTheme>> find(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<AppThemeTable>? where,
     int? limit,
     int? offset,
@@ -301,19 +301,19 @@ class AppThemeRepository {
     _i1.OrderByListBuilder<AppThemeTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.find<AppTheme>(
+    return session.db.find<AppTheme>(
       where: where?.call(AppTheme.t),
       orderBy: orderBy?.call(AppTheme.t),
       orderByList: orderByList?.call(AppTheme.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<AppTheme?> findFirstRow(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<AppThemeTable>? where,
     int? offset,
     _i1.OrderByBuilder<AppThemeTable>? orderBy,
@@ -321,118 +321,118 @@ class AppThemeRepository {
     _i1.OrderByListBuilder<AppThemeTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.findFirstRow<AppTheme>(
+    return session.db.findFirstRow<AppTheme>(
       where: where?.call(AppTheme.t),
       orderBy: orderBy?.call(AppTheme.t),
       orderByList: orderByList?.call(AppTheme.t),
       orderDescending: orderDescending,
       offset: offset,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<AppTheme?> findById(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.findById<AppTheme>(
+    return session.db.findById<AppTheme>(
       id,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<AppTheme>> insert(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<AppTheme> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.insert<AppTheme>(
+    return session.db.insert<AppTheme>(
       rows,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<AppTheme> insertRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     AppTheme row, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.insertRow<AppTheme>(
+    return session.db.insertRow<AppTheme>(
       row,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<AppTheme>> update(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<AppTheme> rows, {
     _i1.ColumnSelections<AppThemeTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.update<AppTheme>(
+    return session.db.update<AppTheme>(
       rows,
       columns: columns?.call(AppTheme.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<AppTheme> updateRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     AppTheme row, {
     _i1.ColumnSelections<AppThemeTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.updateRow<AppTheme>(
+    return session.db.updateRow<AppTheme>(
       row,
       columns: columns?.call(AppTheme.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<AppTheme>> delete(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<AppTheme> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.delete<AppTheme>(
+    return session.db.delete<AppTheme>(
       rows,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<AppTheme> deleteRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     AppTheme row, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.deleteRow<AppTheme>(
+    return session.db.deleteRow<AppTheme>(
       row,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<AppTheme>> deleteWhere(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     required _i1.WhereExpressionBuilder<AppThemeTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.deleteWhere<AppTheme>(
+    return session.db.deleteWhere<AppTheme>(
       where: where(AppTheme.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<int> count(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<AppThemeTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.count<AppTheme>(
+    return session.db.count<AppTheme>(
       where: where?.call(AppTheme.t),
       limit: limit,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 }

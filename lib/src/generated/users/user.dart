@@ -11,7 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i2;
-import '../protocol.dart' as _i3;
+import '../goals/goal.dart' as _i3;
+import '../payment/purchase_item.dart' as _i4;
 
 abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
   User._({
@@ -36,7 +37,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
-    List<_i3.PurchaseItem>? purchases,
+    List<_i4.PurchaseItem>? purchases,
     int? highestStreak,
     String? picture,
     bool? hasPassedOnboarding,
@@ -61,7 +62,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
           ?.map((e) => _i3.Goal.fromJson((e as Map<String, dynamic>)))
           .toList(),
       purchases: (jsonSerialization['purchases'] as List?)
-          ?.map((e) => _i3.PurchaseItem.fromJson((e as Map<String, dynamic>)))
+          ?.map((e) => _i4.PurchaseItem.fromJson((e as Map<String, dynamic>)))
           .toList(),
       highestStreak: jsonSerialization['highestStreak'] as int?,
       picture: jsonSerialization['picture'] as String?,
@@ -91,7 +92,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
 
   List<_i3.Goal>? goals;
 
-  List<_i3.PurchaseItem>? purchases;
+  List<_i4.PurchaseItem>? purchases;
 
   int? highestStreak;
 
@@ -116,7 +117,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
-    List<_i3.PurchaseItem>? purchases,
+    List<_i4.PurchaseItem>? purchases,
     int? highestStreak,
     String? picture,
     bool? hasPassedOnboarding,
@@ -178,7 +179,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
   static UserInclude include({
     _i2.UserInfoInclude? userInfo,
     _i3.GoalIncludeList? goals,
-    _i3.PurchaseItemIncludeList? purchases,
+    _i4.PurchaseItemIncludeList? purchases,
   }) {
     return UserInclude._(
       userInfo: userInfo,
@@ -222,7 +223,7 @@ class _UserImpl extends User {
     _i2.UserInfo? userInfo,
     DateTime? birthday,
     List<_i3.Goal>? goals,
-    List<_i3.PurchaseItem>? purchases,
+    List<_i4.PurchaseItem>? purchases,
     int? highestStreak,
     String? picture,
     bool? hasPassedOnboarding,
@@ -271,7 +272,7 @@ class _UserImpl extends User {
       goals: goals is List<_i3.Goal>?
           ? goals
           : this.goals?.map((e0) => e0.copyWith()).toList(),
-      purchases: purchases is List<_i3.PurchaseItem>?
+      purchases: purchases is List<_i4.PurchaseItem>?
           ? purchases
           : this.purchases?.map((e0) => e0.copyWith()).toList(),
       highestStreak: highestStreak is int? ? highestStreak : this.highestStreak,
@@ -343,9 +344,9 @@ class UserTable extends _i1.Table {
 
   _i1.ManyRelation<_i3.GoalTable>? _goals;
 
-  _i3.PurchaseItemTable? ___purchases;
+  _i4.PurchaseItemTable? ___purchases;
 
-  _i1.ManyRelation<_i3.PurchaseItemTable>? _purchases;
+  _i1.ManyRelation<_i4.PurchaseItemTable>? _purchases;
 
   late final _i1.ColumnInt highestStreak;
 
@@ -387,15 +388,15 @@ class UserTable extends _i1.Table {
     return ___goals!;
   }
 
-  _i3.PurchaseItemTable get __purchases {
+  _i4.PurchaseItemTable get __purchases {
     if (___purchases != null) return ___purchases!;
     ___purchases = _i1.createRelationTable(
       relationFieldName: '__purchases',
       field: User.t.id,
-      foreignField: _i3.PurchaseItem.t.userId,
+      foreignField: _i4.PurchaseItem.t.userId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.PurchaseItemTable(tableRelation: foreignTableRelation),
+          _i4.PurchaseItemTable(tableRelation: foreignTableRelation),
     );
     return ___purchases!;
   }
@@ -418,19 +419,19 @@ class UserTable extends _i1.Table {
     return _goals!;
   }
 
-  _i1.ManyRelation<_i3.PurchaseItemTable> get purchases {
+  _i1.ManyRelation<_i4.PurchaseItemTable> get purchases {
     if (_purchases != null) return _purchases!;
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'purchases',
       field: User.t.id,
-      foreignField: _i3.PurchaseItem.t.userId,
+      foreignField: _i4.PurchaseItem.t.userId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i3.PurchaseItemTable(tableRelation: foreignTableRelation),
+          _i4.PurchaseItemTable(tableRelation: foreignTableRelation),
     );
-    _purchases = _i1.ManyRelation<_i3.PurchaseItemTable>(
+    _purchases = _i1.ManyRelation<_i4.PurchaseItemTable>(
       tableWithRelations: relationTable,
-      table: _i3.PurchaseItemTable(
+      table: _i4.PurchaseItemTable(
           tableRelation: relationTable.tableRelation!.lastRelation),
     );
     return _purchases!;
@@ -469,7 +470,7 @@ class UserInclude extends _i1.IncludeObject {
   UserInclude._({
     _i2.UserInfoInclude? userInfo,
     _i3.GoalIncludeList? goals,
-    _i3.PurchaseItemIncludeList? purchases,
+    _i4.PurchaseItemIncludeList? purchases,
   }) {
     _userInfo = userInfo;
     _goals = goals;
@@ -480,7 +481,7 @@ class UserInclude extends _i1.IncludeObject {
 
   _i3.GoalIncludeList? _goals;
 
-  _i3.PurchaseItemIncludeList? _purchases;
+  _i4.PurchaseItemIncludeList? _purchases;
 
   @override
   Map<String, _i1.Include?> get includes => {
@@ -521,7 +522,7 @@ class UserRepository {
   final attachRow = const UserAttachRowRepository._();
 
   Future<List<User>> find(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<UserTable>? where,
     int? limit,
     int? offset,
@@ -531,20 +532,20 @@ class UserRepository {
     _i1.Transaction? transaction,
     UserInclude? include,
   }) async {
-    return databaseAccessor.db.find<User>(
+    return session.db.find<User>(
       where: where?.call(User.t),
       orderBy: orderBy?.call(User.t),
       orderByList: orderByList?.call(User.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
       include: include,
     );
   }
 
   Future<User?> findFirstRow(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<UserTable>? where,
     int? offset,
     _i1.OrderByBuilder<UserTable>? orderBy,
@@ -553,121 +554,121 @@ class UserRepository {
     _i1.Transaction? transaction,
     UserInclude? include,
   }) async {
-    return databaseAccessor.db.findFirstRow<User>(
+    return session.db.findFirstRow<User>(
       where: where?.call(User.t),
       orderBy: orderBy?.call(User.t),
       orderByList: orderByList?.call(User.t),
       orderDescending: orderDescending,
       offset: offset,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
       include: include,
     );
   }
 
   Future<User?> findById(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
     UserInclude? include,
   }) async {
-    return databaseAccessor.db.findById<User>(
+    return session.db.findById<User>(
       id,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
       include: include,
     );
   }
 
   Future<List<User>> insert(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<User> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.insert<User>(
+    return session.db.insert<User>(
       rows,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<User> insertRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     User row, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.insertRow<User>(
+    return session.db.insertRow<User>(
       row,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<User>> update(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<User> rows, {
     _i1.ColumnSelections<UserTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.update<User>(
+    return session.db.update<User>(
       rows,
       columns: columns?.call(User.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<User> updateRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     User row, {
     _i1.ColumnSelections<UserTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.updateRow<User>(
+    return session.db.updateRow<User>(
       row,
       columns: columns?.call(User.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<User>> delete(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<User> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.delete<User>(
+    return session.db.delete<User>(
       rows,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<User> deleteRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     User row, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.deleteRow<User>(
+    return session.db.deleteRow<User>(
       row,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<User>> deleteWhere(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     required _i1.WhereExpressionBuilder<UserTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.deleteWhere<User>(
+    return session.db.deleteWhere<User>(
       where: where(User.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<int> count(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<UserTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.count<User>(
+    return session.db.count<User>(
       where: where?.call(User.t),
       limit: limit,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 }
@@ -676,7 +677,7 @@ class UserAttachRepository {
   const UserAttachRepository._();
 
   Future<void> goals(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     User user,
     List<_i3.Goal> goal, {
     _i1.Transaction? transaction,
@@ -689,17 +690,17 @@ class UserAttachRepository {
     }
 
     var $goal = goal.map((e) => e.copyWith(userId: user.id)).toList();
-    await databaseAccessor.db.update<_i3.Goal>(
+    await session.db.update<_i3.Goal>(
       $goal,
       columns: [_i3.Goal.t.userId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<void> purchases(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     User user,
-    List<_i3.PurchaseItem> purchaseItem, {
+    List<_i4.PurchaseItem> purchaseItem, {
     _i1.Transaction? transaction,
   }) async {
     if (purchaseItem.any((e) => e.id == null)) {
@@ -711,10 +712,10 @@ class UserAttachRepository {
 
     var $purchaseItem =
         purchaseItem.map((e) => e.copyWith(userId: user.id)).toList();
-    await databaseAccessor.db.update<_i3.PurchaseItem>(
+    await session.db.update<_i4.PurchaseItem>(
       $purchaseItem,
-      columns: [_i3.PurchaseItem.t.userId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      columns: [_i4.PurchaseItem.t.userId],
+      transaction: transaction,
     );
   }
 }
@@ -723,7 +724,7 @@ class UserAttachRowRepository {
   const UserAttachRowRepository._();
 
   Future<void> userInfo(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     User user,
     _i2.UserInfo userInfo, {
     _i1.Transaction? transaction,
@@ -736,15 +737,15 @@ class UserAttachRowRepository {
     }
 
     var $user = user.copyWith(userInfoId: userInfo.id);
-    await databaseAccessor.db.updateRow<User>(
+    await session.db.updateRow<User>(
       $user,
       columns: [User.t.userInfoId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<void> goals(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     User user,
     _i3.Goal goal, {
     _i1.Transaction? transaction,
@@ -757,17 +758,17 @@ class UserAttachRowRepository {
     }
 
     var $goal = goal.copyWith(userId: user.id);
-    await databaseAccessor.db.updateRow<_i3.Goal>(
+    await session.db.updateRow<_i3.Goal>(
       $goal,
       columns: [_i3.Goal.t.userId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<void> purchases(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     User user,
-    _i3.PurchaseItem purchaseItem, {
+    _i4.PurchaseItem purchaseItem, {
     _i1.Transaction? transaction,
   }) async {
     if (purchaseItem.id == null) {
@@ -778,10 +779,10 @@ class UserAttachRowRepository {
     }
 
     var $purchaseItem = purchaseItem.copyWith(userId: user.id);
-    await databaseAccessor.db.updateRow<_i3.PurchaseItem>(
+    await session.db.updateRow<_i4.PurchaseItem>(
       $purchaseItem,
-      columns: [_i3.PurchaseItem.t.userId],
-      transaction: transaction ?? databaseAccessor.transaction,
+      columns: [_i4.PurchaseItem.t.userId],
+      transaction: transaction,
     );
   }
 }

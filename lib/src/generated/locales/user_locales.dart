@@ -184,7 +184,7 @@ class UserLocalesRepository {
   const UserLocalesRepository._();
 
   Future<List<UserLocales>> find(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<UserLocalesTable>? where,
     int? limit,
     int? offset,
@@ -193,19 +193,19 @@ class UserLocalesRepository {
     _i1.OrderByListBuilder<UserLocalesTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.find<UserLocales>(
+    return session.db.find<UserLocales>(
       where: where?.call(UserLocales.t),
       orderBy: orderBy?.call(UserLocales.t),
       orderByList: orderByList?.call(UserLocales.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<UserLocales?> findFirstRow(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<UserLocalesTable>? where,
     int? offset,
     _i1.OrderByBuilder<UserLocalesTable>? orderBy,
@@ -213,118 +213,118 @@ class UserLocalesRepository {
     _i1.OrderByListBuilder<UserLocalesTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.findFirstRow<UserLocales>(
+    return session.db.findFirstRow<UserLocales>(
       where: where?.call(UserLocales.t),
       orderBy: orderBy?.call(UserLocales.t),
       orderByList: orderByList?.call(UserLocales.t),
       orderDescending: orderDescending,
       offset: offset,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<UserLocales?> findById(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.findById<UserLocales>(
+    return session.db.findById<UserLocales>(
       id,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<UserLocales>> insert(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<UserLocales> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.insert<UserLocales>(
+    return session.db.insert<UserLocales>(
       rows,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<UserLocales> insertRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     UserLocales row, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.insertRow<UserLocales>(
+    return session.db.insertRow<UserLocales>(
       row,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<UserLocales>> update(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<UserLocales> rows, {
     _i1.ColumnSelections<UserLocalesTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.update<UserLocales>(
+    return session.db.update<UserLocales>(
       rows,
       columns: columns?.call(UserLocales.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<UserLocales> updateRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     UserLocales row, {
     _i1.ColumnSelections<UserLocalesTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.updateRow<UserLocales>(
+    return session.db.updateRow<UserLocales>(
       row,
       columns: columns?.call(UserLocales.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<UserLocales>> delete(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     List<UserLocales> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.delete<UserLocales>(
+    return session.db.delete<UserLocales>(
       rows,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<UserLocales> deleteRow(
-    _i1.DatabaseAccessor databaseAccessor,
+    _i1.Session session,
     UserLocales row, {
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.deleteRow<UserLocales>(
+    return session.db.deleteRow<UserLocales>(
       row,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<List<UserLocales>> deleteWhere(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     required _i1.WhereExpressionBuilder<UserLocalesTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.deleteWhere<UserLocales>(
+    return session.db.deleteWhere<UserLocales>(
       where: where(UserLocales.t),
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 
   Future<int> count(
-    _i1.DatabaseAccessor databaseAccessor, {
+    _i1.Session session, {
     _i1.WhereExpressionBuilder<UserLocalesTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return databaseAccessor.db.count<UserLocales>(
+    return session.db.count<UserLocales>(
       where: where?.call(UserLocales.t),
       limit: limit,
-      transaction: transaction ?? databaseAccessor.transaction,
+      transaction: transaction,
     );
   }
 }
