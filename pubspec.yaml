@@ -4,7 +4,7 @@ version: 1.0.1
 homepage: https://fixie.world
 
 environment:
-  sdk: ^3.2.5
+  sdk: ^3.6.0
 
 dependencies:
   # Serverpod
