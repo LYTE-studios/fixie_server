@@ -25,6 +25,8 @@ journal:
 notification:
   - setFcmToken:
 payments:
+  - canStartTrial:
+  - startTrial:
   - fetchActivePurchases:
 profile:
   - updatePrivacySettings:

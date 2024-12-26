@@ -509,6 +509,26 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'payments',
       endpoint: endpoints['payments']!,
       methodConnectors: {
+        'canStartTrial': _i1.MethodConnector(
+          name: 'canStartTrial',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['payments'] as _i7.PaymentsEndpoint)
+                  .canStartTrial(session),
+        ),
+        'startTrial': _i1.MethodConnector(
+          name: 'startTrial',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['payments'] as _i7.PaymentsEndpoint)
+                  .startTrial(session),
+        ),
         'fetchActivePurchases': _i1.MethodConnector(
           name: 'fetchActivePurchases',
           params: {},
@@ -518,7 +538,7 @@ class Endpoints extends _i1.EndpointDispatch {
           ) async =>
               (endpoints['payments'] as _i7.PaymentsEndpoint)
                   .fetchActivePurchases(session),
-        )
+        ),
       },
     );
     connectors['profile'] = _i1.EndpointConnector(
