@@ -117,9 +117,18 @@ class ProfileEndpoint extends Endpoint {
       informationCollectionSetting: user.informationCollectionSetting ?? true,
       automaticRemindersSetting: user.automaticRemindersSetting ?? true,
       locale: locale,
+      archetype: user.archetype,
     );
 
     return userProfileData;
+  }
+
+  Future<void> setUserArchetype(Session session, Archetype archetype) async {
+    User? user = await AuthUtils.getAuthenticatedUser(session);
+
+    user.archetype = archetype;
+
+    await User.db.updateRow(session, user);
   }
 
   Future<int> setEmptyLocale(

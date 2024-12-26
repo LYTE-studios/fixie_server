@@ -10,3 +10,4 @@ fields:
   informationCollectionSetting: bool?
   automaticRemindersSetting: bool?
   locale: String?
+  archetype: Archetype?

@@ -1,0 +1,5 @@
+enum: Archetype
+values:
+    - seeker
+    - dreamer
+    - achiever

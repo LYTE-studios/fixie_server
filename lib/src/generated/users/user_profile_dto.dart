@@ -10,6 +10,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import '../users/archetype.dart' as _i2;
 
 abstract class UserProfileDto
     implements _i1.SerializableModel, _i1.ProtocolSerialization {
@@ -24,6 +25,7 @@ abstract class UserProfileDto
     this.informationCollectionSetting,
     this.automaticRemindersSetting,
     this.locale,
+    this.archetype,
   });
 
   factory UserProfileDto({
@@ -37,6 +39,7 @@ abstract class UserProfileDto
     bool? informationCollectionSetting,
     bool? automaticRemindersSetting,
     String? locale,
+    _i2.Archetype? archetype,
   }) = _UserProfileDtoImpl;
 
   factory UserProfileDto.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -55,6 +58,9 @@ abstract class UserProfileDto
       automaticRemindersSetting:
           jsonSerialization['automaticRemindersSetting'] as bool?,
       locale: jsonSerialization['locale'] as String?,
+      archetype: jsonSerialization['archetype'] == null
+          ? null
+          : _i2.Archetype.fromJson((jsonSerialization['archetype'] as int)),
     );
   }
 
@@ -78,6 +84,8 @@ abstract class UserProfileDto
 
   String? locale;
 
+  _i2.Archetype? archetype;
+
   UserProfileDto copyWith({
     String? name,
     DateTime? birthday,
@@ -89,6 +97,7 @@ abstract class UserProfileDto
     bool? informationCollectionSetting,
     bool? automaticRemindersSetting,
     String? locale,
+    _i2.Archetype? archetype,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -105,6 +114,7 @@ abstract class UserProfileDto
       if (automaticRemindersSetting != null)
         'automaticRemindersSetting': automaticRemindersSetting,
       if (locale != null) 'locale': locale,
+      if (archetype != null) 'archetype': archetype?.toJson(),
     };
   }
 
@@ -123,6 +133,7 @@ abstract class UserProfileDto
       if (automaticRemindersSetting != null)
         'automaticRemindersSetting': automaticRemindersSetting,
       if (locale != null) 'locale': locale,
+      if (archetype != null) 'archetype': archetype?.toJson(),
     };
   }
 
@@ -146,6 +157,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
     bool? informationCollectionSetting,
     bool? automaticRemindersSetting,
     String? locale,
+    _i2.Archetype? archetype,
   }) : super._(
           name: name,
           birthday: birthday,
@@ -157,6 +169,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
           informationCollectionSetting: informationCollectionSetting,
           automaticRemindersSetting: automaticRemindersSetting,
           locale: locale,
+          archetype: archetype,
         );
 
   @override
@@ -171,6 +184,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
     Object? informationCollectionSetting = _Undefined,
     Object? automaticRemindersSetting = _Undefined,
     Object? locale = _Undefined,
+    Object? archetype = _Undefined,
   }) {
     return UserProfileDto(
       name: name ?? this.name,
@@ -188,6 +202,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
           ? automaticRemindersSetting
           : this.automaticRemindersSetting,
       locale: locale is String? ? locale : this.locale,
+      archetype: archetype is _i2.Archetype? ? archetype : this.archetype,
     );
   }
 }

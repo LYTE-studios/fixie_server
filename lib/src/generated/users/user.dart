@@ -13,6 +13,7 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i2;
 import '../goals/goal.dart' as _i3;
 import '../payment/purchase_item.dart' as _i4;
+import '../users/archetype.dart' as _i5;
 
 abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
   User._({
@@ -29,6 +30,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     this.hasPassedGoalTutorial,
     this.informationCollectionSetting,
     this.automaticRemindersSetting,
+    this.archetype,
   });
 
   factory User({
@@ -45,6 +47,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     bool? hasPassedGoalTutorial,
     bool? informationCollectionSetting,
     bool? automaticRemindersSetting,
+    _i5.Archetype? archetype,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -74,6 +77,9 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
           jsonSerialization['informationCollectionSetting'] as bool?,
       automaticRemindersSetting:
           jsonSerialization['automaticRemindersSetting'] as bool?,
+      archetype: jsonSerialization['archetype'] == null
+          ? null
+          : _i5.Archetype.fromJson((jsonSerialization['archetype'] as int)),
     );
   }
 
@@ -108,6 +114,8 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
 
   bool? automaticRemindersSetting;
 
+  _i5.Archetype? archetype;
+
   @override
   _i1.Table get table => t;
 
@@ -125,6 +133,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     bool? hasPassedGoalTutorial,
     bool? informationCollectionSetting,
     bool? automaticRemindersSetting,
+    _i5.Archetype? archetype,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -147,6 +156,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
         'informationCollectionSetting': informationCollectionSetting,
       if (automaticRemindersSetting != null)
         'automaticRemindersSetting': automaticRemindersSetting,
+      if (archetype != null) 'archetype': archetype?.toJson(),
     };
   }
 
@@ -173,6 +183,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
         'informationCollectionSetting': informationCollectionSetting,
       if (automaticRemindersSetting != null)
         'automaticRemindersSetting': automaticRemindersSetting,
+      if (archetype != null) 'archetype': archetype?.toJson(),
     };
   }
 
@@ -231,6 +242,7 @@ class _UserImpl extends User {
     bool? hasPassedGoalTutorial,
     bool? informationCollectionSetting,
     bool? automaticRemindersSetting,
+    _i5.Archetype? archetype,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
@@ -245,6 +257,7 @@ class _UserImpl extends User {
           hasPassedGoalTutorial: hasPassedGoalTutorial,
           informationCollectionSetting: informationCollectionSetting,
           automaticRemindersSetting: automaticRemindersSetting,
+          archetype: archetype,
         );
 
   @override
@@ -262,6 +275,7 @@ class _UserImpl extends User {
     Object? hasPassedGoalTutorial = _Undefined,
     Object? informationCollectionSetting = _Undefined,
     Object? automaticRemindersSetting = _Undefined,
+    Object? archetype = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -290,6 +304,7 @@ class _UserImpl extends User {
       automaticRemindersSetting: automaticRemindersSetting is bool?
           ? automaticRemindersSetting
           : this.automaticRemindersSetting,
+      archetype: archetype is _i5.Archetype? ? archetype : this.archetype,
     );
   }
 }
@@ -332,6 +347,11 @@ class UserTable extends _i1.Table {
       'automaticRemindersSetting',
       this,
     );
+    archetype = _i1.ColumnEnum(
+      'archetype',
+      this,
+      _i1.EnumSerialization.byIndex,
+    );
   }
 
   late final _i1.ColumnInt userInfoId;
@@ -361,6 +381,8 @@ class UserTable extends _i1.Table {
   late final _i1.ColumnBool informationCollectionSetting;
 
   late final _i1.ColumnBool automaticRemindersSetting;
+
+  late final _i1.ColumnEnum<_i5.Archetype> archetype;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -449,6 +471,7 @@ class UserTable extends _i1.Table {
         hasPassedGoalTutorial,
         informationCollectionSetting,
         automaticRemindersSetting,
+        archetype,
       ];
 
   @override

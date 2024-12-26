@@ -33,6 +33,7 @@ profile:
   - deleteAccount:
   - createUser:
   - getProfileData:
+  - setUserArchetype:
   - setEmptyLocale:
   - updateLocale:
   - updateBirthday:

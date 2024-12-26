@@ -31,12 +31,13 @@ import 'statistics/goal_statistics.dart' as _i19;
 import 'statistics/statistics.dart' as _i20;
 import 'statistics/user_statistics.dart' as _i21;
 import 'theme/app_theme.dart' as _i22;
-import 'users/user.dart' as _i23;
-import 'users/user_profile_dto.dart' as _i24;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i25;
-import 'package:fixie_server/src/generated/category/category.dart' as _i26;
-import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i27;
-import 'package:fixie_server/src/generated/payment/purchase_item.dart' as _i28;
+import 'users/archetype.dart' as _i23;
+import 'users/user.dart' as _i24;
+import 'users/user_profile_dto.dart' as _i25;
+import 'package:fixie_server/src/generated/goals/goal.dart' as _i26;
+import 'package:fixie_server/src/generated/category/category.dart' as _i27;
+import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i28;
+import 'package:fixie_server/src/generated/payment/purchase_item.dart' as _i29;
 export 'category/category.dart';
 export 'category/create_category_dto.dart';
 export 'core/endpoint_exception.dart';
@@ -56,6 +57,7 @@ export 'statistics/goal_statistics.dart';
 export 'statistics/statistics.dart';
 export 'statistics/user_statistics.dart';
 export 'theme/app_theme.dart';
+export 'users/archetype.dart';
 export 'users/user.dart';
 export 'users/user_profile_dto.dart';
 
@@ -269,6 +271,12 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.boolean,
           isNullable: true,
           dartType: 'bool?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'archetype',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'protocol:Archetype?',
         ),
       ],
       foreignKeys: [
@@ -730,11 +738,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i22.AppTheme) {
       return _i22.AppTheme.fromJson(data) as T;
     }
-    if (t == _i23.User) {
-      return _i23.User.fromJson(data) as T;
+    if (t == _i23.Archetype) {
+      return _i23.Archetype.fromJson(data) as T;
     }
-    if (t == _i24.UserProfileDto) {
-      return _i24.UserProfileDto.fromJson(data) as T;
+    if (t == _i24.User) {
+      return _i24.User.fromJson(data) as T;
+    }
+    if (t == _i25.UserProfileDto) {
+      return _i25.UserProfileDto.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Category?>()) {
       return (data != null ? _i4.Category.fromJson(data) : null) as T;
@@ -793,11 +804,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i22.AppTheme?>()) {
       return (data != null ? _i22.AppTheme.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i23.User?>()) {
-      return (data != null ? _i23.User.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i23.Archetype?>()) {
+      return (data != null ? _i23.Archetype.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i24.UserProfileDto?>()) {
-      return (data != null ? _i24.UserProfileDto.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i24.User?>()) {
+      return (data != null ? _i24.User.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i25.UserProfileDto?>()) {
+      return (data != null ? _i25.UserProfileDto.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<List<int>?>()) {
       return (data != null
@@ -862,31 +876,31 @@ class Protocol extends _i1.SerializationManagerServer {
               .toList()
           : null) as dynamic;
     }
-    if (t == List<_i25.Goal>) {
-      return (data as List).map((e) => deserialize<_i25.Goal>(e)).toList()
+    if (t == List<_i26.Goal>) {
+      return (data as List).map((e) => deserialize<_i26.Goal>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i26.Category>) {
-      return (data as List).map((e) => deserialize<_i26.Category>(e)).toList()
+    if (t == List<_i27.Category>) {
+      return (data as List).map((e) => deserialize<_i27.Category>(e)).toList()
           as dynamic;
     }
-    if (t == _i1.getType<List<_i25.Goal>?>()) {
+    if (t == _i1.getType<List<_i26.Goal>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i25.Goal>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i26.Goal>(e)).toList()
           : null) as dynamic;
     }
     if (t == Map<String, String?>) {
       return (data as Map).map((k, v) =>
           MapEntry(deserialize<String>(k), deserialize<String?>(v))) as dynamic;
     }
-    if (t == _i1.getType<List<_i27.JournalLog>?>()) {
+    if (t == _i1.getType<List<_i28.JournalLog>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i27.JournalLog>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i28.JournalLog>(e)).toList()
           : null) as dynamic;
     }
-    if (t == List<_i28.PurchaseItem>) {
+    if (t == List<_i29.PurchaseItem>) {
       return (data as List)
-          .map((e) => deserialize<_i28.PurchaseItem>(e))
+          .map((e) => deserialize<_i29.PurchaseItem>(e))
           .toList() as dynamic;
     }
     try {
@@ -959,10 +973,13 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i22.AppTheme) {
       return 'AppTheme';
     }
-    if (data is _i23.User) {
+    if (data is _i23.Archetype) {
+      return 'Archetype';
+    }
+    if (data is _i24.User) {
       return 'User';
     }
-    if (data is _i24.UserProfileDto) {
+    if (data is _i25.UserProfileDto) {
       return 'UserProfileDto';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -1039,11 +1056,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'AppTheme') {
       return deserialize<_i22.AppTheme>(data['data']);
     }
+    if (dataClassName == 'Archetype') {
+      return deserialize<_i23.Archetype>(data['data']);
+    }
     if (dataClassName == 'User') {
-      return deserialize<_i23.User>(data['data']);
+      return deserialize<_i24.User>(data['data']);
     }
     if (dataClassName == 'UserProfileDto') {
-      return deserialize<_i24.UserProfileDto>(data['data']);
+      return deserialize<_i25.UserProfileDto>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -1083,8 +1103,8 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i17.PurchaseItem.t;
       case _i22.AppTheme:
         return _i22.AppTheme.t;
-      case _i23.User:
-        return _i23.User.t;
+      case _i24.User:
+        return _i24.User.t;
     }
     return null;
   }

@@ -25,7 +25,8 @@ import 'package:fixie_server/src/generated/category/category.dart' as _i12;
 import 'package:fixie_server/src/generated/goals/create_goal_dto.dart' as _i13;
 import 'package:fixie_server/src/generated/journals/journal_log.dart' as _i14;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i15;
-import 'package:fixie_server/src/generated/goals/goal.dart' as _i16;
+import 'package:fixie_server/src/generated/users/archetype.dart' as _i16;
+import 'package:fixie_server/src/generated/goals/goal.dart' as _i17;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -614,6 +615,24 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['profile'] as _i8.ProfileEndpoint)
                   .getProfileData(session),
         ),
+        'setUserArchetype': _i1.MethodConnector(
+          name: 'setUserArchetype',
+          params: {
+            'archetype': _i1.ParameterDescription(
+              name: 'archetype',
+              type: _i1.getType<_i16.Archetype>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i8.ProfileEndpoint).setUserArchetype(
+            session,
+            params['archetype'],
+          ),
+        ),
         'setEmptyLocale': _i1.MethodConnector(
           name: 'setEmptyLocale',
           params: {
@@ -779,7 +798,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'goal': _i1.ParameterDescription(
               name: 'goal',
-              type: _i1.getType<_i16.Goal>(),
+              type: _i1.getType<_i17.Goal>(),
               nullable: false,
             )
           },
@@ -803,7 +822,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'goal': _i1.ParameterDescription(
               name: 'goal',
-              type: _i1.getType<_i16.Goal?>(),
+              type: _i1.getType<_i17.Goal?>(),
               nullable: true,
             ),
             'month': _i1.ParameterDescription(

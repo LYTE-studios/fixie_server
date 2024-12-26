@@ -12,3 +12,4 @@ fields:
   hasPassedGoalTutorial: bool?
   informationCollectionSetting: bool?
   automaticRemindersSetting: bool?
+  archetype: Archetype?
