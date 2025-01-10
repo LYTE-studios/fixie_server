@@ -510,6 +510,16 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'payments',
       endpoint: endpoints['payments']!,
       methodConnectors: {
+        'getLimitedOffer': _i1.MethodConnector(
+          name: 'getLimitedOffer',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['payments'] as _i7.PaymentsEndpoint)
+                  .getLimitedOffer(session),
+        ),
         'canStartTrial': _i1.MethodConnector(
           name: 'canStartTrial',
           params: {},

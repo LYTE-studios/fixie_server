@@ -278,6 +278,12 @@ class Protocol extends _i1.SerializationManagerServer {
           isNullable: true,
           dartType: 'protocol:Archetype?',
         ),
+        _i2.ColumnDefinition(
+          name: 'limitedOfferEndTime',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
       ],
       foreignKeys: [
         _i2.ForeignKeyDefinition(

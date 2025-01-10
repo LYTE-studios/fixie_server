@@ -3,6 +3,23 @@ import 'package:fixie_server/src/utils/auth_utils.dart';
 import 'package:serverpod/serverpod.dart';
 
 class PaymentsEndpoint extends Endpoint {
+  Future<DateTime?> getLimitedOffer(Session session) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
+
+    if (user.limitedOfferEndTime != null) {
+      if (user.limitedOfferEndTime!.isBefore(DateTime.now())) {
+        return null;
+      }
+      return user.limitedOfferEndTime;
+    }
+
+    user.limitedOfferEndTime = DateTime.now().add(Duration(hours: 2));
+
+    await User.db.updateRow(session, user);
+
+    return user.limitedOfferEndTime;
+  }
+
   Future<bool> canStartTrial(Session session) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 

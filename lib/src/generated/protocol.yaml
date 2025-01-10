@@ -25,6 +25,7 @@ journal:
 notification:
   - setFcmToken:
 payments:
+  - getLimitedOffer:
   - canStartTrial:
   - startTrial:
   - fetchActivePurchases:

@@ -13,3 +13,4 @@ fields:
   informationCollectionSetting: bool?
   automaticRemindersSetting: bool?
   archetype: Archetype?
+  limitedOfferEndTime: DateTime?
