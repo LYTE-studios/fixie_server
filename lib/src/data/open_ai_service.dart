@@ -7,6 +7,51 @@ import 'package:sentry/sentry.dart';
 import 'package:serverpod/serverpod.dart';
 
 class OpenAIService {
+  String getRepetitionDescription(Repetition? repetition) {
+    switch (repetition) {
+      case Repetition.Daily:
+        return 'day';
+      case Repetition.Weekly:
+        return 'week';
+      case Repetition.Monthly:
+        return 'month';
+      case Repetition.Yearly:
+        return 'year';
+      default:
+        return 'day';
+    }
+  }
+
+  String getGoalDescription(Goal goal) {
+    String description = 'The goal\'s title is: \'${goal.title}\'. ';
+
+    String repetitionDescription = getRepetitionDescription(goal.repetition);
+
+    if (goal.repetition == Repetition.Daily &&
+        (goal.weekdays?.isNotEmpty ?? false)) {
+      repetitionDescription = '';
+
+      for (int day in goal.weekdays ?? []) {
+        repetitionDescription += DateTimeUtils.formatWeekday(day);
+
+        if (goal.weekdays!.indexOf(day) != goal.weekdays!.length - 1) {
+          if (goal.weekdays!.indexOf(day) == goal.weekdays!.length - 2) {
+            repetitionDescription += ' and ';
+          } else {
+            repetitionDescription += ', ';
+          }
+        }
+      }
+    }
+
+    description += "The user aims to do this every $repetitionDescription.";
+
+    description +=
+        'The goal\'s target value is: ${goal.target} with \'${goal.unit}\' as a unit of measurement. ';
+
+    return description;
+  }
+
   String generateMotivationPrompt(
     Goal goal,
     String? locale, {
@@ -16,66 +61,22 @@ class OpenAIService {
     locale ??= 'en';
 
     Category? category = goal.category;
-    User? user = goal.user;
 
     // Start building the prompt dynamically
-    String prompt = "Create a short and positive notification for the user, ";
+    String prompt =
+        "Create a short and positive notification for a user that has set a goal in our app. ";
 
     // Add the goal's title
-    prompt += "to register or accomplish the goal titled '${goal.title}'.";
-
-    // Add unit and target if they are provided
-    if (goal.unit != null && goal.unit!.isNotEmpty) {
-      prompt += " The goal involves reaching ${goal.target} ${goal.unit}";
-    }
-
-    // Add repetition and timing if available
-    if (goal.repetition == Repetition.Daily &&
-        (goal.weekdays?.isNotEmpty ?? false)) {
-      String days = '';
-
-      for (int day in goal.weekdays ?? []) {
-        days += DateTimeUtils.formatWeekday(day);
-
-        if (goal.weekdays!.indexOf(day) != goal.weekdays!.length - 1) {
-          if (goal.weekdays!.indexOf(day) == goal.weekdays!.length - 2) {
-            days += ' and ';
-          } else {
-            days += ', ';
-          }
-        }
-      }
-
-      prompt += " every $days.";
-    } else {
-      prompt +=
-          " on a ${goal.repeatEvery == 1 ? '' : goal.repeatEvery ?? ''} ${goal.repetition!.name} basis.";
-    }
+    prompt += getGoalDescription(goal);
 
     if (log != null && log.loggedValue != 0) {
       prompt +=
-          " The user has currently logged a value of ${log.loggedValue ?? 0} ${goal.unit} for the current period. If this value has already reached its target, please inspire the user to achieve more.";
+          " The user has currently logged a value of ${log.loggedValue ?? 0} ${goal.unit} for the current period.";
     }
 
     // Mention the goal category if available
     if (category != null && category.title.isNotEmpty) {
       prompt += " This goal falls under the '${category.title}' category.";
-    }
-
-    // Mention the user's highest streak if available
-    if (user != null && user.highestStreak != null) {
-      prompt +=
-          " The user has a total personal best streak of ${user.highestStreak}.";
-    }
-    if (goal.highestStreak != null) {
-      prompt +=
-          " The user has a total personal best streak for this goal of ${goal.highestStreak}.";
-    }
-
-    // Encourage finishing strong if the goal has an end date
-    if (goal.end != null && DateTime.now().isBefore(goal.end!)) {
-      prompt +=
-          " The goal ends on ${goal.end!.toLocal().toIso8601String().substring(0, 10)}.";
     }
 
     // Add locale to request output in a specific language
@@ -85,6 +86,12 @@ class OpenAIService {
     // Ensure that the response stays concise
     prompt +=
         " Keep it within 16 words and mainly remind the user of the goal they have set out to do. The goal title doesn't have to be in this message literally, the notification title already contains this. Be inspiring in what you say and if possible, use terminology or add something clever specific to their goal.";
+
+    prompt +=
+        " If the user has already achieved the goal, please inspire them to achieve more.";
+
+    prompt +=
+        " You can be a bit creative, I don't want to see the same message repeatedly.";
 
     return prompt;
   }
@@ -107,7 +114,7 @@ class OpenAIService {
             {
               'role': 'system',
               'content':
-                  'You are a helpful assistant that generates helpful reminders.'
+                  'You are a helpful assistant that generates motivating reminders.'
             },
             {
               'role': 'user',
