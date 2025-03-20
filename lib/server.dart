@@ -82,6 +82,11 @@ void run(List<String> args) async {
                 .find(session, where: (t) => t.email.equals(email)))
             .firstOrNull;
 
+        await auth.EmailCreateAccountRequest.db.deleteWhere(
+          session,
+          where: (t) => t.email.equals(email),
+        );
+
         return await MailManager.sendMail(
           session,
           email: email,
