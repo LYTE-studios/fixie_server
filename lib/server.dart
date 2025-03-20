@@ -77,15 +77,18 @@ void run(List<String> args) async {
     auth.AuthConfig(
       userCanEditFullName: true,
       userCanEditUserImage: true,
+      onUserWillBeCreated: (session, userInfo, method) async {
+        await auth.EmailCreateAccountRequest.db.deleteWhere(
+          session,
+          where: (t) => t.email.equals(userInfo.email),
+        );
+
+        return true;
+      },
       sendValidationEmail: (session, email, validationCode) async {
         UserLocales? locales = (await UserLocales.db
                 .find(session, where: (t) => t.email.equals(email)))
             .firstOrNull;
-
-        await auth.EmailCreateAccountRequest.db.deleteWhere(
-          session,
-          where: (t) => t.email.equals(email),
-        );
 
         return await MailManager.sendMail(
           session,
