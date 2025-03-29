@@ -822,92 +822,90 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<List<int>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<int>(e)).toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == _i1.getType<List<DateTime>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == _i1.getType<List<int>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<int>(e)).toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == _i1.getType<List<DateTime>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<DateTime>(e)).toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == _i1.getType<List<_i12.JournalLog>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i12.JournalLog>(e)).toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == List<_i12.JournalLog>) {
       return (data as List).map((e) => deserialize<_i12.JournalLog>(e)).toList()
-          as dynamic;
+          as T;
     }
     if (t == _i1.getType<List<String>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<String>(e)).toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == _i1.getType<List<_i13.RegistrationLog>?>()) {
       return (data != null
           ? (data as List)
               .map((e) => deserialize<_i13.RegistrationLog>(e))
               .toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == Map<DateTime, double?>) {
       return Map.fromEntries((data as List).map((e) => MapEntry(
-              deserialize<DateTime>(e['k']), deserialize<double?>(e['v']))))
-          as dynamic;
+          deserialize<DateTime>(e['k']), deserialize<double?>(e['v'])))) as T;
     }
     if (t == Map<int, double>) {
       return Map.fromEntries((data as List).map((e) =>
               MapEntry(deserialize<int>(e['k']), deserialize<double>(e['v']))))
-          as dynamic;
+          as T;
     }
     if (t == _i1.getType<List<_i10.Goal>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i10.Goal>(e)).toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == _i1.getType<List<_i17.PurchaseItem>?>()) {
       return (data != null
           ? (data as List)
               .map((e) => deserialize<_i17.PurchaseItem>(e))
               .toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == List<_i26.Goal>) {
-      return (data as List).map((e) => deserialize<_i26.Goal>(e)).toList()
-          as dynamic;
+      return (data as List).map((e) => deserialize<_i26.Goal>(e)).toList() as T;
     }
     if (t == List<_i27.Category>) {
       return (data as List).map((e) => deserialize<_i27.Category>(e)).toList()
-          as dynamic;
+          as T;
     }
     if (t == _i1.getType<List<_i26.Goal>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i26.Goal>(e)).toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == Map<String, String?>) {
       return (data as Map).map((k, v) =>
-          MapEntry(deserialize<String>(k), deserialize<String?>(v))) as dynamic;
+          MapEntry(deserialize<String>(k), deserialize<String?>(v))) as T;
     }
     if (t == _i1.getType<List<_i28.JournalLog>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i28.JournalLog>(e)).toList()
-          : null) as dynamic;
+          : null) as T;
     }
     if (t == List<_i29.PurchaseItem>) {
       return (data as List)
           .map((e) => deserialize<_i29.PurchaseItem>(e))
-          .toList() as dynamic;
+          .toList() as T;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);

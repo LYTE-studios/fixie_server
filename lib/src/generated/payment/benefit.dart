@@ -17,7 +17,7 @@ enum Benefit implements _i1.SerializableModel {
   static Benefit fromJson(String name) {
     switch (name) {
       case 'trialPremium':
-        return trialPremium;
+        return Benefit.trialPremium;
       default:
         throw ArgumentError('Value "$name" cannot be converted to "Benefit"');
     }

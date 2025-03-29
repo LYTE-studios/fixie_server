@@ -39,6 +39,9 @@ abstract class CreateCategoryDto
 
   String? icon;
 
+  /// Returns a shallow copy of this [CreateCategoryDto]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   CreateCategoryDto copyWith({
     String? title,
     String? color,
@@ -81,6 +84,9 @@ class _CreateCategoryDtoImpl extends CreateCategoryDto {
           icon: icon,
         );
 
+  /// Returns a shallow copy of this [CreateCategoryDto]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   CreateCategoryDto copyWith({
     String? title,

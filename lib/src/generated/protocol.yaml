@@ -30,6 +30,7 @@ payments:
   - startTrial:
   - fetchActivePurchases:
 profile:
+  - deleteEmailRequest:
   - updatePrivacySettings:
   - deleteAccount:
   - createUser:

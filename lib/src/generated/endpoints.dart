@@ -556,6 +556,24 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'profile',
       endpoint: endpoints['profile']!,
       methodConnectors: {
+        'deleteEmailRequest': _i1.MethodConnector(
+          name: 'deleteEmailRequest',
+          params: {
+            'email': _i1.ParameterDescription(
+              name: 'email',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i8.ProfileEndpoint).deleteEmailRequest(
+            session,
+            params['email'],
+          ),
+        ),
         'updatePrivacySettings': _i1.MethodConnector(
           name: 'updatePrivacySettings',
           params: {

@@ -46,6 +46,9 @@ abstract class RegistrationLog
 
   DateTime modifiedAt;
 
+  /// Returns a shallow copy of this [RegistrationLog]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   RegistrationLog copyWith({
     double? loggedValue,
     DateTime? setTime,
@@ -93,6 +96,9 @@ class _RegistrationLogImpl extends RegistrationLog {
           modifiedAt: modifiedAt,
         );
 
+  /// Returns a shallow copy of this [RegistrationLog]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   RegistrationLog copyWith({
     Object? loggedValue = _Undefined,

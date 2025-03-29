@@ -20,13 +20,13 @@ enum ErrorType implements _i1.SerializableModel {
   static ErrorType fromJson(String name) {
     switch (name) {
       case 'notFound':
-        return notFound;
+        return ErrorType.notFound;
       case 'authenticationError':
-        return authenticationError;
+        return ErrorType.authenticationError;
       case 'databaseError':
-        return databaseError;
+        return ErrorType.databaseError;
       case 'invalidInput':
-        return invalidInput;
+        return ErrorType.invalidInput;
       default:
         throw ArgumentError('Value "$name" cannot be converted to "ErrorType"');
     }

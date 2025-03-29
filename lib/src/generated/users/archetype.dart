@@ -19,11 +19,11 @@ enum Archetype implements _i1.SerializableModel {
   static Archetype fromJson(int index) {
     switch (index) {
       case 0:
-        return seeker;
+        return Archetype.seeker;
       case 1:
-        return dreamer;
+        return Archetype.dreamer;
       case 2:
-        return achiever;
+        return Archetype.achiever;
       default:
         throw ArgumentError(
             'Value "$index" cannot be converted to "Archetype"');

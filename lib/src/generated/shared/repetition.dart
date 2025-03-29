@@ -20,13 +20,13 @@ enum Repetition implements _i1.SerializableModel {
   static Repetition fromJson(int index) {
     switch (index) {
       case 0:
-        return Daily;
+        return Repetition.Daily;
       case 1:
-        return Weekly;
+        return Repetition.Weekly;
       case 2:
-        return Monthly;
+        return Repetition.Monthly;
       case 3:
-        return Yearly;
+        return Repetition.Yearly;
       default:
         throw ArgumentError(
             'Value "$index" cannot be converted to "Repetition"');

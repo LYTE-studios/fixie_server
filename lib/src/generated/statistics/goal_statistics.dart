@@ -48,6 +48,9 @@ abstract class GoalStatistics
 
   Map<DateTime, double?> loggedDays;
 
+  /// Returns a shallow copy of this [GoalStatistics]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   GoalStatistics copyWith({
     _i2.Goal? goal,
     double? total,
@@ -88,6 +91,9 @@ class _GoalStatisticsImpl extends GoalStatistics {
           loggedDays: loggedDays,
         );
 
+  /// Returns a shallow copy of this [GoalStatistics]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   GoalStatistics copyWith({
     _i2.Goal? goal,

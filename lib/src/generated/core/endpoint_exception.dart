@@ -39,6 +39,9 @@ abstract class EndpointException
 
   _i2.ErrorType errorType;
 
+  /// Returns a shallow copy of this [EndpointException]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   EndpointException copyWith({
     String? message,
     _i2.ErrorType? errorType,
@@ -74,6 +77,9 @@ class _EndpointExceptionImpl extends EndpointException {
           errorType: errorType,
         );
 
+  /// Returns a shallow copy of this [EndpointException]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   EndpointException copyWith({
     String? message,

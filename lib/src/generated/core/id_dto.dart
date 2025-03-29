@@ -23,6 +23,9 @@ abstract class IdDto
 
   int id;
 
+  /// Returns a shallow copy of this [IdDto]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   IdDto copyWith({int? id});
   @override
   Map<String, dynamic> toJson() {
@@ -43,6 +46,9 @@ abstract class IdDto
 class _IdDtoImpl extends IdDto {
   _IdDtoImpl({required int id}) : super._(id: id);
 
+  /// Returns a shallow copy of this [IdDto]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   IdDto copyWith({int? id}) {
     return IdDto(id: id ?? this.id);

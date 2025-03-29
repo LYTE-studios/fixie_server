@@ -6,6 +6,11 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
 
 class ProfileEndpoint extends Endpoint {
+  Future<void> deleteEmailRequest(Session session, String email) async {
+    await EmailCreateAccountRequest.db
+        .deleteWhere(session, where: (t) => t.email.equals(email));
+  }
+
   Future<void> updatePrivacySettings(
     Session session, {
     bool? informationCollection,

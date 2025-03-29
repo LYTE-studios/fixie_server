@@ -53,6 +53,9 @@ abstract class JournalListDto
 
   List<_i2.JournalLog> yearly;
 
+  /// Returns a shallow copy of this [JournalListDto]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   JournalListDto copyWith({
     List<_i2.JournalLog>? daily,
     List<_i2.JournalLog>? weekly,
@@ -98,6 +101,9 @@ class _JournalListDtoImpl extends JournalListDto {
           yearly: yearly,
         );
 
+  /// Returns a shallow copy of this [JournalListDto]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   JournalListDto copyWith({
     List<_i2.JournalLog>? daily,
