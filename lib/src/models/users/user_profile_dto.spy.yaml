@@ -1,5 +1,6 @@
 class: UserProfileDto
 fields:
+  id: int
   name: String
   birthday: DateTime?
   daysSinceCreation: int

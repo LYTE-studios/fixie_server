@@ -15,6 +15,7 @@ import '../users/archetype.dart' as _i2;
 abstract class UserProfileDto
     implements _i1.SerializableModel, _i1.ProtocolSerialization {
   UserProfileDto._({
+    required this.id,
     required this.name,
     this.birthday,
     required this.daysSinceCreation,
@@ -29,6 +30,7 @@ abstract class UserProfileDto
   });
 
   factory UserProfileDto({
+    required int id,
     required String name,
     DateTime? birthday,
     required int daysSinceCreation,
@@ -44,6 +46,7 @@ abstract class UserProfileDto
 
   factory UserProfileDto.fromJson(Map<String, dynamic> jsonSerialization) {
     return UserProfileDto(
+      id: jsonSerialization['id'] as int,
       name: jsonSerialization['name'] as String,
       birthday: jsonSerialization['birthday'] == null
           ? null
@@ -63,6 +66,8 @@ abstract class UserProfileDto
           : _i2.Archetype.fromJson((jsonSerialization['archetype'] as int)),
     );
   }
+
+  int id;
 
   String name;
 
@@ -90,6 +95,7 @@ abstract class UserProfileDto
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
   UserProfileDto copyWith({
+    int? id,
     String? name,
     DateTime? birthday,
     int? daysSinceCreation,
@@ -105,6 +111,7 @@ abstract class UserProfileDto
   @override
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
       if (birthday != null) 'birthday': birthday?.toJson(),
       'daysSinceCreation': daysSinceCreation,
@@ -124,6 +131,7 @@ abstract class UserProfileDto
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      'id': id,
       'name': name,
       if (birthday != null) 'birthday': birthday?.toJson(),
       'daysSinceCreation': daysSinceCreation,
@@ -150,6 +158,7 @@ class _Undefined {}
 
 class _UserProfileDtoImpl extends UserProfileDto {
   _UserProfileDtoImpl({
+    required int id,
     required String name,
     DateTime? birthday,
     required int daysSinceCreation,
@@ -162,6 +171,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
     String? locale,
     _i2.Archetype? archetype,
   }) : super._(
+          id: id,
           name: name,
           birthday: birthday,
           daysSinceCreation: daysSinceCreation,
@@ -180,6 +190,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
   @_i1.useResult
   @override
   UserProfileDto copyWith({
+    int? id,
     String? name,
     Object? birthday = _Undefined,
     int? daysSinceCreation,
@@ -193,6 +204,7 @@ class _UserProfileDtoImpl extends UserProfileDto {
     Object? archetype = _Undefined,
   }) {
     return UserProfileDto(
+      id: id ?? this.id,
       name: name ?? this.name,
       birthday: birthday is DateTime? ? birthday : this.birthday,
       daysSinceCreation: daysSinceCreation ?? this.daysSinceCreation,

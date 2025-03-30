@@ -113,6 +113,7 @@ class ProfileEndpoint extends Endpoint {
         ?.locale;
 
     UserProfileDto userProfileData = UserProfileDto(
+      id: user.id ?? 0,
       name: userInfo.fullName ?? '',
       email: userInfo.email ?? '',
       daysSinceCreation: daysSinceCreation,
