@@ -6,6 +6,33 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart';
 
 class ProfileEndpoint extends Endpoint {
+  Future<bool> shouldSendReview(Session session) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
+
+    if (user.hasReviewed ?? false) {
+      return false;
+    }
+
+    // Get the number of JournalLogs for the user
+    int journalLogsCount = (await JournalLog.db
+            .find(session, where: (t) => t.goal.userId.equals(user.id)))
+        .length;
+
+    if (journalLogsCount >= 1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  Future<void> setHasReviewed(Session session) async {
+    User user = await AuthUtils.getAuthenticatedUser(session);
+
+    user.hasReviewed = true;
+
+    await User.db.updateRow(session, user);
+  }
+
   Future<void> deleteEmailRequest(Session session, String email) async {
     await EmailCreateAccountRequest.db
         .deleteWhere(session, where: (t) => t.email.equals(email));

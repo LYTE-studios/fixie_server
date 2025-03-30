@@ -556,6 +556,26 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'profile',
       endpoint: endpoints['profile']!,
       methodConnectors: {
+        'shouldSendReview': _i1.MethodConnector(
+          name: 'shouldSendReview',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i8.ProfileEndpoint)
+                  .shouldSendReview(session),
+        ),
+        'setHasReviewed': _i1.MethodConnector(
+          name: 'setHasReviewed',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['profile'] as _i8.ProfileEndpoint)
+                  .setHasReviewed(session),
+        ),
         'deleteEmailRequest': _i1.MethodConnector(
           name: 'deleteEmailRequest',
           params: {

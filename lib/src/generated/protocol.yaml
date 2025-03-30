@@ -30,6 +30,8 @@ payments:
   - startTrial:
   - fetchActivePurchases:
 profile:
+  - shouldSendReview:
+  - setHasReviewed:
   - deleteEmailRequest:
   - updatePrivacySettings:
   - deleteAccount:

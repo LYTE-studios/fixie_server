@@ -14,3 +14,4 @@ fields:
   automaticRemindersSetting: bool?
   archetype: Archetype?
   limitedOfferEndTime: DateTime?
+  hasReviewed: bool?

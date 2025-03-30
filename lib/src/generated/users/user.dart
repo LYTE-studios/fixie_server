@@ -32,6 +32,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     this.automaticRemindersSetting,
     this.archetype,
     this.limitedOfferEndTime,
+    this.hasReviewed,
   });
 
   factory User({
@@ -50,6 +51,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     bool? automaticRemindersSetting,
     _i5.Archetype? archetype,
     DateTime? limitedOfferEndTime,
+    bool? hasReviewed,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -86,6 +88,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
           ? null
           : _i1.DateTimeJsonExtension.fromJson(
               jsonSerialization['limitedOfferEndTime']),
+      hasReviewed: jsonSerialization['hasReviewed'] as bool?,
     );
   }
 
@@ -124,6 +127,8 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
 
   DateTime? limitedOfferEndTime;
 
+  bool? hasReviewed;
+
   @override
   _i1.Table get table => t;
 
@@ -146,6 +151,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
     bool? automaticRemindersSetting,
     _i5.Archetype? archetype,
     DateTime? limitedOfferEndTime,
+    bool? hasReviewed,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -171,6 +177,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
       if (archetype != null) 'archetype': archetype?.toJson(),
       if (limitedOfferEndTime != null)
         'limitedOfferEndTime': limitedOfferEndTime?.toJson(),
+      if (hasReviewed != null) 'hasReviewed': hasReviewed,
     };
   }
 
@@ -200,6 +207,7 @@ abstract class User implements _i1.TableRow, _i1.ProtocolSerialization {
       if (archetype != null) 'archetype': archetype?.toJson(),
       if (limitedOfferEndTime != null)
         'limitedOfferEndTime': limitedOfferEndTime?.toJson(),
+      if (hasReviewed != null) 'hasReviewed': hasReviewed,
     };
   }
 
@@ -260,6 +268,7 @@ class _UserImpl extends User {
     bool? automaticRemindersSetting,
     _i5.Archetype? archetype,
     DateTime? limitedOfferEndTime,
+    bool? hasReviewed,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
@@ -276,6 +285,7 @@ class _UserImpl extends User {
           automaticRemindersSetting: automaticRemindersSetting,
           archetype: archetype,
           limitedOfferEndTime: limitedOfferEndTime,
+          hasReviewed: hasReviewed,
         );
 
   /// Returns a shallow copy of this [User]
@@ -298,6 +308,7 @@ class _UserImpl extends User {
     Object? automaticRemindersSetting = _Undefined,
     Object? archetype = _Undefined,
     Object? limitedOfferEndTime = _Undefined,
+    Object? hasReviewed = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
@@ -330,6 +341,7 @@ class _UserImpl extends User {
       limitedOfferEndTime: limitedOfferEndTime is DateTime?
           ? limitedOfferEndTime
           : this.limitedOfferEndTime,
+      hasReviewed: hasReviewed is bool? ? hasReviewed : this.hasReviewed,
     );
   }
 }
@@ -381,6 +393,10 @@ class UserTable extends _i1.Table {
       'limitedOfferEndTime',
       this,
     );
+    hasReviewed = _i1.ColumnBool(
+      'hasReviewed',
+      this,
+    );
   }
 
   late final _i1.ColumnInt userInfoId;
@@ -414,6 +430,8 @@ class UserTable extends _i1.Table {
   late final _i1.ColumnEnum<_i5.Archetype> archetype;
 
   late final _i1.ColumnDateTime limitedOfferEndTime;
+
+  late final _i1.ColumnBool hasReviewed;
 
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
@@ -504,6 +522,7 @@ class UserTable extends _i1.Table {
         automaticRemindersSetting,
         archetype,
         limitedOfferEndTime,
+        hasReviewed,
       ];
 
   @override
