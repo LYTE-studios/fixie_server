@@ -54,17 +54,20 @@ class GoalNotificationFutureCall extends FutureCall<IdDto> {
       log ??= logs.monthly.where((t) => t.goalId == goal.id).firstOrNull;
       log ??= logs.yearly.where((t) => t.goalId == goal.id).firstOrNull;
 
-      Notification notification =
-          await NotificationFactory.getNotificationForGoal(
-        session,
-        goal,
-        log: log,
-      );
+      // Only send notification if the goal hasn't been completed yet
+      if (log == null || (log.loggedValue ?? 0) < goal.target) {
+        Notification notification =
+            await NotificationFactory.getNotificationForGoal(
+          session,
+          goal,
+          log: log,
+        );
 
-      NotificationManager.sendUserNotification(
-        session,
-        notification: notification,
-      );
+        NotificationManager.sendUserNotification(
+          session,
+          notification: notification,
+        );
+      }
     } catch (e) {
       Sentry.captureException(e);
     }

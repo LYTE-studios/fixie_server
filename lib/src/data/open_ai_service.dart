@@ -61,99 +61,186 @@ class OpenAIService {
     locale ??= 'en';
 
     Category? category = goal.category;
+    int currentHour = DateTime.now().hour;
+    String timeContext = _getTimeContext(currentHour);
+    String progress = _getProgressContext(goal, log);
 
-    // Start building the prompt dynamically
-    String prompt =
-        "Create a short and positive notification for a user that has set a goal in our app. ";
+    String prompt = """
+You are an expert motivational coach specializing in personalized goal achievement. Create a short, impactful notification message that will inspire and motivate the user to engage with their goal tracking app.
 
-    // Add the goal's title
-    prompt += getGoalDescription(goal);
+CONTEXT:
+${getGoalDescription(goal)}
+Time of Day: $timeContext
+Category: ${category?.title ?? 'Personal goal'}
+Progress Status: $progress
 
-    if (log != null && log.loggedValue != 0) {
-      prompt +=
-          " The user has currently logged a value of ${log.loggedValue ?? 0} ${goal.unit} for the current period.";
-    }
+NOTIFICATION REQUIREMENTS:
+1. Maximum Length: 150 characters
+2. Language: ${locale == 'nl' ? 'Dutch' : 'English'}
+3. Tone: Encouraging, positive, and personalized
+4. Must include a clear call-to-action
 
-    // Mention the goal category if available
-    if (category != null && category.title.isNotEmpty) {
-      prompt += " This goal falls under the '${category.title}' category.";
-    }
+STYLE GUIDELINES:
+- Be conversational but professional
+- Use active voice
+- Be specific to the goal type
+- Incorporate time-appropriate messaging
+- Avoid generic phrases
+- Don't repeat the exact goal title (it's shown separately)
+- Use emotive language that resonates with the goal category
 
-    // Add locale to request output in a specific language
-    prompt +=
-        " Generate the description in the language of the locale: $locale.";
+EXAMPLES OF GREAT MESSAGES:
+For a fitness goal in the morning:
+"Fresh day, fresh energy! Those weights won't lift themselves. Ready to crush it?"
 
-    // Ensure that the response stays concise
-    prompt +=
-        " Keep it within 16 words and mainly remind the user of the goal they have set out to do. The goal title doesn't have to be in this message literally, the notification title already contains this. Be inspiring in what you say and if possible, use terminology or add something clever specific to their goal.";
+For a reading goal in the evening:
+"The perfect time to dive into those pages. Your reading corner is calling!"
 
-    prompt +=
-        " If the user has already achieved the goal, please inspire them to achieve more.";
+For a meditation goal when behind:
+"A moment of calm awaits. Even 5 minutes can make a difference today."
 
-    prompt +=
-        " You can be a bit creative, I don't want to see the same message repeatedly.";
+For a learning goal when on track:
+"You're building an amazing streak! Ready to add another achievement?"
+
+BAD EXAMPLES TO AVOID:
+- "Don't forget to do your goal"
+- "Time to log your progress"
+- "You can do it!"
+- Generic motivational quotes
+
+RESPONSE FORMAT:
+Provide only the notification message, no explanations or quotes.
+""";
 
     return prompt;
   }
 
-  Future<String?> generateText(Session session, String prompt) async {
-    try {
-      final String apiKey = session.serverpod.getPassword('openApiKey')!;
+  String _getTimeContext(int hour) {
+    if (hour >= 5 && hour < 12) {
+      return "Morning (Perfect for fresh starts and building momentum)";
+    } else if (hour >= 12 && hour < 17) {
+      return "Afternoon (Good for maintaining energy and progress)";
+    } else if (hour >= 17 && hour < 22) {
+      return "Evening (Ideal for reflection and completing daily goals)";
+    } else {
+      return "Night (Time for final check-ins and planning tomorrow)";
+    }
+  }
 
-      final response = await Dio().post(
+  String _getProgressContext(Goal goal, JournalLog? log) {
+    if (log == null) {
+      return "No activity logged yet for this period";
+    }
+
+    double progressPercentage = ((log.loggedValue ?? 0) / goal.target) * 100;
+    if (progressPercentage >= 100) {
+      return "Goal achieved! (${progressPercentage.toStringAsFixed(0)}% complete)";
+    } else if (progressPercentage >= 75) {
+      return "Nearly there! (${progressPercentage.toStringAsFixed(0)}% complete)";
+    } else if (progressPercentage >= 50) {
+      return "Good progress (${progressPercentage.toStringAsFixed(0)}% complete)";
+    } else if (progressPercentage > 0) {
+      return "Started (${progressPercentage.toStringAsFixed(0)}% complete)";
+    } else {
+      return "Ready to start";
+    }
+  }
+
+  Future<String?> generateText(Session session, String prompt) async {
+    final String apiKey = session.serverpod.getPassword('openApiKey')!;
+    final dio = Dio()
+      ..options.connectTimeout = Duration(seconds: 10)
+      ..options.receiveTimeout = Duration(seconds: 10);
+
+    try {
+      final response = await dio.post(
         'https://api.openai.com/v1/chat/completions',
         options: Options(
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $apiKey',
           },
+          validateStatus: (status) => status != null && status < 500,
         ),
         data: jsonEncode({
-          'model': 'gpt-3.5-turbo',
+          'model': 'gpt-4-turbo-preview',
           'messages': [
             {
               'role': 'system',
-              'content':
-                  'You are a helpful assistant that generates motivating reminders.'
+              'content': '''
+You are an expert motivational coach specializing in personalized notifications.
+Your messages are always:
+- Concise and impactful (max 150 characters)
+- Highly personalized to the goal and context
+- Action-oriented with clear next steps
+- Time-appropriate and relevant
+- Emotionally engaging without being pushy
+Never use generic phrases or clichés.'''
             },
             {
               'role': 'user',
               'content': prompt,
             }
           ],
-          'max_tokens': 64, // Approx. 16 words
-          'n': 1,
-          'temperature': 0.7, // Creativity control
+          'max_tokens': 100,
+          'temperature':
+              0.85, // Increased creativity while maintaining coherence
+          'presence_penalty': 0.6, // Encourage more diverse responses
+          'frequency_penalty': 0.4, // Reduce repetitive phrases
+          'response_format': {'type': 'text'}, // Ensure clean text output
         }),
       );
 
+      if (response.statusCode != 200) {
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: 'OpenAI API error: ${response.statusCode}',
+        );
+      }
+
       final data = response.data;
-
-      final String generatedText = (await json.decode(
-        json.encode(
-          data["choices"][0]["message"]["content"] ?? '',
-        ),
-      ))
+      final String generatedText = data["choices"][0]["message"]["content"]
           .toString()
-          .replaceAll('"', '');
+          .trim()
+          .replaceAll('"', '')
+          .replaceAll('\n', ' ');
 
+      // Log the successful generation with context
       Sentry.captureMessage(
-        'Saved prompt message',
-        params: [
-          prompt,
-          generatedText,
-        ],
+        'Generated notification message',
+        hint: Hint.withMap({
+          'prompt': prompt,
+          'response': generatedText,
+          'model': 'gpt-4-turbo-preview',
+          'goal_type':
+              prompt.contains('goal') ? prompt.split('"')[1] : 'unknown',
+          'message_length': generatedText.length,
+          'time_generated': DateTime.now().toIso8601String(),
+        }),
       );
 
       return generatedText;
     } on DioException catch (e) {
       Sentry.captureException(
         e,
-        hint: Hint.withMap(
-          {
-            'prompt': prompt,
-          },
-        ),
+        hint: Hint.withMap({
+          'prompt': prompt,
+          'error_type': e.type.toString(),
+          'error_message': e.message,
+          'response': e.response?.data,
+          'status_code': e.response?.statusCode,
+        }),
+      );
+      return null;
+    } catch (e) {
+      Sentry.captureException(
+        e,
+        hint: Hint.withMap({
+          'prompt': prompt,
+          'error_type': 'Unexpected error',
+          'error_message': e.toString(),
+        }),
       );
       return null;
     }

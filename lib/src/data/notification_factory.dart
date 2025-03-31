@@ -155,4 +155,90 @@ class NotificationFactory {
       image: imageUrl,
     );
   }
+
+  static String generateReengagementPrompt(
+    Goal goal,
+    String? locale, {
+    JournalLog? lastLog,
+    int daysInactive = 0,
+  }) {
+    String basePrompt = """
+You are a supportive and motivating AI assistant. Create a short, engaging notification message (max 150 characters) to re-engage a user who hasn't logged into their goal tracking app for ${daysInactive} days.
+
+Context:
+- Their goal: "${goal.title}" (Target: ${goal.target} ${goal.unit ?? ''})
+- Last activity: ${lastLog?.createdAt != null ? '$daysInactive days ago' : 'No previous activity'}
+- Goal category: ${goal.category?.title ?? 'Personal goal'}
+
+Consider these aspects:
+1. Be encouraging without being pushy
+2. Reference their specific goal
+3. Keep it personal and warm
+4. Avoid guilt-tripping
+5. Include a clear call to action
+
+The tone should be:
+- Friendly and supportive
+- Optimistic
+- Genuinely caring
+- Motivating without pressure
+
+${locale == 'nl' ? 'Respond in Dutch.' : 'Respond in English.'}
+
+Examples of good messages:
+- "Your [goal] journey misses you! Ready to take a small step forward today?"
+- "A quick check-in on your [goal] - even small progress counts!"
+- "Miss tracking your [goal]? Let's pick up where you left off!"
+
+Avoid:
+- "You haven't logged in for X days"
+- "You're falling behind"
+- "Don't give up"
+
+Response format: Just the notification message, no quotes or explanations.
+""";
+
+    return basePrompt;
+  }
+
+  static Future<Notification> getNotificationForInactiveUser(
+    Session session,
+    Goal goal,
+    int daysInactive, {
+    JournalLog? lastLog,
+  }) async {
+    UserLocales? locale = (await UserLocales.db.find(
+      session,
+      where: (t) => t.email.equals(goal.user?.userInfo?.email),
+    ))
+        .firstOrNull;
+
+    String prompt = generateReengagementPrompt(
+      goal,
+      locale?.locale,
+      lastLog: lastLog,
+      daysInactive: daysInactive,
+    );
+
+    OpenAIService service = OpenAIService();
+    String? description;
+
+    try {
+      description = await service.generateText(session, prompt);
+    } catch (e) {
+      Sentry.captureException(e);
+    }
+
+    description ??= NotificationFactory.findBestMatchingPhrase(
+      goal.title,
+      locale?.locale ?? 'en',
+    );
+
+    return Notification(
+      title: "Welcome Back!",
+      description: description,
+      userId: goal.userId,
+      image: goal.picture,
+    );
+  }
 }
