@@ -101,6 +101,10 @@ class JournalEndpoint extends Endpoint {
     int? categoryId,
     int? pageSize,
     int? offset,
+
+    /// Returns only logs with images if set to true
+    /// This is by default [true] to work with current app version
+    bool onlyImages = true,
   }) async {
     User user = await AuthUtils.getAuthenticatedUser(session);
 
