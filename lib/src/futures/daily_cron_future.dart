@@ -184,16 +184,18 @@ class DailyCronFuture extends FutureCall {
 
   @override
   Future<void> invoke(Session session, dynamic object) async {
-    await scheduleFixedGoalNotifications(session);
-    await scheduleUserNotifications(session);
-
-    DateTime now = DateTime.now();
-    DateTime next = DateTime(now.year, now.month, now.day + 1, 0, 0);
-    await session.serverpod.futureCallAtTime(
-      'DailyCron',
-      null,
-      next,
-      identifier: next.toString(),
-    );
+    try {
+      await scheduleFixedGoalNotifications(session);
+      await scheduleUserNotifications(session);
+    } finally {
+      DateTime now = DateTime.now();
+      DateTime next = DateTime(now.year, now.month, now.day + 1, 0, 0);
+      await session.serverpod.futureCallAtTime(
+        'DailyCron',
+        null,
+        next,
+        identifier: next.toString(),
+      );
+    }
   }
 }
