@@ -4,14 +4,14 @@ version: 1.0.1
 homepage: https://fixie.world
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.0
 
 dependencies:
   # Serverpod
-  serverpod: 2.4.0
-  serverpod_auth_server: 2.4.0
-  serverpod_cloud_storage_s3: 2.4.0
-  serverpod_serialization: 2.4.0
+  serverpod: 2.7.0
+  serverpod_auth_server: 2.7.0
+  serverpod_cloud_storage_s3: 2.7.0
+  serverpod_serialization: 2.7.0
 
   # Firebase
   firebase_cloud_messaging_flutter: ^1.0.6
@@ -28,4 +28,4 @@ dependencies:
   intl: any
 
 dev_dependencies:
-  lints: ^5.1.1
+  lints: ^6.0.0
