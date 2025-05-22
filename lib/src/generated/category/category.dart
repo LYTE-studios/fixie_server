@@ -11,7 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-abstract class Category implements _i1.TableRow, _i1.ProtocolSerialization {
+abstract class Category
+    implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   Category._({
     this.id,
     required this.title,
@@ -59,7 +60,7 @@ abstract class Category implements _i1.TableRow, _i1.ProtocolSerialization {
   int? presetId;
 
   @override
-  _i1.Table get table => t;
+  _i1.Table<int?> get table => t;
 
   /// Returns a shallow copy of this [Category]
   /// with some or all fields replaced by the given arguments.
@@ -168,7 +169,7 @@ class _CategoryImpl extends Category {
   }
 }
 
-class CategoryTable extends _i1.Table {
+class CategoryTable extends _i1.Table<int?> {
   CategoryTable({super.tableRelation}) : super(tableName: 'category') {
     title = _i1.ColumnString(
       'title',
@@ -220,7 +221,7 @@ class CategoryInclude extends _i1.IncludeObject {
   Map<String, _i1.Include?> get includes => {};
 
   @override
-  _i1.Table get table => Category.t;
+  _i1.Table<int?> get table => Category.t;
 }
 
 class CategoryIncludeList extends _i1.IncludeList {
@@ -240,7 +241,7 @@ class CategoryIncludeList extends _i1.IncludeList {
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table get table => Category.t;
+  _i1.Table<int?> get table => Category.t;
 }
 
 class CategoryRepository {

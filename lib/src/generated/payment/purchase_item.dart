@@ -8,12 +8,15 @@
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
 
+// ignore_for_file: unnecessary_null_comparison
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../payment/benefit.dart' as _i2;
 import '../users/user.dart' as _i3;
 
-abstract class PurchaseItem implements _i1.TableRow, _i1.ProtocolSerialization {
+abstract class PurchaseItem
+    implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   PurchaseItem._({
     this.id,
     required this.benefitIdentifier,
@@ -74,7 +77,7 @@ abstract class PurchaseItem implements _i1.TableRow, _i1.ProtocolSerialization {
   _i3.User? user;
 
   @override
-  _i1.Table get table => t;
+  _i1.Table<int?> get table => t;
 
   /// Returns a shallow copy of this [PurchaseItem]
   /// with some or all fields replaced by the given arguments.
@@ -190,7 +193,7 @@ class _PurchaseItemImpl extends PurchaseItem {
   }
 }
 
-class PurchaseItemTable extends _i1.Table {
+class PurchaseItemTable extends _i1.Table<int?> {
   PurchaseItemTable({super.tableRelation}) : super(tableName: 'purchase_item') {
     benefitIdentifier = _i1.ColumnEnum(
       'benefitIdentifier',
@@ -270,7 +273,7 @@ class PurchaseItemInclude extends _i1.IncludeObject {
   Map<String, _i1.Include?> get includes => {'user': _user};
 
   @override
-  _i1.Table get table => PurchaseItem.t;
+  _i1.Table<int?> get table => PurchaseItem.t;
 }
 
 class PurchaseItemIncludeList extends _i1.IncludeList {
@@ -290,7 +293,7 @@ class PurchaseItemIncludeList extends _i1.IncludeList {
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table get table => PurchaseItem.t;
+  _i1.Table<int?> get table => PurchaseItem.t;
 }
 
 class PurchaseItemRepository {

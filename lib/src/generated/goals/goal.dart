@@ -8,6 +8,8 @@
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
 
+// ignore_for_file: unnecessary_null_comparison
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../users/user.dart' as _i2;
@@ -15,7 +17,7 @@ import '../category/category.dart' as _i3;
 import '../shared/repetition.dart' as _i4;
 import '../journals/journal_log.dart' as _i5;
 
-abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
+abstract class Goal implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   Goal._({
     this.id,
     required this.title,
@@ -146,7 +148,7 @@ abstract class Goal implements _i1.TableRow, _i1.ProtocolSerialization {
   DateTime? created;
 
   @override
-  _i1.Table get table => t;
+  _i1.Table<int?> get table => t;
 
   /// Returns a shallow copy of this [Goal]
   /// with some or all fields replaced by the given arguments.
@@ -365,7 +367,7 @@ class _GoalImpl extends Goal {
   }
 }
 
-class GoalTable extends _i1.Table {
+class GoalTable extends _i1.Table<int?> {
   GoalTable({super.tableRelation}) : super(tableName: 'goal') {
     title = _i1.ColumnString(
       'title',
@@ -585,7 +587,7 @@ class GoalInclude extends _i1.IncludeObject {
       };
 
   @override
-  _i1.Table get table => Goal.t;
+  _i1.Table<int?> get table => Goal.t;
 }
 
 class GoalIncludeList extends _i1.IncludeList {
@@ -605,7 +607,7 @@ class GoalIncludeList extends _i1.IncludeList {
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table get table => Goal.t;
+  _i1.Table<int?> get table => Goal.t;
 }
 
 class GoalRepository {

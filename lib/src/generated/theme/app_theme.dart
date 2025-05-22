@@ -11,7 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-abstract class AppTheme implements _i1.TableRow, _i1.ProtocolSerialization {
+abstract class AppTheme
+    implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   AppTheme._({
     this.id,
     required this.validFrom,
@@ -73,7 +74,7 @@ abstract class AppTheme implements _i1.TableRow, _i1.ProtocolSerialization {
   String? backgroundColor;
 
   @override
-  _i1.Table get table => t;
+  _i1.Table<int?> get table => t;
 
   /// Returns a shallow copy of this [AppTheme]
   /// with some or all fields replaced by the given arguments.
@@ -205,7 +206,7 @@ class _AppThemeImpl extends AppTheme {
   }
 }
 
-class AppThemeTable extends _i1.Table {
+class AppThemeTable extends _i1.Table<int?> {
   AppThemeTable({super.tableRelation}) : super(tableName: 'app_theme') {
     validFrom = _i1.ColumnDateTime(
       'validFrom',
@@ -271,7 +272,7 @@ class AppThemeInclude extends _i1.IncludeObject {
   Map<String, _i1.Include?> get includes => {};
 
   @override
-  _i1.Table get table => AppTheme.t;
+  _i1.Table<int?> get table => AppTheme.t;
 }
 
 class AppThemeIncludeList extends _i1.IncludeList {
@@ -291,7 +292,7 @@ class AppThemeIncludeList extends _i1.IncludeList {
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table get table => AppTheme.t;
+  _i1.Table<int?> get table => AppTheme.t;
 }
 
 class AppThemeRepository {

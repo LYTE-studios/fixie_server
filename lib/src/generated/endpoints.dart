@@ -448,6 +448,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<int?>(),
               nullable: true,
             ),
+            'onlyImages': _i1.ParameterDescription(
+              name: 'onlyImages',
+              type: _i1.getType<bool>(),
+              nullable: false,
+            ),
           },
           call: (
             _i1.Session session,
@@ -459,6 +464,7 @@ class Endpoints extends _i1.EndpointDispatch {
             categoryId: params['categoryId'],
             pageSize: params['pageSize'],
             offset: params['offset'],
+            onlyImages: params['onlyImages'],
           ),
         ),
         'updateLog': _i1.MethodConnector(
