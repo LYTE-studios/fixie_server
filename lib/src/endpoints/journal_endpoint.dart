@@ -146,15 +146,17 @@ class JournalEndpoint extends Endpoint {
       );
     }
 
-    List<JournalLog> list = [...logs];
+    if (onlyImages) {
+      List<JournalLog> list = [...logs];
 
-    for (JournalLog log in logs) {
-      if (log.picture?.isEmpty ?? true) {
-        list.remove(log);
+      for (JournalLog log in logs) {
+        if (log.picture?.isEmpty ?? true) {
+          list.remove(log);
+        }
       }
-    }
 
-    logs = list;
+      logs = list;
+    }
 
     logs.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
