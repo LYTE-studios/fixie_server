@@ -13,9 +13,7 @@ class JournalManager {
     cachedLogs ??= await JournalLog.db.find(
       session,
       include: JournalLog.include(
-        goal: Goal.include(
-          category: Category.include(),
-        ),
+        goal: Goal.include(category: Category.include()),
       ),
       where: (t) => t.goalId.equals(goal.id),
     );
@@ -23,29 +21,32 @@ class JournalManager {
     switch (goal.repetition) {
       case Repetition.Daily:
         {
-          if (!(goal.weekdays?.contains(date.weekday) ?? false)) {
-            return null;
-          }
+          DateTime dayBefore = DateTime(
+            date.year,
+            date.month,
+            date.day,
+          ).subtract(Duration(days: 1));
 
-          DateTime dayBefore = DateTime(date.year, date.month, date.day)
-              .subtract(Duration(days: 1));
+          JournalLog? dayBeforeLog = cachedLogs.firstWhereOrNull(
+            (log) =>
+                (log.goal?.id == goal.id) &
+                (log.date.year == dayBefore.year) &
+                (log.date.month == dayBefore.month) &
+                (log.date.day == dayBefore.day),
+          );
 
-          JournalLog? dayBeforeLog = cachedLogs.firstWhereOrNull((log) =>
-              (log.goal?.id == goal.id) &
-              (log.date.year == dayBefore.year) &
-              (log.date.month == dayBefore.month) &
-              (log.date.day == dayBefore.day));
-
-          JournalLog? todayLog = cachedLogs.firstWhereOrNull((log) =>
-              (log.goal?.id == goal.id) &
-              (log.date.year == date.year) &
-              (log.date.month == date.month) &
-              (log.date.day == date.day));
+          JournalLog? todayLog = cachedLogs.firstWhereOrNull(
+            (log) =>
+                (log.goal?.id == goal.id) &
+                (log.date.year == date.year) &
+                (log.date.month == date.month) &
+                (log.date.day == date.day),
+          );
 
           bool hasStreak = dayBeforeLog == null
               ? false
               : (dayBeforeLog.loggedValue ?? 0) >=
-                  (dayBeforeLog.goal?.target.toDouble() ?? 0);
+                    (dayBeforeLog.goal?.target.toDouble() ?? 0);
 
           todayLog?.streak = hasStreak;
 
@@ -56,36 +57,39 @@ class JournalManager {
             createdAt: date,
             modifiedAt: date,
             streak: hasStreak,
-            date: DateTime(
-              date.year,
-              date.month,
-              date.day,
-            ),
+            date: DateTime(date.year, date.month, date.day),
           );
 
           return todayLog;
         }
       case Repetition.Weekly:
         {
-          DateTime dayBefore = DateTime(date.year, date.month, date.day)
-              .subtract(Duration(days: 7));
+          DateTime dayBefore = DateTime(
+            date.year,
+            date.month,
+            date.day,
+          ).subtract(Duration(days: 7));
 
-          JournalLog? dayBeforeLog = cachedLogs.firstWhereOrNull((log) =>
-              (log.goal?.id == goal.id) &&
-              log.date.year == dayBefore.year &&
-              (DateTimeUtils.weekNumber(log.date) ==
-                  DateTimeUtils.weekNumber(dayBefore)));
+          JournalLog? dayBeforeLog = cachedLogs.firstWhereOrNull(
+            (log) =>
+                (log.goal?.id == goal.id) &&
+                log.date.year == dayBefore.year &&
+                (DateTimeUtils.weekNumber(log.date) ==
+                    DateTimeUtils.weekNumber(dayBefore)),
+          );
 
-          JournalLog? todayLog = cachedLogs.firstWhereOrNull((log) =>
-              (log.goal?.id == goal.id) &&
-              log.date.year == date.year &&
-              (DateTimeUtils.weekNumber(log.date) ==
-                  DateTimeUtils.weekNumber(date)));
+          JournalLog? todayLog = cachedLogs.firstWhereOrNull(
+            (log) =>
+                (log.goal?.id == goal.id) &&
+                log.date.year == date.year &&
+                (DateTimeUtils.weekNumber(log.date) ==
+                    DateTimeUtils.weekNumber(date)),
+          );
 
           bool hasStreak = dayBeforeLog == null
               ? false
               : (dayBeforeLog.loggedValue ?? 0) >=
-                  (dayBeforeLog.goal?.target.toDouble() ?? 0);
+                    (dayBeforeLog.goal?.target.toDouble() ?? 0);
 
           todayLog?.streak = hasStreak;
 
@@ -96,34 +100,36 @@ class JournalManager {
             createdAt: date,
             modifiedAt: date,
             streak: hasStreak,
-            date: DateTime(
-              date.year,
-              date.month,
-              date.day,
-            ),
+            date: DateTime(date.year, date.month, date.day),
           );
 
           return todayLog;
         }
       case Repetition.Monthly:
         {
-          DateTime dayBefore =
-              DateTime(date.year, date.month).subtract(Duration(days: 1));
+          DateTime dayBefore = DateTime(
+            date.year,
+            date.month,
+          ).subtract(Duration(days: 1));
 
-          JournalLog? dayBeforeLog = cachedLogs.firstWhereOrNull((log) =>
-              (log.goal?.id == goal.id) &
-              (log.date.year == dayBefore.year) &
-              (log.date.month == dayBefore.month));
+          JournalLog? dayBeforeLog = cachedLogs.firstWhereOrNull(
+            (log) =>
+                (log.goal?.id == goal.id) &
+                (log.date.year == dayBefore.year) &
+                (log.date.month == dayBefore.month),
+          );
 
-          JournalLog? todayLog = cachedLogs.firstWhereOrNull((log) =>
-              (log.goal?.id == goal.id) &
-              (log.date.year == date.year) &
-              (log.date.month == date.month));
+          JournalLog? todayLog = cachedLogs.firstWhereOrNull(
+            (log) =>
+                (log.goal?.id == goal.id) &
+                (log.date.year == date.year) &
+                (log.date.month == date.month),
+          );
 
           bool hasStreak = dayBeforeLog == null
               ? false
               : (dayBeforeLog.loggedValue ?? 0) >=
-                  (dayBeforeLog.goal?.target.toDouble() ?? 0);
+                    (dayBeforeLog.goal?.target.toDouble() ?? 0);
 
           todayLog?.streak = hasStreak;
 
@@ -134,18 +140,16 @@ class JournalManager {
             createdAt: date,
             modifiedAt: date,
             streak: hasStreak,
-            date: DateTime(
-              date.year,
-              date.month,
-            ),
+            date: DateTime(date.year, date.month),
           );
 
           return todayLog;
         }
       case Repetition.Yearly:
         {
-          JournalLog? todayLog = cachedLogs.firstWhereOrNull((log) =>
-              (log.goal?.id == goal.id) & (log.date.year == date.year));
+          JournalLog? todayLog = cachedLogs.firstWhereOrNull(
+            (log) => (log.goal?.id == goal.id) & (log.date.year == date.year),
+          );
 
           todayLog ??= JournalLog(
             goalId: goal.id!,
@@ -154,9 +158,7 @@ class JournalManager {
             createdAt: date,
             modifiedAt: date,
             streak: false,
-            date: DateTime(
-              date.year,
-            ),
+            date: DateTime(date.year),
           );
 
           return todayLog;
@@ -174,29 +176,19 @@ class JournalManager {
   }) async {
     List<Goal> goals = await Goal.db.find(
       session,
-      include: Goal.include(
-        category: Category.include(),
-      ),
-      where: (t) => (t.userId.equals(user.id) &
+      include: Goal.include(category: Category.include()),
+      where: (t) =>
+          (t.userId.equals(user.id) &
           t.archived.notEquals(true) &
-          t.created.between(
-            DateTime(1900),
-            start.add(
-              Duration(days: 1),
-            ),
-          )),
+          t.created.between(DateTime(1900), start.add(Duration(days: 1)))),
     );
 
     List<JournalLog> definedLogs = await JournalLog.db.find(
       session,
       include: JournalLog.include(
-        goal: Goal.include(
-          category: Category.include(),
-        ),
+        goal: Goal.include(category: Category.include()),
       ),
-      where: (t) => t.goalId.inSet(
-        goals.map((e) => e.id!).toSet(),
-      ),
+      where: (t) => t.goalId.inSet(goals.map((e) => e.id!).toSet()),
     );
 
     JournalListDto dto = JournalListDto(
